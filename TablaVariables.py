@@ -2,10 +2,11 @@ class TablaVariables(object):
     def __init__(self):
         self.diccionario = {}
 
-    def agregarVariable(self, name, type):
+    def agregarVariable(self, name, type, value):
         if not self.varExiste(name):
             self.diccionario[name] = {
-                "type": type
+                "type": type,
+                "value": value
             }
         else:
             print("Ya existe una variable con el nombre", name)
@@ -18,4 +19,4 @@ class TablaVariables(object):
 
     def printVariables(self):
         for vars in self.diccionario:
-            print(vars)
+            print("NombreVar:", vars, "Tipo:", self.diccionario[vars]["type"])

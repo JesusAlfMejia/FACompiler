@@ -19,7 +19,7 @@ class DirFunciones(object):
 
     def agregarVariables(self, nombreFuncion, listaVars):
         for variable in listaVars:
-            self.diccionario[nombreFuncion]["varTable"].agregarVariable(variable[0], variable[1])
+            self.diccionario[nombreFuncion]["varTable"].agregarVariable(variable[0], variable[1], None)
             #print("Se le esta agregando las variables", variable[0], variable[1])
 
     def printFunciones(self):
@@ -28,5 +28,5 @@ class DirFunciones(object):
 
     def printTodo(self):
         for funciones in self.diccionario:
-            print(funciones)
+            print("NombreFunc:", funciones, "Tipo", self.diccionario[funciones]["returnType"])
             self.diccionario[funciones]["varTable"].printVariables()

@@ -2,6 +2,7 @@ from scaner import tokens
 import ply.yacc as yacc
 import codecs
 from DirFunciones import DirFunciones
+from CuboSemantico import CuboSemantico
 
 tipoFuncionLeido = ""
 tipoVarLeido = ""
@@ -9,6 +10,7 @@ nombreFuncion = ""
 nombreVar = ""
 listaVariables = []
 directorioFunc = DirFunciones()
+cuboSem = CuboSemantico()
 
 def p_PROGRAMA(p):
     '''
@@ -44,17 +46,26 @@ def p_V3(p):
 
 def p_FUNCION(p):
     '''
-    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN PARAMS RPAREN V4 CUERPO 
+    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar PARAMS agregarVariables RPAREN V4 CUERPO 
     V4 : VARS
     | empty
     '''
 def p_PARAMS(p):
     '''
-    PARAMS : TIPO NAME P1
-    P1 : COMMA PARAMS P1
-    | empty
-
+    PARAMS : TIPO NAME agregarVarLista P1
     '''
+
+def p_P1(p):
+    '''
+    P1 : P2
+    | empty
+    '''
+
+def p_P2(p):
+    '''
+    P2 : COMMA PARAMS P1
+    '''
+    
 def p_CUERPO(p):
     '''
     CUERPO : LBRACKET E RBRACKET
@@ -80,6 +91,8 @@ def p_TIPO_FUNCION(p):
     | CHAR
     | VOID
     '''
+    global tipoFuncionLeido
+    tipoFuncionLeido = p[1]
 
 def p_PRINCIPAL(p):
     '''
@@ -232,14 +245,14 @@ def p_crearFuncGlobal(p):
     global directorioFunc
     global nombreFuncion
     nombreFuncion = "global"
-    directorioFunc.agregarFuncion(nombreFuncion, "VOID")
+    directorioFunc.agregarFuncion(nombreFuncion, "void")
 
 def p_crearFuncMain(p):
     '''crearFuncMain : '''
     global directorioFunc
     global nombreFuncion
     nombreFuncion = "main"
-    directorioFunc.agregarFuncion(nombreFuncion, "VOID")
+    directorioFunc.agregarFuncion(nombreFuncion, "void")
 
 def p_agregarFunc(p):
     ''' agregarFunc : '''
