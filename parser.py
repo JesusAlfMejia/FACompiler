@@ -1,26 +1,50 @@
 from scaner import tokens
 import ply.yacc as yacc
 import codecs
+from DirFunciones import DirFunciones
+
+tipoFuncionLeido = ""
+tipoVarLeido = ""
+nombreFuncion = ""
+nombreVar = ""
+listaVariables = []
+directorioFunc = DirFunciones()
 
 def p_PROGRAMA(p):
     '''
-    PROGRAMA : PROGRAM NAME SEMICOLON VARS F PRINCIPAL
+    PROGRAMA : crearFuncGlobal PROGRAM NAME SEMICOLON VARS F PRINCIPAL printTodo
     F : FUNCION F
     | empty
     '''
 
 def p_VARS(p):
     '''
-    VARS : VAR TIPO VARIABLE V2 V3
-    V2 : COMMA VARIABLE V2
-    | SEMICOLON
-    V3 : TIPO VARIABLE V2 V3
+    VARS : borrarListaVar VAR V1
+    '''
+    
+
+def p_V1(p):
+    '''
+    V1 : TIPO VARIABLE agregarVarLista V2 SEMICOLON agregarVariables V3
+    '''
+    
+
+def p_V2(p):
+    '''
+    V2 : COMMA VARIABLE agregarVarLista V2
     | empty
     '''
 
+def p_V3(p):
+    '''
+    V3 : borrarListaVar V1
+    | empty
+    '''
+    
+
 def p_FUNCION(p):
     '''
-    FUNCION : FUNC TIPO_FUNCION NAME LPAREN PARAMS RPAREN V4 CUERPO 
+    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN PARAMS RPAREN V4 CUERPO 
     V4 : VARS
     | empty
     '''
@@ -46,6 +70,8 @@ def p_TIPO(p):
     | FLOAT
     | CHAR
     '''
+    global tipoVarLeido
+    tipoVarLeido = p[1]
 
 def p_TIPO_FUNCION(p):
     '''
@@ -57,12 +83,17 @@ def p_TIPO_FUNCION(p):
 
 def p_PRINCIPAL(p):
     '''
-    PRINCIPAL : MAIN LPAREN RPAREN CUERPO
+    PRINCIPAL : MAIN LPAREN crearFuncMain RPAREN CUERPO
     '''
 
 def p_VARIABLE(p):
     '''
     VARIABLE : NAME E2
+    '''
+    p[0] = p[1]
+
+def p_E2(p):
+    '''
     E2 : LSBRACKET EXP RSBRACKET
     | empty
     '''
@@ -194,6 +225,60 @@ def p_empty(p):
     '''
     empty :
     '''
+#Puntos Neuralgicos
+
+def p_crearFuncGlobal(p):
+    '''crearFuncGlobal : '''
+    global directorioFunc
+    global nombreFuncion
+    nombreFuncion = "global"
+    directorioFunc.agregarFuncion(nombreFuncion, "VOID")
+
+def p_crearFuncMain(p):
+    '''crearFuncMain : '''
+    global directorioFunc
+    global nombreFuncion
+    nombreFuncion = "main"
+    directorioFunc.agregarFuncion(nombreFuncion, "VOID")
+
+def p_agregarFunc(p):
+    ''' agregarFunc : '''
+    global directorioFunc
+    global nombreFuncion
+    global tipoFuncionLeido
+    nombreFuncion = p[-1]
+    directorioFunc.agregarFuncion(nombreFuncion, tipoFuncionLeido)
+
+def p_agregarVariables(p):
+    '''agregarVariables : '''
+    global directorioFunc
+    global listaVariables
+    global nombreFuncion
+    print(listaVariables)
+    directorioFunc.agregarVariables(nombreFuncion, listaVariables)
+
+def p_printFunciones(p):
+    '''printFunciones : '''
+    global directorioFunc
+    directorioFunc.printFunciones()
+
+def p_printTodo(p):
+    '''printTodo : '''
+    global directorioFunc
+    directorioFunc.printTodo()
+
+def p_agregarVarLista(p):
+    '''agregarVarLista : '''
+    global listaVariables
+    global nombreVar
+    global tipoVarLeido
+    nombreVar = p[-1]
+    listaVariables.append([nombreVar, tipoVarLeido])
+
+def p_borrarListaVar(p):
+    ''' borrarListaVar : '''
+    global listaVariables
+    del listaVariables[:]
 
 def p_error(p):
     if p == None:
