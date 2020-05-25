@@ -3,6 +3,8 @@ import ply.yacc as yacc
 import codecs
 from DirFunciones import DirFunciones
 from CuboSemantico import CuboSemantico
+from Cuadruplo import Cuadruplo
+import sys
 
 tipoFuncionLeido = ""
 tipoVarLeido = ""
@@ -11,6 +13,10 @@ nombreVar = ""
 listaVariables = []
 directorioFunc = DirFunciones()
 cuboSem = CuboSemantico()
+pilaPoper = []
+pilaOp = []
+pilaTipos = []
+cuadruplos = Cuadruplo()
 
 def p_PROGRAMA(p):
     '''
@@ -210,27 +216,27 @@ def p_S_EXP(p):
     
 def p_EXP(p):
     '''
-    EXP : TERMINO T
-    T : PLUS TERMINO T
-    | MINUS TERMINO T
+    EXP : TERMINO T popSumaResta
+    T : PLUS meterSumaResta EXP
+    | MINUS meterSumaResta EXP
     | empty
     '''
 
 def p_TERMINO(p):
     '''
-    TERMINO : FACTOR F2
-    F2 : DIVIDE FACTOR F2
-    | MULTIPLY FACTOR F2
+    TERMINO : FACTOR F2 popMultDiv
+    F2 : DIVIDE meterMultDiv TERMINO
+    | MULTIPLY meterMultDiv TERMINO
     | empty
     '''
 
 def p_FACTOR(p):
     '''
-    FACTOR : LPAREN H_EXP RPAREN
+    FACTOR : LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
     | C_INT
     | C_FLOAT
     | C_CHAR
-    | VARIABLE
+    | VARIABLE agregarPilaOp
     | LLAMADAF
     '''
 
@@ -239,6 +245,97 @@ def p_empty(p):
     empty :
     '''
 #Puntos Neuralgicos
+
+def p_meterFondoFalso(p):
+    '''meterFondoFalso : '''
+    global pilaPoper
+    pilaPoper.append('(')
+
+def p_quitarFondoFalso(p):
+    '''quitarFondoFalso : '''
+    global pilaPoper
+    if len(pilaPoper) > 0:
+        topPoper = pilaPoper[-1]
+    else: topPoper = "None"
+    if topPoper == '(':
+        pilaPoper.pop()
+
+def p_agregarPilaOp(p):
+    '''  agregarPilaOp : '''
+    global directorioFunc
+    global nombreFuncion
+    global pilaOp
+    global pilaTipos
+    varName = p[-1]
+    variable = directorioFunc.buscarVariable(varName, nombreFuncion) 
+    if variable != "ERROR":
+        pilaOp.append(varName)
+        pilaTipos.append(variable["type"])
+        length = len(pilaTipos)
+        print(length, pilaTipos[length - 1])
+    else:
+        print("La variable", varName, "no ha sido declarada")
+        sys.exit()
+
+def p_popMultDiv(p):
+    '''popMultDiv : '''
+    global pilaPoper
+    global pilaOp
+    global pilaTipos
+    global cuadruplos
+    global cuboSem
+    if len(pilaPoper) > 0:
+        topPoper = pilaPoper[-1]
+    else: topPoper = "None"
+    if topPoper != '(':
+        if  topPoper == '*' or topPoper == '/':
+            op = pilaPoper.pop()
+            opdo_der = pilaOp.pop()
+            opdo_izq = pilaOp.pop()
+            tipo_der = pilaTipos.pop()
+            tipo_izq = pilaTipos.pop()
+            tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
+            if  tipoRes == "error":
+                print("La muchacha no baila con el señor")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_izq, opdo_der, "temporal")
+            pilaOp.append("temporal")
+            pilaTipos.append(tipoRes)
+
+def p_popSumaResta(p):
+    '''popSumaResta : '''
+    global pilaPoper
+    global pilaOp
+    global pilaTipos
+    global cuadruplos
+    global cuboSem
+    if len(pilaPoper) > 0:
+        topPoper = pilaPoper[-1]
+    else: topPoper = "None"
+    if topPoper != '(':
+        if  topPoper == '+' or topPoper == '-':
+            op = pilaPoper.pop()
+            opdo_der = pilaOp.pop()
+            opdo_izq = pilaOp.pop()
+            tipo_der = pilaTipos.pop()
+            tipo_izq = pilaTipos.pop()
+            tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
+            if  tipoRes == "error":
+                print("La muchacha no baila con el señor")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_izq, opdo_der, "temporal")
+            pilaOp.append("temporal")
+            pilaTipos.append(tipoRes)
+
+def p_meterMultDiv(p):
+    ''' meterMultDiv : '''
+    global pilaPoper
+    pilaPoper.append(p[-1])
+
+def p_meterSumaResta(p):
+    ''' meterSumaResta : '''
+    global pilaPoper
+    pilaPoper.append(p[-1])
 
 def p_crearFuncGlobal(p):
     '''crearFuncGlobal : '''
@@ -260,7 +357,16 @@ def p_agregarFunc(p):
     global nombreFuncion
     global tipoFuncionLeido
     nombreFuncion = p[-1]
-    directorioFunc.agregarFuncion(nombreFuncion, tipoFuncionLeido)
+    resultado = directorioFunc.agregarFuncion(nombreFuncion, tipoFuncionLeido)
+    if resultado == "global":
+        print("No se puede declarar una funcion con el nombre de global")
+        sys.exit()
+    elif resultado == "main":
+        print("No se puede declarar una funcion con el nombre de main")
+        sys.exit()
+    elif resultado != "OK":
+        print("Ya existe una funcion con el nombre ", resultado)
+        sys.exit()
 
 def p_agregarVariables(p):
     '''agregarVariables : '''
@@ -268,7 +374,10 @@ def p_agregarVariables(p):
     global listaVariables
     global nombreFuncion
     print(listaVariables)
-    directorioFunc.agregarVariables(nombreFuncion, listaVariables)
+    resultado = directorioFunc.agregarVariables(nombreFuncion, listaVariables)
+    if resultado != "OK":
+        print("Ya existe una variable con el nombre", resultado)
+        sys.exit()
 
 def p_printFunciones(p):
     '''printFunciones : '''
@@ -278,7 +387,9 @@ def p_printFunciones(p):
 def p_printTodo(p):
     '''printTodo : '''
     global directorioFunc
+    global cuadruplos
     directorioFunc.printTodo()
+    cuadruplos.printCuads()
 
 def p_agregarVarLista(p):
     '''agregarVarLista : '''
