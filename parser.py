@@ -16,6 +16,7 @@ cuboSem = CuboSemantico()
 pilaPoper = []
 pilaOp = []
 pilaTipos = []
+pilaSaltos = []
 cuadruplos = Cuadruplo()
 
 def p_PROGRAMA(p):
@@ -131,8 +132,9 @@ def p_ESTATUTO(p):
 
 def p_ASIGNACION(p):
     '''
-    ASIGNACION : VARIABLE EQUALS EXP SEMICOLON
+    ASIGNACION : VARIABLE agregarPilaOp EQUALS meterOperador EXP popIgual SEMICOLON
     '''
+    p[0] = p[1]
 
 def p_LLAMADA(p):
     '''
@@ -167,14 +169,14 @@ def p_ESCRITURA(p):
 
 def p_CONDICION(p):
     '''
-    CONDICION : IF LPAREN H_EXP RPAREN THEN CUERPO ELSE1
-    ELSE1 : ELSE CUERPO
+    CONDICION : IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto
+    ELSE1 : ELSE gotoElse CUERPO
     | empty
     '''
 
 def p_CICLO_W(p):
     '''
-    CICLO_W : WHILE LPAREN H_EXP RPAREN DO CUERPO
+    CICLO_W : WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
     '''
 
 def p_CICLO_F(p):
@@ -184,27 +186,25 @@ def p_CICLO_F(p):
 
 def p_H_EXP(p):
     '''
-    H_EXP : T
-    T : T_EXP
-    | T_EXP OR T
+    H_EXP : T_EXP
+    | T_EXP OR H_EXP
     '''
 
 def p_T_EXP(p):
     '''
-    T_EXP : G
-    G : G_EXP
-    | G_EXP AND G
+    T_EXP : G_EXP
+    | G_EXP AND T_EXP
     '''
 
 def p_G_EXP(p):
     '''
-    G_EXP : EXP B
-    B : GREATER_OR_EQUAL EXP
-    | LESS_OR_EQUAL EXP
-    | GREATER_THAN EXP
-    | LESS_THAN EXP
-    | IS_EQUAL EXP
-    | NOT_EQUAL EXP
+    G_EXP : EXP B popBool
+    B : GREATER_OR_EQUAL meterOperador G_EXP
+    | LESS_OR_EQUAL meterOperador EXP
+    | GREATER_THAN meterOperador EXP
+    | LESS_THAN meterOperador EXP
+    | IS_EQUAL meterOperador EXP
+    | NOT_EQUAL meterOperador EXP
     | empty
     '''
 
@@ -217,16 +217,16 @@ def p_S_EXP(p):
 def p_EXP(p):
     '''
     EXP : TERMINO T popSumaResta
-    T : PLUS meterSumaResta EXP
-    | MINUS meterSumaResta EXP
+    T : PLUS meterOperador EXP
+    | MINUS meterOperador EXP
     | empty
     '''
 
 def p_TERMINO(p):
     '''
     TERMINO : FACTOR F2 popMultDiv
-    F2 : DIVIDE meterMultDiv TERMINO
-    | MULTIPLY meterMultDiv TERMINO
+    F2 : DIVIDE meterOperador TERMINO
+    | MULTIPLY meterOperador TERMINO
     | empty
     '''
 
@@ -245,6 +245,54 @@ def p_empty(p):
     empty :
     '''
 #Puntos Neuralgicos
+
+def p_gotoIf(p):
+    '''gotoIf : '''
+    global pilaPoper
+    global pilaTipos
+    global pilaOp
+    global pilaSaltos
+    global cuadruplos
+    expRes = pilaTipos.pop()
+    if expRes != 'bool':
+        print("Type Mismatch error: If requiere de una expresión booleana")
+        sys.exit()
+    else:
+        res = pilaOp.pop()
+        cuadruplos.generarCuad("gotof", res, "", "")
+        pilaSaltos.append(cuadruplos.contador-1)
+
+def p_terminaGoto(p):
+    '''terminarGoto : '''
+    global pilaSaltos
+    global cuadruplos
+    final = pilaSaltos.pop()
+    cuadruplos.rellenar(final, cuadruplos.contador)
+
+def p_agregarWhile(p):
+    ''' agregarWhile : '''
+    global pilaSaltos
+    pilaSaltos.append(cuadruplos.contador)
+
+def p_terminaWhile(p):
+    '''terminarWhile : '''
+    global pilaSaltos
+    global cuadruplos
+    final = pilaSaltos.pop()
+    retorno = pilaSaltos.pop()
+    cuadruplos.generarCuad("goto", "", "", retorno)
+    cuadruplos.rellenar(final, cuadruplos.contador)
+
+def p_gotoElse(p):
+    '''gotoElse : '''
+    global pilaSaltos
+    global cuadruplos
+    cuadruplos.generarCuad("goto","","","")
+    falso = pilaSaltos.pop()
+    pilaSaltos.append(cuadruplos.contador - 1)
+    #print(cuadruplos.contador)
+    #cuadruplos.printCuads()
+    cuadruplos.rellenar(falso, cuadruplos.contador)
 
 def p_meterFondoFalso(p):
     '''meterFondoFalso : '''
@@ -271,11 +319,61 @@ def p_agregarPilaOp(p):
     if variable != "ERROR":
         pilaOp.append(varName)
         pilaTipos.append(variable["type"])
-        length = len(pilaTipos)
-        print(length, pilaTipos[length - 1])
     else:
         print("La variable", varName, "no ha sido declarada")
         sys.exit()
+
+def p_popBool(p):
+    '''popBool : '''
+    global pilaPoper
+    global pilaOp
+    global pilaTipos
+    global cuadruplos
+    global cuboSem
+    if len(pilaPoper) > 0:
+        topPoper = pilaPoper[-1]
+    else: topPoper = "None"
+    if topPoper != '(':
+        if  topPoper == '<=' or topPoper == '<' or topPoper == '>=' or topPoper == '>' or topPoper == '==' or topPoper == '!=':
+            op = pilaPoper.pop()
+            opdo_der = pilaOp.pop()
+            opdo_izq = pilaOp.pop()
+            tipo_der = pilaTipos.pop()
+            tipo_izq = pilaTipos.pop()
+            tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
+            if  tipoRes == "error":
+                print("Type mismatch error: Los tipos de los operandos no son compatibles")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_izq, opdo_der, "temporal")
+            pilaOp.append("temporal")
+            pilaTipos.append(tipoRes)
+
+def p_popIgual(p):
+    '''popIgual : '''
+    global pilaPoper
+    global pilaOp
+    global pilaTipos
+    global cuadruplos
+    global cuboSem
+    if len(pilaPoper) > 0:
+        topPoper = pilaPoper[-1]
+    else: topPoper = "None"
+    if topPoper != '(':
+        if  topPoper == '=':
+            op = pilaPoper.pop()
+            opdo_der = pilaOp.pop()
+            opdo_izq = pilaOp.pop()
+            tipo_der = pilaTipos.pop()
+            tipo_izq = pilaTipos.pop()
+            tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
+            if  tipoRes == "error":
+                cuadruplos.printCuads()
+                print(op, opdo_izq, opdo_der, tipo_izq, tipo_der, tipoRes)
+                print("Type mismatch error: Los tipos de los operandos no son compatibles")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_der, "", opdo_izq)
+            pilaOp.append("temporal")
+            pilaTipos.append(tipoRes)
 
 def p_popMultDiv(p):
     '''popMultDiv : '''
@@ -327,6 +425,16 @@ def p_popSumaResta(p):
             pilaOp.append("temporal")
             pilaTipos.append(tipoRes)
 
+def p_meterIgual(p):
+    ''' meterIgual : '''
+    global pilaPoper
+    pilaPoper.append(p[-1])
+
+def p_meterBool(p):
+    ''' meterBool : '''
+    global pilaPoper
+    pilaPoper.append(p[-1])
+
 def p_meterMultDiv(p):
     ''' meterMultDiv : '''
     global pilaPoper
@@ -336,6 +444,12 @@ def p_meterSumaResta(p):
     ''' meterSumaResta : '''
     global pilaPoper
     pilaPoper.append(p[-1])
+
+def p_meterOperador(p):
+    ''' meterOperador : '''
+    global pilaPoper
+    pilaPoper.append(p[-1])
+
 
 def p_crearFuncGlobal(p):
     '''crearFuncGlobal : '''

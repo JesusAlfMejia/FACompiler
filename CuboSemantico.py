@@ -15,7 +15,8 @@ class CuboSemantico:
                     ">" : "bool",
                     "<" : "bool",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "int"
                 },
                 "float" : {
                     "+" : "float",
@@ -29,7 +30,8 @@ class CuboSemantico:
                     ">" : "bool",
                     "<" : "bool",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 },
                 "char" : {
                     "+" : "error",
@@ -43,7 +45,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" : "error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 },
                 "bool" : {
                     "+" : "error",
@@ -57,7 +60,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 }
             },
             "float" : {
@@ -73,7 +77,8 @@ class CuboSemantico:
                     ">" : "bool",
                     "<" : "bool",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 },
                 "float" : {
                     "+" : "float",
@@ -87,7 +92,8 @@ class CuboSemantico:
                     ">" : "bool",
                     "<" : "bool",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "float"
                 },
                 "char" : {
                     "+" : "error",
@@ -101,7 +107,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error" 
+                    "&&" : "error",
+                    "=" : "error" 
                 },
                 "bool" : {
                     "+" : "error",
@@ -115,7 +122,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 }
             },
             "char" : {
@@ -131,7 +139,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error" 
+                    "&&" : "error",
+                    "=" : "error" 
                 },
                 "float" : {
                     "+" : "error",
@@ -145,7 +154,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 },
                 "char" : {
                     "+" : "error",
@@ -159,7 +169,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "char"
                 },
                 "bool" : {
                     "+" : "error",
@@ -173,7 +184,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 }
             },
             "bool" : {
@@ -189,7 +201,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error" 
+                    "&&" : "error",
+                    "=" : "error" 
                 },
                 "float" : {
                     "+" : "error",
@@ -203,7 +216,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 },
                 "char" : {
                     "+" : "error",
@@ -217,7 +231,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "error",
-                    "&&" : "error"
+                    "&&" : "error",
+                    "=" : "error"
                 },
                 "bool" : {
                     "+" : "error",
@@ -231,7 +246,8 @@ class CuboSemantico:
                     ">" : "error",
                     "<" :"error",
                     "||" : "bool",
-                    "&&" : "bool"
+                    "&&" : "bool",
+                    "=" : "bool"
                 }
             }
         }
