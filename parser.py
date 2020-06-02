@@ -4,6 +4,8 @@ import codecs
 from DirFunciones import DirFunciones
 from CuboSemantico import CuboSemantico
 from Cuadruplo import Cuadruplo
+from TablaDirecciones import TablaDirecciones
+from TablaConstantes import TablaConstantes
 import sys
 
 tipoFuncionLeido = ""
@@ -18,10 +20,28 @@ pilaOp = []
 pilaTipos = []
 pilaSaltos = []
 cuadruplos = Cuadruplo()
+dicDirecciones = {
+    "globalInt" : TablaDirecciones(1000, 3999),
+    "globalFloat" : TablaDirecciones(4000, 6999),
+    "globalChar" : TablaDirecciones(7000, 9999),
+    "localInt": TablaDirecciones(10000, 12999),
+    "localFloat": TablaDirecciones(13000, 15999),
+    "localChar": TablaDirecciones(16000, 18999),
+    "tempInt": TablaDirecciones(19000, 21999),
+    "tempFloat": TablaDirecciones(22000, 24999),
+    "tempChar": TablaDirecciones(25000, 27999),
+    "tempBool": TablaDirecciones(28000, 30999),
+    "constInt": TablaDirecciones(31000, 33999),
+    "constFloat": TablaDirecciones(34000, 36999),
+    "constChar": TablaDirecciones(37000, 39999),
+    "constString": TablaDirecciones(40000, 42999)
+}
+scopeActual = "global"
+tablaConstantes = TablaConstantes()
 
 def p_PROGRAMA(p):
     '''
-    PROGRAMA : crearFuncGlobal PROGRAM NAME SEMICOLON VARS F PRINCIPAL printTodo
+    PROGRAMA : crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F PRINCIPAL printTodo
     F : FUNCION F
     | empty
     '''
@@ -53,7 +73,7 @@ def p_V3(p):
 
 def p_FUNCION(p):
     '''
-    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar PARAMS agregarVariables RPAREN V4 CUERPO 
+    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarVariables RPAREN V4 CUERPO 
     V4 : VARS
     | empty
     '''
@@ -150,21 +170,21 @@ def p_LLAMADAF(p):
 
 def p_RETORNO(p):
     '''
-    RETORNO : RETURN LPAREN EXP RPAREN SEMICOLON
+    RETORNO : RETURN LPAREN EXP popReturn RPAREN SEMICOLON
     '''
 
 def p_LECTURA(p):
     '''
     LECTURA : READ LPAREN V3 RPAREN SEMICOLON
-    V3 : VARIABLE COMMA V3
-    | VARIABLE
+    V3 : VARIABLE popRead COMMA V3
+    | VARIABLE popRead
     '''
 
 def p_ESCRITURA(p):
     '''
-    ESCRITURA : PRINT LPAREN E2 RPAREN SEMICOLON
-    E2 : S_EXP
-    | S_EXP COMMA E2
+    ESCRITURA : PRINT LPAREN E3 RPAREN SEMICOLON
+    E3 : S_EXP popPrint
+    | S_EXP popPrint COMMA E3
     '''
 
 def p_CONDICION(p):
@@ -210,7 +230,7 @@ def p_G_EXP(p):
 
 def p_S_EXP(p):
     '''
-    S_EXP : C_STRING
+    S_EXP : C_STRING agregarConstString
     | EXP
     '''
     
@@ -233,9 +253,9 @@ def p_TERMINO(p):
 def p_FACTOR(p):
     '''
     FACTOR : LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
-    | C_INT
-    | C_FLOAT
-    | C_CHAR
+    | C_INT agregarConstInt
+    | C_FLOAT agregarConstFloat
+    | C_CHAR agregarConstChar
     | VARIABLE agregarPilaOp
     | LLAMADAF
     '''
@@ -245,6 +265,90 @@ def p_empty(p):
     empty :
     '''
 #Puntos Neuralgicos
+
+def p_agregarConstInt(p):
+    '''agregarConstInt : '''
+    global pilaOp
+    global pilaTipos
+    global tablaConstantes
+    constante = p[-1]
+    dirConstante = tablaConstantes.buscarElemento(constante)
+    if dirConstante == "ERROR":
+        dirConstante = dicDirecciones["constInt"].obtenerDir()
+        tablaConstantes.agregarConstante(constante, "int", dirConstante)
+        pilaOp.append(dirConstante)
+        pilaTipos.append("int")
+    else:
+        pilaOp.append(dirConstante)
+        pilaTipos.append("int")
+
+def p_agregarConstFloat(p):
+    '''agregarConstFloat : '''
+    global pilaOp
+    global pilaTipos
+    global tablaConstantes
+    constante = p[-1]
+    dirConstante = tablaConstantes.buscarElemento(constante)
+    if dirConstante == "ERROR":
+        dirConstante = dicDirecciones["constFloat"].obtenerDir()
+        tablaConstantes.agregarConstante(constante, "float", dirConstante)
+        pilaOp.append(dirConstante)
+        pilaTipos.append("float")
+    else:
+        pilaOp.append(dirConstante)
+        pilaTipos.append("float")
+
+def p_agregarConstChar(p):
+    '''agregarConstChar : '''
+    global pilaOp
+    global pilaTipos
+    global tablaConstantes
+    constante = p[-1]
+    dirConstante = tablaConstantes.buscarElemento(constante)
+    if dirConstante == "ERROR":
+        dirConstante = dicDirecciones["constChar"].obtenerDir()
+        tablaConstantes.agregarConstante(constante, "char", dirConstante)
+        pilaOp.append(dirConstante)
+        pilaTipos.append("char")
+    else:
+        pilaOp.append(dirConstante)
+        pilaTipos.append("char")
+
+def p_agregarConstString(p):
+    '''agregarConstString : '''
+    global pilaOp
+    global pilaTipos
+    global tablaConstantes
+    constante = p[-1]
+    dirConstante = tablaConstantes.buscarElemento(constante)
+    if dirConstante == "ERROR":
+        dirConstante = dicDirecciones["constString"].obtenerDir()
+        tablaConstantes.agregarConstante(constante, "string", dirConstante)
+        pilaOp.append(dirConstante)
+        pilaTipos.append("string")
+    else:
+        pilaOp.append(dirConstante)
+        pilaTipos.append("string")
+
+def p_scopeGlobal(p):
+    '''scopeGlobal : '''
+    global scopeActual
+    scopeActual = "global"
+
+def p_scopeLocal(p):
+    '''scopeLocal : '''
+    global scopeActual
+    scopeActual = "local"
+
+def p_scopeTemp(p):
+    '''scopeTemp : '''
+    global scopeActual
+    scopeActual = "temp"
+
+def p_scopeConst(p):
+    '''scopeConst : '''
+    global scopeActual
+    scopeActual = "const"
 
 def p_gotoIf(p):
     '''gotoIf : '''
@@ -259,7 +363,7 @@ def p_gotoIf(p):
         sys.exit()
     else:
         res = pilaOp.pop()
-        cuadruplos.generarCuad("gotof", res, "", "")
+        cuadruplos.generarCuad("gotof", res, -1, -1)
         pilaSaltos.append(cuadruplos.contador-1)
 
 def p_terminaGoto(p):
@@ -280,14 +384,14 @@ def p_terminaWhile(p):
     global cuadruplos
     final = pilaSaltos.pop()
     retorno = pilaSaltos.pop()
-    cuadruplos.generarCuad("goto", "", "", retorno)
+    cuadruplos.generarCuad("goto", -1, -1, retorno)
     cuadruplos.rellenar(final, cuadruplos.contador)
 
 def p_gotoElse(p):
     '''gotoElse : '''
     global pilaSaltos
     global cuadruplos
-    cuadruplos.generarCuad("goto","","","")
+    cuadruplos.generarCuad("goto",-1,-1,-1)
     falso = pilaSaltos.pop()
     pilaSaltos.append(cuadruplos.contador - 1)
     #print(cuadruplos.contador)
@@ -317,11 +421,32 @@ def p_agregarPilaOp(p):
     varName = p[-1]
     variable = directorioFunc.buscarVariable(varName, nombreFuncion) 
     if variable != "ERROR":
-        pilaOp.append(varName)
+        pilaOp.append(variable["dir"])
         pilaTipos.append(variable["type"])
     else:
         print("La variable", varName, "no ha sido declarada")
         sys.exit()
+
+def p_popPrint(p):
+    '''popPrint : '''
+    global pilaOp
+    global cuadruplos
+    elem = pilaOp.pop()
+    cuadruplos.generarCuad("print", elem, -1, -1)
+
+def p_popRead(p):
+    '''popRead : '''
+    global pilaOp
+    global cuadruplos
+    elem = pilaOp.pop()
+    cuadruplos.generarCuad("read", elem, -1, -1)
+
+def p_popReturn(p):
+    '''popReturn : '''
+    global pilaOp
+    global cuadruplos
+    elem = pilaOp.pop()
+    cuadruplos.generarCuad("return", elem, -1, -1)
 
 def p_popBool(p):
     '''popBool : '''
@@ -330,11 +455,13 @@ def p_popBool(p):
     global pilaTipos
     global cuadruplos
     global cuboSem
+    global dicDirecciones
     if len(pilaPoper) > 0:
         topPoper = pilaPoper[-1]
     else: topPoper = "None"
     if topPoper != '(':
         if  topPoper == '<=' or topPoper == '<' or topPoper == '>=' or topPoper == '>' or topPoper == '==' or topPoper == '!=':
+            cuadruplos.printCuads()
             op = pilaPoper.pop()
             opdo_der = pilaOp.pop()
             opdo_izq = pilaOp.pop()
@@ -344,8 +471,20 @@ def p_popBool(p):
             if  tipoRes == "error":
                 print("Type mismatch error: Los tipos de los operandos no son compatibles")
                 sys.exit()
-            cuadruplos.generarCuad(op, opdo_izq, opdo_der, "temporal")
-            pilaOp.append("temporal")
+            nuevaDir = 0
+            if tipoRes == "int":
+                nuevaDir = dicDirecciones["tempInt"].obtenerDir()
+            elif tipoRes == "float":
+                nuevaDir = dicDirecciones["tempFloat"].obtenerDir()
+            elif tipoRes == "char":
+                nuevaDir = dicDirecciones["tempChar"].obtenerDir()
+            elif tipoRes == "bool":
+                nuevaDir = dicDirecciones["tempBool"].obtenerDir()
+            if nuevaDir == -1:
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
+            pilaOp.append(nuevaDir)
             pilaTipos.append(tipoRes)
 
 def p_popIgual(p):
@@ -371,9 +510,21 @@ def p_popIgual(p):
                 print(op, opdo_izq, opdo_der, tipo_izq, tipo_der, tipoRes)
                 print("Type mismatch error: Los tipos de los operandos no son compatibles")
                 sys.exit()
-            cuadruplos.generarCuad(op, opdo_der, "", opdo_izq)
-            pilaOp.append("temporal")
-            pilaTipos.append(tipoRes)
+            nuevaDir = 0
+            if tipoRes == "int":
+                nuevaDir = dicDirecciones["tempInt"].obtenerDir()
+            elif tipoRes == "float":
+                nuevaDir = dicDirecciones["tempFloat"].obtenerDir()
+            elif tipoRes == "char":
+                nuevaDir = dicDirecciones["tempChar"].obtenerDir()
+            elif tipoRes == "bool":
+                nuevaDir = dicDirecciones["tempBool"].obtenerDir()
+            if nuevaDir == -1:
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_der, -1, opdo_izq)
+            #pilaOp.append(nuevaDir)
+            #pilaTipos.append(tipoRes)
 
 def p_popMultDiv(p):
     '''popMultDiv : '''
@@ -396,8 +547,20 @@ def p_popMultDiv(p):
             if  tipoRes == "error":
                 print("La muchacha no baila con el señor")
                 sys.exit()
-            cuadruplos.generarCuad(op, opdo_izq, opdo_der, "temporal")
-            pilaOp.append("temporal")
+            nuevaDir = 0
+            if tipoRes == "int":
+                nuevaDir = dicDirecciones["tempInt"].obtenerDir()
+            elif tipoRes == "float":
+                nuevaDir = dicDirecciones["tempFloat"].obtenerDir()
+            elif tipoRes == "char":
+                nuevaDir = dicDirecciones["tempChar"].obtenerDir()
+            elif tipoRes == "bool":
+                nuevaDir = dicDirecciones["tempBool"].obtenerDir()
+            if nuevaDir == -1:
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
+            pilaOp.append(nuevaDir)
             pilaTipos.append(tipoRes)
 
 def p_popSumaResta(p):
@@ -421,8 +584,20 @@ def p_popSumaResta(p):
             if  tipoRes == "error":
                 print("La muchacha no baila con el señor")
                 sys.exit()
-            cuadruplos.generarCuad(op, opdo_izq, opdo_der, "temporal")
-            pilaOp.append("temporal")
+            nuevaDir = 0
+            if tipoRes == "int":
+                nuevaDir = dicDirecciones["tempInt"].obtenerDir()
+            elif tipoRes == "float":
+                nuevaDir = dicDirecciones["tempFloat"].obtenerDir()
+            elif tipoRes == "char":
+                nuevaDir = dicDirecciones["tempChar"].obtenerDir()
+            elif tipoRes == "bool":
+                nuevaDir = dicDirecciones["tempBool"].obtenerDir()
+            if nuevaDir == -1:
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
+            pilaOp.append(nuevaDir)
             pilaTipos.append(tipoRes)
 
 def p_meterIgual(p):
@@ -510,8 +685,28 @@ def p_agregarVarLista(p):
     global listaVariables
     global nombreVar
     global tipoVarLeido
+    global dicDirecciones
+    global scopeActual
     nombreVar = p[-1]
-    listaVariables.append([nombreVar, tipoVarLeido])
+    nuevaDir = 0
+    if scopeActual == "global":
+        if tipoVarLeido == "int":
+            nuevaDir = dicDirecciones["globalInt"].obtenerDir()
+        elif tipoVarLeido == "float":
+            nuevaDir = dicDirecciones["globalFloat"].obtenerDir()
+        elif tipoVarLeido == "char":
+            nuevaDir = dicDirecciones["globalChar"].obtenerDir()
+    elif scopeActual == "local":
+        if tipoVarLeido == "int":
+            nuevaDir = dicDirecciones["localInt"].obtenerDir()
+        elif tipoVarLeido == "float":
+            nuevaDir = dicDirecciones["localFloat"].obtenerDir()
+        elif tipoVarLeido == "char":
+            nuevaDir = dicDirecciones["localChar"].obtenerDir()
+    if nuevaDir == -1:
+        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+        sys.exit()
+    listaVariables.append([nombreVar, tipoVarLeido, nuevaDir])
 
 def p_borrarListaVar(p):
     ''' borrarListaVar : '''

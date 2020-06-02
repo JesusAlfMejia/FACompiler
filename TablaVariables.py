@@ -5,7 +5,7 @@ class TablaVariables(object):
     def agregarVariable(self, name, varType, value):
         self.diccionario[name] = {
             "type": varType,
-            "value": value
+            "dir": value
         }
 
     def varExiste(self, name):
@@ -16,7 +16,7 @@ class TablaVariables(object):
 
     def printVariables(self):
         for vars in self.diccionario:
-            print("NombreVar:", vars, "Tipo:", self.diccionario[vars]["type"])
+            print("NombreVar:", vars, "Tipo:", self.diccionario[vars]["type"], "Dir:", self.diccionario[vars]["dir"])
 
     def buscarVariable(self, name):
         if self.varExiste(name):

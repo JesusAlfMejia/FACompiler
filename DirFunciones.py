@@ -29,7 +29,7 @@ class DirFunciones(object):
     def agregarVariables(self, nombreFuncion, listaVars):
         for variable in listaVars:
             if not self.diccionario[nombreFuncion]["varTable"].varExiste(variable[0]):
-                self.diccionario[nombreFuncion]["varTable"].agregarVariable(variable[0], variable[1], None)
+                self.diccionario[nombreFuncion]["varTable"].agregarVariable(variable[0], variable[1], variable[2])
             #print("Se le esta agregando las variables", variable[0], variable[1])
             else: 
                 return variable[0]
