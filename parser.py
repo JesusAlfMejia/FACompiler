@@ -154,7 +154,6 @@ def p_ASIGNACION(p):
     '''
     ASIGNACION : VARIABLE agregarPilaOp EQUALS meterOperador EXP popIgual SEMICOLON
     '''
-    p[0] = p[1]
 
 def p_LLAMADA(p):
     '''
@@ -201,7 +200,7 @@ def p_CICLO_W(p):
 
 def p_CICLO_F(p):
     '''
-    CICLO_F : FROM NAME EQUALS C_INT TO C_INT DO CUERPO
+    CICLO_F : FROM agregarWhile VARIABLE agregarPilaOp agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
     '''
 
 def p_H_EXP(p):
@@ -220,11 +219,11 @@ def p_G_EXP(p):
     '''
     G_EXP : EXP B popBool
     B : GREATER_OR_EQUAL meterOperador G_EXP
-    | LESS_OR_EQUAL meterOperador EXP
-    | GREATER_THAN meterOperador EXP
-    | LESS_THAN meterOperador EXP
-    | IS_EQUAL meterOperador EXP
-    | NOT_EQUAL meterOperador EXP
+    | LESS_OR_EQUAL meterOperador G_EXP
+    | GREATER_THAN meterOperador G_EXP
+    | LESS_THAN meterOperador G_EXP
+    | IS_EQUAL meterOperador G_EXP
+    | NOT_EQUAL meterOperador G_EXP
     | empty
     '''
 
@@ -236,7 +235,7 @@ def p_S_EXP(p):
     
 def p_EXP(p):
     '''
-    EXP : TERMINO T popSumaResta
+    EXP : TERMINO popSumaResta T 
     T : PLUS meterOperador EXP
     | MINUS meterOperador EXP
     | empty
@@ -244,7 +243,7 @@ def p_EXP(p):
 
 def p_TERMINO(p):
     '''
-    TERMINO : FACTOR F2 popMultDiv
+    TERMINO : FACTOR popMultDiv F2 
     F2 : DIVIDE meterOperador TERMINO
     | MULTIPLY meterOperador TERMINO
     | empty
@@ -265,6 +264,78 @@ def p_empty(p):
     empty :
     '''
 #Puntos Neuralgicos
+
+def p_agregarFrom(p):
+    '''agregarFrom : '''
+    global pilaOp
+    global pilaTipos
+    varFrom = pilaOp.pop()
+    tipoVarFrom = pilaTipos.pop()
+    for x in range(3):
+        pilaOp.append(varFrom)
+        pilaTipos.append(tipoVarFrom)
+    
+def p_crearCompFrom(p):
+    '''crearCompFrom : '''
+    global tipoVarLeido
+    global cuadruplos
+    global pilaOp
+    global pilaTipos
+    global cuboSem
+    global dicDirecciones
+    limitante = pilaOp.pop()
+    tipoLimit = pilaTipos.pop()
+    fromVar = pilaOp.pop()
+    tipoVar = pilaTipos.pop()
+    tipoRes = cuboSem.obtenerSem(tipoVar, tipoLimit, ">")
+    if tipoRes == "error":
+        print("Type mismatch: Las variables en el from no son compatibles")
+        sys.exit()
+    else:
+        nuevaDir = 0
+        if tipoRes == "bool":
+            nuevaDir = dicDirecciones["tempBool"].obtenerDir()
+        if nuevaDir == -1:
+            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+            sys.exit()
+        cuadruplos.generarCuad("<", fromVar, limitante, nuevaDir)
+        pilaOp.append(nuevaDir)
+        pilaTipos.append(tipoRes)
+        
+
+def p_sumarFrom(p):
+    '''sumarFrom : '''
+    global cuadruplos
+    global tablaConstantes
+    global dicDirecciones
+    global cuboSem
+    global pilaTipos
+    global pilaOp
+    fromVar = pilaOp.pop()
+    tipoFromVar = pilaTipos.pop()
+    constUno = tablaConstantes.buscarElemento(1)
+    if constUno == "ERROR":
+        constUno = dicDirecciones["constInt"].obtenerDir()
+        tablaConstantes.agregarConstante(1, "int", constUno)
+    nuevaDir = 0
+    tipoRes = cuboSem.obtenerSem(tipoFromVar, "int", "+")
+    if tipoRes == "error":
+        print("Type mismatch: Las variables en el from no son compatibles")
+        sys.exit()
+    else:
+        if tipoRes == "int":
+            nuevaDir = dicDirecciones["tempInt"].obtenerDir()
+        elif tipoRes == "float":
+            nuevaDir = dicDirecciones["tempFloat"].obtenerDir()
+        elif tipoRes == "char":
+            nuevaDir = dicDirecciones["tempChar"].obtenerDir()
+        elif tipoRes == "bool":
+            nuevaDir = dicDirecciones["tempBool"].obtenerDir()
+        if nuevaDir == -1:
+            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+            sys.exit()
+    cuadruplos.generarCuad("+", fromVar, constUno, nuevaDir)
+    cuadruplos.generarCuad("=", nuevaDir, -1, fromVar)
 
 def p_agregarConstInt(p):
     '''agregarConstInt : '''
@@ -359,7 +430,7 @@ def p_gotoIf(p):
     global cuadruplos
     expRes = pilaTipos.pop()
     if expRes != 'bool':
-        print("Type Mismatch error: If requiere de una expresión booleana")
+        print("Type Mismatch error: La expresión asignada no es de tipo booleana")
         sys.exit()
     else:
         res = pilaOp.pop()
@@ -461,7 +532,6 @@ def p_popBool(p):
     else: topPoper = "None"
     if topPoper != '(':
         if  topPoper == '<=' or topPoper == '<' or topPoper == '>=' or topPoper == '>' or topPoper == '==' or topPoper == '!=':
-            cuadruplos.printCuads()
             op = pilaPoper.pop()
             opdo_der = pilaOp.pop()
             opdo_izq = pilaOp.pop()
@@ -506,9 +576,8 @@ def p_popIgual(p):
             tipo_izq = pilaTipos.pop()
             tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
             if  tipoRes == "error":
-                cuadruplos.printCuads()
                 print(op, opdo_izq, opdo_der, tipo_izq, tipo_der, tipoRes)
-                print("Type mismatch error: Los tipos de los operandos no son compatibles")
+                print("Type mismatch error: Se esta asignando un tipo de variable diferente a la declarada")
                 sys.exit()
             nuevaDir = 0
             if tipoRes == "int":

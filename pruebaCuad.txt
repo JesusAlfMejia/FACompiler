@@ -20,7 +20,7 @@ var int i;
 func void inicia(int y)
 var int x;
 {
-    x = 0;
+    x = j = 0;
     while(x<11) do
     {
         Arreglo[x] = y * x;
