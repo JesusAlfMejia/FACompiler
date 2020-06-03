@@ -6,7 +6,9 @@ var
 
 
 func int fact(int j)
-var int i;
+var int i[100];
+float m[200], n[100];
+int p[100];
 {
     i = j + (p - j* j);
     if(j == 1) then {

@@ -8,8 +8,10 @@ class Cuadruplo:
         self.contador += 1
 
     def printCuads(self):
+        x = 0
         for cuad in self.quad:
-            print("Cuadruplo:", cuad[0], cuad[1], cuad[2], cuad[3])
+            print(x, ")","Cuadruplo:", cuad[0], cuad[1], cuad[2], cuad[3])
+            x += 1
 
     def rellenar(self, cont, res):
         self.quad[cont][3] = res

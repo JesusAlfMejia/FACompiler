@@ -38,6 +38,7 @@ dicDirecciones = {
 }
 scopeActual = "global"
 tablaConstantes = TablaConstantes()
+declarandoVars = False
 
 def p_PROGRAMA(p):
     '''
@@ -54,29 +55,30 @@ def p_VARS(p):
 
 def p_V1(p):
     '''
-    V1 : TIPO VARIABLE agregarVarLista V2 SEMICOLON agregarVariables V3
+    V1 : TIPO VARIABLEDer V2 SEMICOLON V3
     '''
     
 
 def p_V2(p):
     '''
-    V2 : COMMA VARIABLE agregarVarLista V2
+    V2 : COMMA VARIABLEDer V2
     | empty
     '''
 
 def p_V3(p):
     '''
-    V3 : borrarListaVar V1
+    V3 : V1
     | empty
     '''
     
 
 def p_FUNCION(p):
     '''
-    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarVariables RPAREN V4 CUERPO 
+    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO 
     V4 : VARS
     | empty
     '''
+
 def p_PARAMS(p):
     '''
     PARAMS : TIPO NAME agregarVarLista P1
@@ -128,13 +130,25 @@ def p_PRINCIPAL(p):
 
 def p_VARIABLE(p):
     '''
-    VARIABLE : NAME E2
+    VARIABLE : NAME agregarPilaOp E2
     '''
     p[0] = p[1]
 
 def p_E2(p):
     '''
-    E2 : LSBRACKET EXP RSBRACKET
+    E2 : LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso
+    | empty
+    '''
+
+def p_VARIABLEDer(p):
+    '''
+    VARIABLEDer : NAME agregarVarLista agregarVariables borrarListaVar E2Der
+    '''
+    p[0] = p[1]
+
+def p_E2Der(p):
+    '''
+    E2Der : LSBRACKET C_INT declararArray RSBRACKET
     | empty
     '''
 
@@ -152,7 +166,7 @@ def p_ESTATUTO(p):
 
 def p_ASIGNACION(p):
     '''
-    ASIGNACION : VARIABLE agregarPilaOp EQUALS meterOperador EXP popIgual SEMICOLON
+    ASIGNACION : VARIABLE EQUALS meterOperador EXP popIgual SEMICOLON
     '''
 
 def p_LLAMADA(p):
@@ -200,7 +214,7 @@ def p_CICLO_W(p):
 
 def p_CICLO_F(p):
     '''
-    CICLO_F : FROM agregarWhile VARIABLE agregarPilaOp agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    CICLO_F : FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
     '''
 
 def p_H_EXP(p):
@@ -255,7 +269,7 @@ def p_FACTOR(p):
     | C_INT agregarConstInt
     | C_FLOAT agregarConstFloat
     | C_CHAR agregarConstChar
-    | VARIABLE agregarPilaOp
+    | VARIABLE
     | LLAMADAF
     '''
 
@@ -264,6 +278,88 @@ def p_empty(p):
     empty :
     '''
 #Puntos Neuralgicos
+
+def p_agregarLocalVar(p):
+    ''' agregarLocalVar : '''
+    global directorioFunc
+    global nombreFuncion
+    directorioFunc.calcularLocales(nombreFuncion)
+
+def p_agregarParamTable(p):
+    '''agregarParamTable : '''
+    global listaVariables
+    global directorioFunc
+    global nombreFuncion
+    directorioFunc.agregarParamTable(nombreFuncion, listaVariables)
+
+def p_guardarArreglo(p):
+    '''guardarArreglo : '''
+    global pilaOp
+    global pilaTipos
+    global nombreVar
+    global nombreFuncion
+    global directorioFunc
+    id = pilaOp.pop()
+    tipo = pilaTipos.pop()
+    variable = directorioFunc.buscarVariableDir(id, nombreFuncion)
+    idArray = variable["isArray"]
+    if idArray == False:
+        print("No se puede indexar una variable que no fue declarada como un arreglo")
+        sys.exit()
+    else:
+        nombreVar = variable
+    
+
+def p_verificarArreglo(p):
+    '''verificarArreglo : '''
+    global cuadruplos
+    global pilaOp
+    global pilaTipos
+    global dicDirecciones
+    topOp = pilaOp[-1]
+    tamArray = nombreVar["arraySize"]
+    dirArray = nombreVar["dir"]
+    tipoArray = nombreVar["type"]
+    cuadruplos.generarCuad("verify", tamArray ,-1, topOp)
+    aux1 = pilaOp.pop()
+    tipo = pilaTipos.pop()
+    nuevaDir = dicDirecciones["tempInt"].obtenerDir()
+    dirArray = str(dirArray)
+    dirArray = '(' + dirArray + ')'
+    cuadruplos.generarCuad("+", aux1, dirArray, nuevaDir)
+    #print("nuevaDir:",nuevaDir)
+    pilaOp.append(nuevaDir)
+    #print("pilaDeOperandos:", pilaOp)
+    pilaTipos.append(tipoArray)
+
+def p_declararArray(p):
+    ''' declararArray : '''
+    global directorioFunc
+    global nombreFuncion
+    global nombreVar
+    global scopeActual
+    global tipoVarLeido
+    tamArray = p[-1]
+    directorioFunc.agregarArray(nombreFuncion, nombreVar, tamArray)
+    nuevaDir = 0
+    if scopeActual == "global":
+        if tipoVarLeido == "int":
+            nuevaDir = dicDirecciones["globalInt"].aumentarDir(tamArray -1)
+        elif tipoVarLeido == "float":
+            nuevaDir = dicDirecciones["globalFloat"].aumentarDir(tamArray-1)
+        elif tipoVarLeido == "char":
+            nuevaDir = dicDirecciones["globalChar"].aumentarDir(tamArray-1)
+    elif scopeActual == "local":
+        if tipoVarLeido == "int":
+            nuevaDir = dicDirecciones["localInt"].aumentarDir(tamArray -1)
+        elif tipoVarLeido == "float":
+            nuevaDir = dicDirecciones["localFloat"].aumentarDir(tamArray -1)
+        elif tipoVarLeido == "char":
+            nuevaDir = dicDirecciones["localChar"].aumentarDir(tamArray -1)
+    if nuevaDir == -1:
+        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+        sys.exit()
+
 
 def p_agregarFrom(p):
     '''agregarFrom : '''
@@ -746,8 +842,10 @@ def p_printTodo(p):
     '''printTodo : '''
     global directorioFunc
     global cuadruplos
+    global pilaOp
     directorioFunc.printTodo()
     cuadruplos.printCuads()
+    print(pilaOp)
 
 def p_agregarVarLista(p):
     '''agregarVarLista : '''
@@ -755,6 +853,8 @@ def p_agregarVarLista(p):
     global nombreVar
     global tipoVarLeido
     global dicDirecciones
+    global directorioFunc
+    global nombreFuncion
     global scopeActual
     nombreVar = p[-1]
     nuevaDir = 0
@@ -776,6 +876,8 @@ def p_agregarVarLista(p):
         print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
         sys.exit()
     listaVariables.append([nombreVar, tipoVarLeido, nuevaDir])
+    
+
 
 def p_borrarListaVar(p):
     ''' borrarListaVar : '''

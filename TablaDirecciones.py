@@ -11,4 +11,8 @@ class TablaDirecciones:
             return -1 
         return dirRegreso
         
-        
+    def aumentarDir(self, num):
+        self.dirActual += num
+        if(self.dirActual > self.dirFinal):
+            return -1
+        return self.dirActual 
