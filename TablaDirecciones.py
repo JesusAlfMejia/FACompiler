@@ -16,3 +16,8 @@ class TablaDirecciones:
         if(self.dirActual > self.dirFinal):
             return -1
         return self.dirActual 
+
+    def calcularTam(self):
+        tam = self.dirActual - self.dirInicial
+        self.dirActual = self.dirInicial
+        return tam
