@@ -74,8 +74,12 @@ t_RSBRACKET = r'\]'
 t_AND = r'\&\&'
 t_OR = r'\|\|'
 
-t_ignore = " \t\n"
+t_ignore = " \t"
 
+def t_newline(t):
+     r'\n+'
+     t.lexer.lineno += len(t.value)
+    
 def t_C_FLOAT(t):
     r'\d+\.\d+'
     t.value = float(t.value)
@@ -100,7 +104,7 @@ def t_NAME(t):
     return t
 
 def t_error(t):
-    print("Illegal characters:", t.value)
+    print("Caracteres ilegales:", t.value[0], "en linea", t.lexer.lineno)
     t.lexer.skip(1)
 
 lexer = lex.lex()

@@ -51,7 +51,7 @@ Rule 45    LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 ve
 Rule 46    E4 -> EXP generarParam
 Rule 47    E4 -> EXP generarParam COMMA E4
 Rule 48    E4 -> empty
-Rule 49    LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+Rule 49    LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 Rule 50    RETORNO -> RETURN LPAREN EXP popReturn RPAREN SEMICOLON
 Rule 51    LECTURA -> READ LPAREN V3 RPAREN SEMICOLON
 Rule 52    V3 -> VARIABLE popRead COMMA V3
@@ -94,55 +94,56 @@ Rule 88    FACTOR -> VARIABLE
 Rule 89    FACTOR -> LLAMADAF
 Rule 90    empty -> <empty>
 Rule 91    generarGosub -> <empty>
-Rule 92    verificarParam -> <empty>
-Rule 93    generarParam -> <empty>
-Rule 94    generarEra -> <empty>
-Rule 95    verificarFunc -> <empty>
-Rule 96    terminarFunc -> <empty>
-Rule 97    agregarLocalVar -> <empty>
-Rule 98    agregarParamTable -> <empty>
-Rule 99    guardarArreglo -> <empty>
-Rule 100   verificarArreglo -> <empty>
-Rule 101   declararArray -> <empty>
-Rule 102   agregarFrom -> <empty>
-Rule 103   crearCompFrom -> <empty>
-Rule 104   sumarFrom -> <empty>
-Rule 105   agregarConstInt -> <empty>
-Rule 106   agregarConstFloat -> <empty>
-Rule 107   agregarConstChar -> <empty>
-Rule 108   agregarConstString -> <empty>
-Rule 109   scopeGlobal -> <empty>
-Rule 110   scopeLocal -> <empty>
-Rule 111   scopeTemp -> <empty>
-Rule 112   scopeConst -> <empty>
-Rule 113   gotoIf -> <empty>
-Rule 114   terminarGoto -> <empty>
-Rule 115   agregarWhile -> <empty>
-Rule 116   terminarWhile -> <empty>
-Rule 117   gotoElse -> <empty>
-Rule 118   meterFondoFalso -> <empty>
-Rule 119   quitarFondoFalso -> <empty>
-Rule 120   agregarPilaOp -> <empty>
-Rule 121   popPrint -> <empty>
-Rule 122   popRead -> <empty>
-Rule 123   popReturn -> <empty>
-Rule 124   popBool -> <empty>
-Rule 125   popIgual -> <empty>
-Rule 126   popMultDiv -> <empty>
-Rule 127   popSumaResta -> <empty>
-Rule 128   meterIgual -> <empty>
-Rule 129   meterBool -> <empty>
-Rule 130   meterMultDiv -> <empty>
-Rule 131   meterSumaResta -> <empty>
-Rule 132   meterOperador -> <empty>
-Rule 133   crearFuncGlobal -> <empty>
-Rule 134   crearFuncMain -> <empty>
-Rule 135   agregarFunc -> <empty>
-Rule 136   agregarVariables -> <empty>
-Rule 137   printFunciones -> <empty>
-Rule 138   printTodo -> <empty>
-Rule 139   agregarVarLista -> <empty>
-Rule 140   borrarListaVar -> <empty>
+Rule 92    verificarLlamada -> <empty>
+Rule 93    verificarParam -> <empty>
+Rule 94    generarParam -> <empty>
+Rule 95    generarEra -> <empty>
+Rule 96    verificarFunc -> <empty>
+Rule 97    terminarFunc -> <empty>
+Rule 98    agregarLocalVar -> <empty>
+Rule 99    agregarParamTable -> <empty>
+Rule 100   guardarArreglo -> <empty>
+Rule 101   verificarArreglo -> <empty>
+Rule 102   declararArray -> <empty>
+Rule 103   agregarFrom -> <empty>
+Rule 104   crearCompFrom -> <empty>
+Rule 105   sumarFrom -> <empty>
+Rule 106   agregarConstInt -> <empty>
+Rule 107   agregarConstFloat -> <empty>
+Rule 108   agregarConstChar -> <empty>
+Rule 109   agregarConstString -> <empty>
+Rule 110   scopeGlobal -> <empty>
+Rule 111   scopeLocal -> <empty>
+Rule 112   scopeTemp -> <empty>
+Rule 113   scopeConst -> <empty>
+Rule 114   gotoIf -> <empty>
+Rule 115   terminarGoto -> <empty>
+Rule 116   agregarWhile -> <empty>
+Rule 117   terminarWhile -> <empty>
+Rule 118   gotoElse -> <empty>
+Rule 119   meterFondoFalso -> <empty>
+Rule 120   quitarFondoFalso -> <empty>
+Rule 121   agregarPilaOp -> <empty>
+Rule 122   popPrint -> <empty>
+Rule 123   popRead -> <empty>
+Rule 124   popReturn -> <empty>
+Rule 125   popBool -> <empty>
+Rule 126   popIgual -> <empty>
+Rule 127   popMultDiv -> <empty>
+Rule 128   popSumaResta -> <empty>
+Rule 129   meterIgual -> <empty>
+Rule 130   meterBool -> <empty>
+Rule 131   meterMultDiv -> <empty>
+Rule 132   meterSumaResta -> <empty>
+Rule 133   meterOperador -> <empty>
+Rule 134   crearFuncGlobal -> <empty>
+Rule 135   crearFuncMain -> <empty>
+Rule 136   agregarFunc -> <empty>
+Rule 137   agregarVariables -> <empty>
+Rule 138   printFunciones -> <empty>
+Rule 139   printTodo -> <empty>
+Rule 140   agregarVarLista -> <empty>
+Rule 141   borrarListaVar -> <empty>
 
 Terminals, with rules where they appear
 
@@ -288,6 +289,7 @@ terminarGoto         : 57
 terminarWhile        : 60 61
 verificarArreglo     : 31
 verificarFunc        : 45 49
+verificarLlamada     : 49
 verificarParam       : 45 49
 
 Parsing method: LALR
@@ -296,9 +298,9 @@ state 0
 
     (0) S' -> . PROGRAMA
     (1) PROGRAMA -> . crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F PRINCIPAL printTodo
-    (133) crearFuncGlobal -> .
+    (134) crearFuncGlobal -> .
 
-    PROGRAM         reduce using rule 133 (crearFuncGlobal -> .)
+    PROGRAM         reduce using rule 134 (crearFuncGlobal -> .)
 
     PROGRAMA                       shift and go to state 1
     crearFuncGlobal                shift and go to state 2
@@ -333,9 +335,9 @@ state 4
 state 5
 
     (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON . scopeGlobal VARS F PRINCIPAL printTodo
-    (109) scopeGlobal -> .
+    (110) scopeGlobal -> .
 
-    VAR             reduce using rule 109 (scopeGlobal -> .)
+    VAR             reduce using rule 110 (scopeGlobal -> .)
 
     scopeGlobal                    shift and go to state 6
 
@@ -343,9 +345,9 @@ state 6
 
     (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal . VARS F PRINCIPAL printTodo
     (4) VARS -> . borrarListaVar VAR V1
-    (140) borrarListaVar -> .
+    (141) borrarListaVar -> .
 
-    VAR             reduce using rule 140 (borrarListaVar -> .)
+    VAR             reduce using rule 141 (borrarListaVar -> .)
 
     VARS                           shift and go to state 7
     borrarListaVar                 shift and go to state 8
@@ -436,9 +438,9 @@ state 13
 state 14
 
     (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F PRINCIPAL . printTodo
-    (138) printTodo -> .
+    (139) printTodo -> .
 
-    $end            reduce using rule 138 (printTodo -> .)
+    $end            reduce using rule 139 (printTodo -> .)
 
     printTodo                      shift and go to state 27
 
@@ -540,18 +542,18 @@ state 27
 state 28
 
     (29) PRINCIPAL -> MAIN LPAREN . crearFuncMain RPAREN CUERPO
-    (134) crearFuncMain -> .
+    (135) crearFuncMain -> .
 
-    RPAREN          reduce using rule 134 (crearFuncMain -> .)
+    RPAREN          reduce using rule 135 (crearFuncMain -> .)
 
     crearFuncMain                  shift and go to state 32
 
 state 29
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME . agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (135) agregarFunc -> .
+    (136) agregarFunc -> .
 
-    LPAREN          reduce using rule 135 (agregarFunc -> .)
+    LPAREN          reduce using rule 136 (agregarFunc -> .)
 
     agregarFunc                    shift and go to state 33
 
@@ -571,11 +573,11 @@ state 30
 state 31
 
     (33) VARIABLEDer -> NAME . agregarVarLista agregarVariables borrarListaVar E2Der
-    (139) agregarVarLista -> .
+    (140) agregarVarLista -> .
 
-    LSBRACKET       reduce using rule 139 (agregarVarLista -> .)
-    COMMA           reduce using rule 139 (agregarVarLista -> .)
-    SEMICOLON       reduce using rule 139 (agregarVarLista -> .)
+    LSBRACKET       reduce using rule 140 (agregarVarLista -> .)
+    COMMA           reduce using rule 140 (agregarVarLista -> .)
+    SEMICOLON       reduce using rule 140 (agregarVarLista -> .)
 
     agregarVarLista                shift and go to state 37
 
@@ -619,11 +621,11 @@ state 36
 state 37
 
     (33) VARIABLEDer -> NAME agregarVarLista . agregarVariables borrarListaVar E2Der
-    (136) agregarVariables -> .
+    (137) agregarVariables -> .
 
-    LSBRACKET       reduce using rule 136 (agregarVariables -> .)
-    COMMA           reduce using rule 136 (agregarVariables -> .)
-    SEMICOLON       reduce using rule 136 (agregarVariables -> .)
+    LSBRACKET       reduce using rule 137 (agregarVariables -> .)
+    COMMA           reduce using rule 137 (agregarVariables -> .)
+    SEMICOLON       reduce using rule 137 (agregarVariables -> .)
 
     agregarVariables               shift and go to state 42
 
@@ -639,11 +641,11 @@ state 38
 state 39
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN . borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (140) borrarListaVar -> .
+    (141) borrarListaVar -> .
 
-    INT             reduce using rule 140 (borrarListaVar -> .)
-    FLOAT           reduce using rule 140 (borrarListaVar -> .)
-    CHAR            reduce using rule 140 (borrarListaVar -> .)
+    INT             reduce using rule 141 (borrarListaVar -> .)
+    FLOAT           reduce using rule 141 (borrarListaVar -> .)
+    CHAR            reduce using rule 141 (borrarListaVar -> .)
 
     borrarListaVar                 shift and go to state 45
 
@@ -692,11 +694,11 @@ state 41
 state 42
 
     (33) VARIABLEDer -> NAME agregarVarLista agregarVariables . borrarListaVar E2Der
-    (140) borrarListaVar -> .
+    (141) borrarListaVar -> .
 
-    LSBRACKET       reduce using rule 140 (borrarListaVar -> .)
-    COMMA           reduce using rule 140 (borrarListaVar -> .)
-    SEMICOLON       reduce using rule 140 (borrarListaVar -> .)
+    LSBRACKET       reduce using rule 141 (borrarListaVar -> .)
+    COMMA           reduce using rule 141 (borrarListaVar -> .)
+    SEMICOLON       reduce using rule 141 (borrarListaVar -> .)
 
     borrarListaVar                 shift and go to state 52
 
@@ -759,11 +761,11 @@ state 44
 state 45
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar . scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (110) scopeLocal -> .
+    (111) scopeLocal -> .
 
-    INT             reduce using rule 110 (scopeLocal -> .)
-    FLOAT           reduce using rule 110 (scopeLocal -> .)
-    CHAR            reduce using rule 110 (scopeLocal -> .)
+    INT             reduce using rule 111 (scopeLocal -> .)
+    FLOAT           reduce using rule 111 (scopeLocal -> .)
+    CHAR            reduce using rule 111 (scopeLocal -> .)
 
     scopeLocal                     shift and go to state 73
 
@@ -801,28 +803,28 @@ state 49
 
     (52) V3 -> VARIABLE . popRead COMMA V3
     (53) V3 -> VARIABLE . popRead
-    (122) popRead -> .
+    (123) popRead -> .
 
-    COMMA           reduce using rule 122 (popRead -> .)
-    FUNC            reduce using rule 122 (popRead -> .)
-    MAIN            reduce using rule 122 (popRead -> .)
-    LBRACKET        reduce using rule 122 (popRead -> .)
-    RPAREN          reduce using rule 122 (popRead -> .)
+    COMMA           reduce using rule 123 (popRead -> .)
+    FUNC            reduce using rule 123 (popRead -> .)
+    MAIN            reduce using rule 123 (popRead -> .)
+    LBRACKET        reduce using rule 123 (popRead -> .)
+    RPAREN          reduce using rule 123 (popRead -> .)
 
     popRead                        shift and go to state 74
 
 state 50
 
     (30) VARIABLE -> NAME . agregarPilaOp E2
-    (120) agregarPilaOp -> .
+    (121) agregarPilaOp -> .
 
-    LSBRACKET       reduce using rule 120 (agregarPilaOp -> .)
-    COMMA           reduce using rule 120 (agregarPilaOp -> .)
-    FUNC            reduce using rule 120 (agregarPilaOp -> .)
-    MAIN            reduce using rule 120 (agregarPilaOp -> .)
-    LBRACKET        reduce using rule 120 (agregarPilaOp -> .)
-    RPAREN          reduce using rule 120 (agregarPilaOp -> .)
-    EQUALS          reduce using rule 120 (agregarPilaOp -> .)
+    LSBRACKET       reduce using rule 121 (agregarPilaOp -> .)
+    COMMA           reduce using rule 121 (agregarPilaOp -> .)
+    FUNC            reduce using rule 121 (agregarPilaOp -> .)
+    MAIN            reduce using rule 121 (agregarPilaOp -> .)
+    LBRACKET        reduce using rule 121 (agregarPilaOp -> .)
+    RPAREN          reduce using rule 121 (agregarPilaOp -> .)
+    EQUALS          reduce using rule 121 (agregarPilaOp -> .)
 
     agregarPilaOp                  shift and go to state 75
 
@@ -1036,12 +1038,12 @@ state 66
 
     (45) LLAMADA -> NAME . verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
     (30) VARIABLE -> NAME . agregarPilaOp E2
-    (95) verificarFunc -> .
-    (120) agregarPilaOp -> .
+    (96) verificarFunc -> .
+    (121) agregarPilaOp -> .
 
-    LPAREN          reduce using rule 95 (verificarFunc -> .)
-    LSBRACKET       reduce using rule 120 (agregarPilaOp -> .)
-    EQUALS          reduce using rule 120 (agregarPilaOp -> .)
+    LPAREN          reduce using rule 96 (verificarFunc -> .)
+    LSBRACKET       reduce using rule 121 (agregarPilaOp -> .)
+    EQUALS          reduce using rule 121 (agregarPilaOp -> .)
 
     verificarFunc                  shift and go to state 82
     agregarPilaOp                  shift and go to state 75
@@ -1077,18 +1079,18 @@ state 70
 state 71
 
     (60) CICLO_W -> WHILE . agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
-    (115) agregarWhile -> .
+    (116) agregarWhile -> .
 
-    LPAREN          reduce using rule 115 (agregarWhile -> .)
+    LPAREN          reduce using rule 116 (agregarWhile -> .)
 
     agregarWhile                   shift and go to state 87
 
 state 72
 
     (61) CICLO_F -> FROM . agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (115) agregarWhile -> .
+    (116) agregarWhile -> .
 
-    NAME            reduce using rule 115 (agregarWhile -> .)
+    NAME            reduce using rule 116 (agregarWhile -> .)
 
     agregarWhile                   shift and go to state 88
 
@@ -1204,13 +1206,13 @@ state 80
 state 81
 
     (44) ASIGNACION -> VARIABLE EQUALS . meterOperador EXP popIgual SEMICOLON
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 96
 
@@ -1233,7 +1235,7 @@ state 83
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -1289,7 +1291,7 @@ state 85
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     C_STRING        shift and go to state 111
     LPAREN          shift and go to state 98
@@ -1323,7 +1325,7 @@ state 86
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -1359,9 +1361,9 @@ state 88
 state 89
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS . agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (98) agregarParamTable -> .
+    (99) agregarParamTable -> .
 
-    RPAREN          reduce using rule 98 (agregarParamTable -> .)
+    RPAREN          reduce using rule 99 (agregarParamTable -> .)
 
     agregarParamTable              shift and go to state 119
 
@@ -1432,13 +1434,13 @@ state 92
 state 93
 
     (31) E2 -> LSBRACKET . guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso
-    (99) guardarArreglo -> .
+    (100) guardarArreglo -> .
 
-    LPAREN          reduce using rule 99 (guardarArreglo -> .)
-    C_INT           reduce using rule 99 (guardarArreglo -> .)
-    C_FLOAT         reduce using rule 99 (guardarArreglo -> .)
-    C_CHAR          reduce using rule 99 (guardarArreglo -> .)
-    NAME            reduce using rule 99 (guardarArreglo -> .)
+    LPAREN          reduce using rule 100 (guardarArreglo -> .)
+    C_INT           reduce using rule 100 (guardarArreglo -> .)
+    C_FLOAT         reduce using rule 100 (guardarArreglo -> .)
+    C_CHAR          reduce using rule 100 (guardarArreglo -> .)
+    NAME            reduce using rule 100 (guardarArreglo -> .)
 
     guardarArreglo                 shift and go to state 122
 
@@ -1473,9 +1475,9 @@ state 94
 state 95
 
     (34) E2Der -> LSBRACKET C_INT . declararArray RSBRACKET
-    (101) declararArray -> .
+    (102) declararArray -> .
 
-    RSBRACKET       reduce using rule 101 (declararArray -> .)
+    RSBRACKET       reduce using rule 102 (declararArray -> .)
 
     declararArray                  shift and go to state 123
 
@@ -1491,7 +1493,7 @@ state 96
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -1508,164 +1510,164 @@ state 96
 state 97
 
     (45) LLAMADA -> NAME verificarFunc LPAREN . meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
-    (118) meterFondoFalso -> .
+    (119) meterFondoFalso -> .
 
-    LPAREN          reduce using rule 118 (meterFondoFalso -> .)
-    C_INT           reduce using rule 118 (meterFondoFalso -> .)
-    C_FLOAT         reduce using rule 118 (meterFondoFalso -> .)
-    C_CHAR          reduce using rule 118 (meterFondoFalso -> .)
-    NAME            reduce using rule 118 (meterFondoFalso -> .)
-    RPAREN          reduce using rule 118 (meterFondoFalso -> .)
+    LPAREN          reduce using rule 119 (meterFondoFalso -> .)
+    C_INT           reduce using rule 119 (meterFondoFalso -> .)
+    C_FLOAT         reduce using rule 119 (meterFondoFalso -> .)
+    C_CHAR          reduce using rule 119 (meterFondoFalso -> .)
+    NAME            reduce using rule 119 (meterFondoFalso -> .)
+    RPAREN          reduce using rule 119 (meterFondoFalso -> .)
 
     meterFondoFalso                shift and go to state 125
 
 state 98
 
     (84) FACTOR -> LPAREN . meterFondoFalso H_EXP RPAREN quitarFondoFalso
-    (118) meterFondoFalso -> .
+    (119) meterFondoFalso -> .
 
-    LPAREN          reduce using rule 118 (meterFondoFalso -> .)
-    C_INT           reduce using rule 118 (meterFondoFalso -> .)
-    C_FLOAT         reduce using rule 118 (meterFondoFalso -> .)
-    C_CHAR          reduce using rule 118 (meterFondoFalso -> .)
-    NAME            reduce using rule 118 (meterFondoFalso -> .)
+    LPAREN          reduce using rule 119 (meterFondoFalso -> .)
+    C_INT           reduce using rule 119 (meterFondoFalso -> .)
+    C_FLOAT         reduce using rule 119 (meterFondoFalso -> .)
+    C_CHAR          reduce using rule 119 (meterFondoFalso -> .)
+    NAME            reduce using rule 119 (meterFondoFalso -> .)
 
     meterFondoFalso                shift and go to state 126
 
 state 99
 
     (50) RETORNO -> RETURN LPAREN EXP . popReturn RPAREN SEMICOLON
-    (123) popReturn -> .
+    (124) popReturn -> .
 
-    RPAREN          reduce using rule 123 (popReturn -> .)
+    RPAREN          reduce using rule 124 (popReturn -> .)
 
     popReturn                      shift and go to state 127
 
 state 100
 
     (76) EXP -> TERMINO . popSumaResta T
-    (127) popSumaResta -> .
+    (128) popSumaResta -> .
 
-    PLUS            reduce using rule 127 (popSumaResta -> .)
-    MINUS           reduce using rule 127 (popSumaResta -> .)
-    RPAREN          reduce using rule 127 (popSumaResta -> .)
-    COMMA           reduce using rule 127 (popSumaResta -> .)
-    GREATER_OR_EQUAL reduce using rule 127 (popSumaResta -> .)
-    LESS_OR_EQUAL   reduce using rule 127 (popSumaResta -> .)
-    GREATER_THAN    reduce using rule 127 (popSumaResta -> .)
-    LESS_THAN       reduce using rule 127 (popSumaResta -> .)
-    IS_EQUAL        reduce using rule 127 (popSumaResta -> .)
-    NOT_EQUAL       reduce using rule 127 (popSumaResta -> .)
-    AND             reduce using rule 127 (popSumaResta -> .)
-    OR              reduce using rule 127 (popSumaResta -> .)
-    SEMICOLON       reduce using rule 127 (popSumaResta -> .)
-    RSBRACKET       reduce using rule 127 (popSumaResta -> .)
-    TO              reduce using rule 127 (popSumaResta -> .)
-    DO              reduce using rule 127 (popSumaResta -> .)
+    PLUS            reduce using rule 128 (popSumaResta -> .)
+    MINUS           reduce using rule 128 (popSumaResta -> .)
+    RPAREN          reduce using rule 128 (popSumaResta -> .)
+    COMMA           reduce using rule 128 (popSumaResta -> .)
+    GREATER_OR_EQUAL reduce using rule 128 (popSumaResta -> .)
+    LESS_OR_EQUAL   reduce using rule 128 (popSumaResta -> .)
+    GREATER_THAN    reduce using rule 128 (popSumaResta -> .)
+    LESS_THAN       reduce using rule 128 (popSumaResta -> .)
+    IS_EQUAL        reduce using rule 128 (popSumaResta -> .)
+    NOT_EQUAL       reduce using rule 128 (popSumaResta -> .)
+    AND             reduce using rule 128 (popSumaResta -> .)
+    OR              reduce using rule 128 (popSumaResta -> .)
+    SEMICOLON       reduce using rule 128 (popSumaResta -> .)
+    RSBRACKET       reduce using rule 128 (popSumaResta -> .)
+    TO              reduce using rule 128 (popSumaResta -> .)
+    DO              reduce using rule 128 (popSumaResta -> .)
 
     popSumaResta                   shift and go to state 128
 
 state 101
 
     (80) TERMINO -> FACTOR . popMultDiv F2
-    (126) popMultDiv -> .
+    (127) popMultDiv -> .
 
-    DIVIDE          reduce using rule 126 (popMultDiv -> .)
-    MULTIPLY        reduce using rule 126 (popMultDiv -> .)
-    PLUS            reduce using rule 126 (popMultDiv -> .)
-    MINUS           reduce using rule 126 (popMultDiv -> .)
-    RPAREN          reduce using rule 126 (popMultDiv -> .)
-    COMMA           reduce using rule 126 (popMultDiv -> .)
-    GREATER_OR_EQUAL reduce using rule 126 (popMultDiv -> .)
-    LESS_OR_EQUAL   reduce using rule 126 (popMultDiv -> .)
-    GREATER_THAN    reduce using rule 126 (popMultDiv -> .)
-    LESS_THAN       reduce using rule 126 (popMultDiv -> .)
-    IS_EQUAL        reduce using rule 126 (popMultDiv -> .)
-    NOT_EQUAL       reduce using rule 126 (popMultDiv -> .)
-    AND             reduce using rule 126 (popMultDiv -> .)
-    OR              reduce using rule 126 (popMultDiv -> .)
-    SEMICOLON       reduce using rule 126 (popMultDiv -> .)
-    RSBRACKET       reduce using rule 126 (popMultDiv -> .)
-    TO              reduce using rule 126 (popMultDiv -> .)
-    DO              reduce using rule 126 (popMultDiv -> .)
+    DIVIDE          reduce using rule 127 (popMultDiv -> .)
+    MULTIPLY        reduce using rule 127 (popMultDiv -> .)
+    PLUS            reduce using rule 127 (popMultDiv -> .)
+    MINUS           reduce using rule 127 (popMultDiv -> .)
+    RPAREN          reduce using rule 127 (popMultDiv -> .)
+    COMMA           reduce using rule 127 (popMultDiv -> .)
+    GREATER_OR_EQUAL reduce using rule 127 (popMultDiv -> .)
+    LESS_OR_EQUAL   reduce using rule 127 (popMultDiv -> .)
+    GREATER_THAN    reduce using rule 127 (popMultDiv -> .)
+    LESS_THAN       reduce using rule 127 (popMultDiv -> .)
+    IS_EQUAL        reduce using rule 127 (popMultDiv -> .)
+    NOT_EQUAL       reduce using rule 127 (popMultDiv -> .)
+    AND             reduce using rule 127 (popMultDiv -> .)
+    OR              reduce using rule 127 (popMultDiv -> .)
+    SEMICOLON       reduce using rule 127 (popMultDiv -> .)
+    RSBRACKET       reduce using rule 127 (popMultDiv -> .)
+    TO              reduce using rule 127 (popMultDiv -> .)
+    DO              reduce using rule 127 (popMultDiv -> .)
 
     popMultDiv                     shift and go to state 129
 
 state 102
 
     (85) FACTOR -> C_INT . agregarConstInt
-    (105) agregarConstInt -> .
+    (106) agregarConstInt -> .
 
-    DIVIDE          reduce using rule 105 (agregarConstInt -> .)
-    MULTIPLY        reduce using rule 105 (agregarConstInt -> .)
-    PLUS            reduce using rule 105 (agregarConstInt -> .)
-    MINUS           reduce using rule 105 (agregarConstInt -> .)
-    RPAREN          reduce using rule 105 (agregarConstInt -> .)
-    COMMA           reduce using rule 105 (agregarConstInt -> .)
-    GREATER_OR_EQUAL reduce using rule 105 (agregarConstInt -> .)
-    LESS_OR_EQUAL   reduce using rule 105 (agregarConstInt -> .)
-    GREATER_THAN    reduce using rule 105 (agregarConstInt -> .)
-    LESS_THAN       reduce using rule 105 (agregarConstInt -> .)
-    IS_EQUAL        reduce using rule 105 (agregarConstInt -> .)
-    NOT_EQUAL       reduce using rule 105 (agregarConstInt -> .)
-    AND             reduce using rule 105 (agregarConstInt -> .)
-    OR              reduce using rule 105 (agregarConstInt -> .)
-    SEMICOLON       reduce using rule 105 (agregarConstInt -> .)
-    RSBRACKET       reduce using rule 105 (agregarConstInt -> .)
-    TO              reduce using rule 105 (agregarConstInt -> .)
-    DO              reduce using rule 105 (agregarConstInt -> .)
+    DIVIDE          reduce using rule 106 (agregarConstInt -> .)
+    MULTIPLY        reduce using rule 106 (agregarConstInt -> .)
+    PLUS            reduce using rule 106 (agregarConstInt -> .)
+    MINUS           reduce using rule 106 (agregarConstInt -> .)
+    RPAREN          reduce using rule 106 (agregarConstInt -> .)
+    COMMA           reduce using rule 106 (agregarConstInt -> .)
+    GREATER_OR_EQUAL reduce using rule 106 (agregarConstInt -> .)
+    LESS_OR_EQUAL   reduce using rule 106 (agregarConstInt -> .)
+    GREATER_THAN    reduce using rule 106 (agregarConstInt -> .)
+    LESS_THAN       reduce using rule 106 (agregarConstInt -> .)
+    IS_EQUAL        reduce using rule 106 (agregarConstInt -> .)
+    NOT_EQUAL       reduce using rule 106 (agregarConstInt -> .)
+    AND             reduce using rule 106 (agregarConstInt -> .)
+    OR              reduce using rule 106 (agregarConstInt -> .)
+    SEMICOLON       reduce using rule 106 (agregarConstInt -> .)
+    RSBRACKET       reduce using rule 106 (agregarConstInt -> .)
+    TO              reduce using rule 106 (agregarConstInt -> .)
+    DO              reduce using rule 106 (agregarConstInt -> .)
 
     agregarConstInt                shift and go to state 130
 
 state 103
 
     (86) FACTOR -> C_FLOAT . agregarConstFloat
-    (106) agregarConstFloat -> .
+    (107) agregarConstFloat -> .
 
-    DIVIDE          reduce using rule 106 (agregarConstFloat -> .)
-    MULTIPLY        reduce using rule 106 (agregarConstFloat -> .)
-    PLUS            reduce using rule 106 (agregarConstFloat -> .)
-    MINUS           reduce using rule 106 (agregarConstFloat -> .)
-    RPAREN          reduce using rule 106 (agregarConstFloat -> .)
-    COMMA           reduce using rule 106 (agregarConstFloat -> .)
-    GREATER_OR_EQUAL reduce using rule 106 (agregarConstFloat -> .)
-    LESS_OR_EQUAL   reduce using rule 106 (agregarConstFloat -> .)
-    GREATER_THAN    reduce using rule 106 (agregarConstFloat -> .)
-    LESS_THAN       reduce using rule 106 (agregarConstFloat -> .)
-    IS_EQUAL        reduce using rule 106 (agregarConstFloat -> .)
-    NOT_EQUAL       reduce using rule 106 (agregarConstFloat -> .)
-    AND             reduce using rule 106 (agregarConstFloat -> .)
-    OR              reduce using rule 106 (agregarConstFloat -> .)
-    SEMICOLON       reduce using rule 106 (agregarConstFloat -> .)
-    RSBRACKET       reduce using rule 106 (agregarConstFloat -> .)
-    TO              reduce using rule 106 (agregarConstFloat -> .)
-    DO              reduce using rule 106 (agregarConstFloat -> .)
+    DIVIDE          reduce using rule 107 (agregarConstFloat -> .)
+    MULTIPLY        reduce using rule 107 (agregarConstFloat -> .)
+    PLUS            reduce using rule 107 (agregarConstFloat -> .)
+    MINUS           reduce using rule 107 (agregarConstFloat -> .)
+    RPAREN          reduce using rule 107 (agregarConstFloat -> .)
+    COMMA           reduce using rule 107 (agregarConstFloat -> .)
+    GREATER_OR_EQUAL reduce using rule 107 (agregarConstFloat -> .)
+    LESS_OR_EQUAL   reduce using rule 107 (agregarConstFloat -> .)
+    GREATER_THAN    reduce using rule 107 (agregarConstFloat -> .)
+    LESS_THAN       reduce using rule 107 (agregarConstFloat -> .)
+    IS_EQUAL        reduce using rule 107 (agregarConstFloat -> .)
+    NOT_EQUAL       reduce using rule 107 (agregarConstFloat -> .)
+    AND             reduce using rule 107 (agregarConstFloat -> .)
+    OR              reduce using rule 107 (agregarConstFloat -> .)
+    SEMICOLON       reduce using rule 107 (agregarConstFloat -> .)
+    RSBRACKET       reduce using rule 107 (agregarConstFloat -> .)
+    TO              reduce using rule 107 (agregarConstFloat -> .)
+    DO              reduce using rule 107 (agregarConstFloat -> .)
 
     agregarConstFloat              shift and go to state 131
 
 state 104
 
     (87) FACTOR -> C_CHAR . agregarConstChar
-    (107) agregarConstChar -> .
+    (108) agregarConstChar -> .
 
-    DIVIDE          reduce using rule 107 (agregarConstChar -> .)
-    MULTIPLY        reduce using rule 107 (agregarConstChar -> .)
-    PLUS            reduce using rule 107 (agregarConstChar -> .)
-    MINUS           reduce using rule 107 (agregarConstChar -> .)
-    RPAREN          reduce using rule 107 (agregarConstChar -> .)
-    COMMA           reduce using rule 107 (agregarConstChar -> .)
-    GREATER_OR_EQUAL reduce using rule 107 (agregarConstChar -> .)
-    LESS_OR_EQUAL   reduce using rule 107 (agregarConstChar -> .)
-    GREATER_THAN    reduce using rule 107 (agregarConstChar -> .)
-    LESS_THAN       reduce using rule 107 (agregarConstChar -> .)
-    IS_EQUAL        reduce using rule 107 (agregarConstChar -> .)
-    NOT_EQUAL       reduce using rule 107 (agregarConstChar -> .)
-    AND             reduce using rule 107 (agregarConstChar -> .)
-    OR              reduce using rule 107 (agregarConstChar -> .)
-    SEMICOLON       reduce using rule 107 (agregarConstChar -> .)
-    RSBRACKET       reduce using rule 107 (agregarConstChar -> .)
-    TO              reduce using rule 107 (agregarConstChar -> .)
-    DO              reduce using rule 107 (agregarConstChar -> .)
+    DIVIDE          reduce using rule 108 (agregarConstChar -> .)
+    MULTIPLY        reduce using rule 108 (agregarConstChar -> .)
+    PLUS            reduce using rule 108 (agregarConstChar -> .)
+    MINUS           reduce using rule 108 (agregarConstChar -> .)
+    RPAREN          reduce using rule 108 (agregarConstChar -> .)
+    COMMA           reduce using rule 108 (agregarConstChar -> .)
+    GREATER_OR_EQUAL reduce using rule 108 (agregarConstChar -> .)
+    LESS_OR_EQUAL   reduce using rule 108 (agregarConstChar -> .)
+    GREATER_THAN    reduce using rule 108 (agregarConstChar -> .)
+    LESS_THAN       reduce using rule 108 (agregarConstChar -> .)
+    IS_EQUAL        reduce using rule 108 (agregarConstChar -> .)
+    NOT_EQUAL       reduce using rule 108 (agregarConstChar -> .)
+    AND             reduce using rule 108 (agregarConstChar -> .)
+    OR              reduce using rule 108 (agregarConstChar -> .)
+    SEMICOLON       reduce using rule 108 (agregarConstChar -> .)
+    RSBRACKET       reduce using rule 108 (agregarConstChar -> .)
+    TO              reduce using rule 108 (agregarConstChar -> .)
+    DO              reduce using rule 108 (agregarConstChar -> .)
 
     agregarConstChar               shift and go to state 132
 
@@ -1720,30 +1722,30 @@ state 106
 state 107
 
     (30) VARIABLE -> NAME . agregarPilaOp E2
-    (49) LLAMADAF -> NAME . verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
-    (120) agregarPilaOp -> .
-    (95) verificarFunc -> .
+    (49) LLAMADAF -> NAME . verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+    (121) agregarPilaOp -> .
+    (96) verificarFunc -> .
 
-    LSBRACKET       reduce using rule 120 (agregarPilaOp -> .)
-    DIVIDE          reduce using rule 120 (agregarPilaOp -> .)
-    MULTIPLY        reduce using rule 120 (agregarPilaOp -> .)
-    PLUS            reduce using rule 120 (agregarPilaOp -> .)
-    MINUS           reduce using rule 120 (agregarPilaOp -> .)
-    RPAREN          reduce using rule 120 (agregarPilaOp -> .)
-    COMMA           reduce using rule 120 (agregarPilaOp -> .)
-    GREATER_OR_EQUAL reduce using rule 120 (agregarPilaOp -> .)
-    LESS_OR_EQUAL   reduce using rule 120 (agregarPilaOp -> .)
-    GREATER_THAN    reduce using rule 120 (agregarPilaOp -> .)
-    LESS_THAN       reduce using rule 120 (agregarPilaOp -> .)
-    IS_EQUAL        reduce using rule 120 (agregarPilaOp -> .)
-    NOT_EQUAL       reduce using rule 120 (agregarPilaOp -> .)
-    AND             reduce using rule 120 (agregarPilaOp -> .)
-    OR              reduce using rule 120 (agregarPilaOp -> .)
-    SEMICOLON       reduce using rule 120 (agregarPilaOp -> .)
-    RSBRACKET       reduce using rule 120 (agregarPilaOp -> .)
-    TO              reduce using rule 120 (agregarPilaOp -> .)
-    DO              reduce using rule 120 (agregarPilaOp -> .)
-    LPAREN          reduce using rule 95 (verificarFunc -> .)
+    LSBRACKET       reduce using rule 121 (agregarPilaOp -> .)
+    DIVIDE          reduce using rule 121 (agregarPilaOp -> .)
+    MULTIPLY        reduce using rule 121 (agregarPilaOp -> .)
+    PLUS            reduce using rule 121 (agregarPilaOp -> .)
+    MINUS           reduce using rule 121 (agregarPilaOp -> .)
+    RPAREN          reduce using rule 121 (agregarPilaOp -> .)
+    COMMA           reduce using rule 121 (agregarPilaOp -> .)
+    GREATER_OR_EQUAL reduce using rule 121 (agregarPilaOp -> .)
+    LESS_OR_EQUAL   reduce using rule 121 (agregarPilaOp -> .)
+    GREATER_THAN    reduce using rule 121 (agregarPilaOp -> .)
+    LESS_THAN       reduce using rule 121 (agregarPilaOp -> .)
+    IS_EQUAL        reduce using rule 121 (agregarPilaOp -> .)
+    NOT_EQUAL       reduce using rule 121 (agregarPilaOp -> .)
+    AND             reduce using rule 121 (agregarPilaOp -> .)
+    OR              reduce using rule 121 (agregarPilaOp -> .)
+    SEMICOLON       reduce using rule 121 (agregarPilaOp -> .)
+    RSBRACKET       reduce using rule 121 (agregarPilaOp -> .)
+    TO              reduce using rule 121 (agregarPilaOp -> .)
+    DO              reduce using rule 121 (agregarPilaOp -> .)
+    LPAREN          reduce using rule 96 (verificarFunc -> .)
 
     agregarPilaOp                  shift and go to state 75
     verificarFunc                  shift and go to state 133
@@ -1766,20 +1768,20 @@ state 110
 
     (55) E3 -> S_EXP . popPrint
     (56) E3 -> S_EXP . popPrint COMMA E3
-    (121) popPrint -> .
+    (122) popPrint -> .
 
-    COMMA           reduce using rule 121 (popPrint -> .)
-    RPAREN          reduce using rule 121 (popPrint -> .)
+    COMMA           reduce using rule 122 (popPrint -> .)
+    RPAREN          reduce using rule 122 (popPrint -> .)
 
     popPrint                       shift and go to state 136
 
 state 111
 
     (74) S_EXP -> C_STRING . agregarConstString
-    (108) agregarConstString -> .
+    (109) agregarConstString -> .
 
-    COMMA           reduce using rule 108 (agregarConstString -> .)
-    RPAREN          reduce using rule 108 (agregarConstString -> .)
+    COMMA           reduce using rule 109 (agregarConstString -> .)
+    RPAREN          reduce using rule 109 (agregarConstString -> .)
 
     agregarConstString             shift and go to state 137
 
@@ -1859,7 +1861,7 @@ state 117
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -1879,28 +1881,28 @@ state 117
 state 118
 
     (61) CICLO_F -> FROM agregarWhile VARIABLE . agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (102) agregarFrom -> .
+    (103) agregarFrom -> .
 
-    EQUALS          reduce using rule 102 (agregarFrom -> .)
+    EQUALS          reduce using rule 103 (agregarFrom -> .)
 
     agregarFrom                    shift and go to state 150
 
 state 119
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable . agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (136) agregarVariables -> .
+    (137) agregarVariables -> .
 
-    RPAREN          reduce using rule 136 (agregarVariables -> .)
+    RPAREN          reduce using rule 137 (agregarVariables -> .)
 
     agregarVariables               shift and go to state 151
 
 state 120
 
     (13) PARAMS -> TIPO NAME . agregarVarLista P1
-    (139) agregarVarLista -> .
+    (140) agregarVarLista -> .
 
-    COMMA           reduce using rule 139 (agregarVarLista -> .)
-    RPAREN          reduce using rule 139 (agregarVarLista -> .)
+    COMMA           reduce using rule 140 (agregarVarLista -> .)
+    RPAREN          reduce using rule 140 (agregarVarLista -> .)
 
     agregarVarLista                shift and go to state 152
 
@@ -1917,13 +1919,13 @@ state 121
 state 122
 
     (31) E2 -> LSBRACKET guardarArreglo . meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso
-    (118) meterFondoFalso -> .
+    (119) meterFondoFalso -> .
 
-    LPAREN          reduce using rule 118 (meterFondoFalso -> .)
-    C_INT           reduce using rule 118 (meterFondoFalso -> .)
-    C_FLOAT         reduce using rule 118 (meterFondoFalso -> .)
-    C_CHAR          reduce using rule 118 (meterFondoFalso -> .)
-    NAME            reduce using rule 118 (meterFondoFalso -> .)
+    LPAREN          reduce using rule 119 (meterFondoFalso -> .)
+    C_INT           reduce using rule 119 (meterFondoFalso -> .)
+    C_FLOAT         reduce using rule 119 (meterFondoFalso -> .)
+    C_CHAR          reduce using rule 119 (meterFondoFalso -> .)
+    NAME            reduce using rule 119 (meterFondoFalso -> .)
 
     meterFondoFalso                shift and go to state 153
 
@@ -1937,23 +1939,23 @@ state 123
 state 124
 
     (44) ASIGNACION -> VARIABLE EQUALS meterOperador EXP . popIgual SEMICOLON
-    (125) popIgual -> .
+    (126) popIgual -> .
 
-    SEMICOLON       reduce using rule 125 (popIgual -> .)
+    SEMICOLON       reduce using rule 126 (popIgual -> .)
 
     popIgual                       shift and go to state 155
 
 state 125
 
     (45) LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso . generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
-    (94) generarEra -> .
+    (95) generarEra -> .
 
-    LPAREN          reduce using rule 94 (generarEra -> .)
-    C_INT           reduce using rule 94 (generarEra -> .)
-    C_FLOAT         reduce using rule 94 (generarEra -> .)
-    C_CHAR          reduce using rule 94 (generarEra -> .)
-    NAME            reduce using rule 94 (generarEra -> .)
-    RPAREN          reduce using rule 94 (generarEra -> .)
+    LPAREN          reduce using rule 95 (generarEra -> .)
+    C_INT           reduce using rule 95 (generarEra -> .)
+    C_FLOAT         reduce using rule 95 (generarEra -> .)
+    C_CHAR          reduce using rule 95 (generarEra -> .)
+    NAME            reduce using rule 95 (generarEra -> .)
+    RPAREN          reduce using rule 95 (generarEra -> .)
 
     generarEra                     shift and go to state 156
 
@@ -1974,7 +1976,7 @@ state 126
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2130,7 +2132,7 @@ state 132
 
 state 133
 
-    (49) LLAMADAF -> NAME verificarFunc . LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> NAME verificarFunc . LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 167
 
@@ -2169,9 +2171,9 @@ state 137
 state 138
 
     (57) CONDICION -> IF LPAREN H_EXP RPAREN . gotoIf THEN CUERPO ELSE1 terminarGoto
-    (113) gotoIf -> .
+    (114) gotoIf -> .
 
-    THEN            reduce using rule 113 (gotoIf -> .)
+    THEN            reduce using rule 114 (gotoIf -> .)
 
     gotoIf                         shift and go to state 171
 
@@ -2192,7 +2194,7 @@ state 139
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2224,7 +2226,7 @@ state 140
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2243,89 +2245,89 @@ state 140
 state 141
 
     (66) G_EXP -> EXP B . popBool
-    (124) popBool -> .
+    (125) popBool -> .
 
-    AND             reduce using rule 124 (popBool -> .)
-    OR              reduce using rule 124 (popBool -> .)
-    RPAREN          reduce using rule 124 (popBool -> .)
+    AND             reduce using rule 125 (popBool -> .)
+    OR              reduce using rule 125 (popBool -> .)
+    RPAREN          reduce using rule 125 (popBool -> .)
 
     popBool                        shift and go to state 174
 
 state 142
 
     (67) B -> GREATER_OR_EQUAL . meterOperador G_EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 175
 
 state 143
 
     (68) B -> LESS_OR_EQUAL . meterOperador G_EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 176
 
 state 144
 
     (69) B -> GREATER_THAN . meterOperador G_EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 177
 
 state 145
 
     (70) B -> LESS_THAN . meterOperador G_EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 178
 
 state 146
 
     (71) B -> IS_EQUAL . meterOperador G_EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 179
 
 state 147
 
     (72) B -> NOT_EQUAL . meterOperador G_EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 180
 
@@ -2389,7 +2391,7 @@ state 153
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2434,7 +2436,7 @@ state 156
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     RPAREN          reduce using rule 90 (empty -> .)
     LPAREN          shift and go to state 98
@@ -2488,26 +2490,26 @@ state 159
 state 160
 
     (77) T -> PLUS . meterOperador EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 195
 
 state 161
 
     (78) T -> MINUS . meterOperador EXP
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 196
 
@@ -2556,26 +2558,26 @@ state 163
 state 164
 
     (81) F2 -> DIVIDE . meterOperador TERMINO
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 197
 
 state 165
 
     (82) F2 -> MULTIPLY . meterOperador TERMINO
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 198
 
@@ -2603,15 +2605,15 @@ state 166
 
 state 167
 
-    (49) LLAMADAF -> NAME verificarFunc LPAREN . meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
-    (118) meterFondoFalso -> .
+    (49) LLAMADAF -> NAME verificarFunc LPAREN . meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+    (119) meterFondoFalso -> .
 
-    LPAREN          reduce using rule 118 (meterFondoFalso -> .)
-    C_INT           reduce using rule 118 (meterFondoFalso -> .)
-    C_FLOAT         reduce using rule 118 (meterFondoFalso -> .)
-    C_CHAR          reduce using rule 118 (meterFondoFalso -> .)
-    NAME            reduce using rule 118 (meterFondoFalso -> .)
-    RPAREN          reduce using rule 118 (meterFondoFalso -> .)
+    LPAREN          reduce using rule 119 (meterFondoFalso -> .)
+    C_INT           reduce using rule 119 (meterFondoFalso -> .)
+    C_FLOAT         reduce using rule 119 (meterFondoFalso -> .)
+    C_CHAR          reduce using rule 119 (meterFondoFalso -> .)
+    NAME            reduce using rule 119 (meterFondoFalso -> .)
+    RPAREN          reduce using rule 119 (meterFondoFalso -> .)
 
     meterFondoFalso                shift and go to state 199
 
@@ -2659,7 +2661,7 @@ state 170
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     C_STRING        shift and go to state 111
     LPAREN          shift and go to state 98
@@ -2720,7 +2722,7 @@ state 175
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2748,7 +2750,7 @@ state 176
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2776,7 +2778,7 @@ state 177
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2804,7 +2806,7 @@ state 178
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2832,7 +2834,7 @@ state 179
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2860,7 +2862,7 @@ state 180
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -2885,13 +2887,13 @@ state 181
 state 182
 
     (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS . meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (132) meterOperador -> .
+    (133) meterOperador -> .
 
-    LPAREN          reduce using rule 132 (meterOperador -> .)
-    C_INT           reduce using rule 132 (meterOperador -> .)
-    C_FLOAT         reduce using rule 132 (meterOperador -> .)
-    C_CHAR          reduce using rule 132 (meterOperador -> .)
-    NAME            reduce using rule 132 (meterOperador -> .)
+    LPAREN          reduce using rule 133 (meterOperador -> .)
+    C_INT           reduce using rule 133 (meterOperador -> .)
+    C_FLOAT         reduce using rule 133 (meterOperador -> .)
+    C_CHAR          reduce using rule 133 (meterOperador -> .)
+    NAME            reduce using rule 133 (meterOperador -> .)
 
     meterOperador                  shift and go to state 209
 
@@ -2902,10 +2904,10 @@ state 183
     (12) V4 -> . empty
     (4) VARS -> . borrarListaVar VAR V1
     (90) empty -> .
-    (140) borrarListaVar -> .
+    (141) borrarListaVar -> .
 
     LBRACKET        reduce using rule 90 (empty -> .)
-    VAR             reduce using rule 140 (borrarListaVar -> .)
+    VAR             reduce using rule 141 (borrarListaVar -> .)
 
     borrarListaVar                 shift and go to state 8
     V4                             shift and go to state 210
@@ -2975,9 +2977,9 @@ state 189
 state 190
 
     (45) LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 . verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
-    (92) verificarParam -> .
+    (93) verificarParam -> .
 
-    RPAREN          reduce using rule 92 (verificarParam -> .)
+    RPAREN          reduce using rule 93 (verificarParam -> .)
 
     verificarParam                 shift and go to state 215
 
@@ -2985,10 +2987,10 @@ state 191
 
     (46) E4 -> EXP . generarParam
     (47) E4 -> EXP . generarParam COMMA E4
-    (93) generarParam -> .
+    (94) generarParam -> .
 
-    COMMA           reduce using rule 93 (generarParam -> .)
-    RPAREN          reduce using rule 93 (generarParam -> .)
+    COMMA           reduce using rule 94 (generarParam -> .)
+    RPAREN          reduce using rule 94 (generarParam -> .)
 
     generarParam                   shift and go to state 216
 
@@ -3002,26 +3004,26 @@ state 192
 state 193
 
     (84) FACTOR -> LPAREN meterFondoFalso H_EXP RPAREN . quitarFondoFalso
-    (119) quitarFondoFalso -> .
+    (120) quitarFondoFalso -> .
 
-    DIVIDE          reduce using rule 119 (quitarFondoFalso -> .)
-    MULTIPLY        reduce using rule 119 (quitarFondoFalso -> .)
-    PLUS            reduce using rule 119 (quitarFondoFalso -> .)
-    MINUS           reduce using rule 119 (quitarFondoFalso -> .)
-    RPAREN          reduce using rule 119 (quitarFondoFalso -> .)
-    COMMA           reduce using rule 119 (quitarFondoFalso -> .)
-    GREATER_OR_EQUAL reduce using rule 119 (quitarFondoFalso -> .)
-    LESS_OR_EQUAL   reduce using rule 119 (quitarFondoFalso -> .)
-    GREATER_THAN    reduce using rule 119 (quitarFondoFalso -> .)
-    LESS_THAN       reduce using rule 119 (quitarFondoFalso -> .)
-    IS_EQUAL        reduce using rule 119 (quitarFondoFalso -> .)
-    NOT_EQUAL       reduce using rule 119 (quitarFondoFalso -> .)
-    AND             reduce using rule 119 (quitarFondoFalso -> .)
-    OR              reduce using rule 119 (quitarFondoFalso -> .)
-    SEMICOLON       reduce using rule 119 (quitarFondoFalso -> .)
-    RSBRACKET       reduce using rule 119 (quitarFondoFalso -> .)
-    TO              reduce using rule 119 (quitarFondoFalso -> .)
-    DO              reduce using rule 119 (quitarFondoFalso -> .)
+    DIVIDE          reduce using rule 120 (quitarFondoFalso -> .)
+    MULTIPLY        reduce using rule 120 (quitarFondoFalso -> .)
+    PLUS            reduce using rule 120 (quitarFondoFalso -> .)
+    MINUS           reduce using rule 120 (quitarFondoFalso -> .)
+    RPAREN          reduce using rule 120 (quitarFondoFalso -> .)
+    COMMA           reduce using rule 120 (quitarFondoFalso -> .)
+    GREATER_OR_EQUAL reduce using rule 120 (quitarFondoFalso -> .)
+    LESS_OR_EQUAL   reduce using rule 120 (quitarFondoFalso -> .)
+    GREATER_THAN    reduce using rule 120 (quitarFondoFalso -> .)
+    LESS_THAN       reduce using rule 120 (quitarFondoFalso -> .)
+    IS_EQUAL        reduce using rule 120 (quitarFondoFalso -> .)
+    NOT_EQUAL       reduce using rule 120 (quitarFondoFalso -> .)
+    AND             reduce using rule 120 (quitarFondoFalso -> .)
+    OR              reduce using rule 120 (quitarFondoFalso -> .)
+    SEMICOLON       reduce using rule 120 (quitarFondoFalso -> .)
+    RSBRACKET       reduce using rule 120 (quitarFondoFalso -> .)
+    TO              reduce using rule 120 (quitarFondoFalso -> .)
+    DO              reduce using rule 120 (quitarFondoFalso -> .)
 
     quitarFondoFalso               shift and go to state 217
 
@@ -3051,7 +3053,7 @@ state 195
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -3077,7 +3079,7 @@ state 196
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -3102,7 +3104,7 @@ state 197
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -3126,7 +3128,7 @@ state 198
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -3141,15 +3143,15 @@ state 198
 
 state 199
 
-    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso . generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
-    (94) generarEra -> .
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso . generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+    (95) generarEra -> .
 
-    LPAREN          reduce using rule 94 (generarEra -> .)
-    C_INT           reduce using rule 94 (generarEra -> .)
-    C_FLOAT         reduce using rule 94 (generarEra -> .)
-    C_CHAR          reduce using rule 94 (generarEra -> .)
-    NAME            reduce using rule 94 (generarEra -> .)
-    RPAREN          reduce using rule 94 (generarEra -> .)
+    LPAREN          reduce using rule 95 (generarEra -> .)
+    C_INT           reduce using rule 95 (generarEra -> .)
+    C_FLOAT         reduce using rule 95 (generarEra -> .)
+    C_CHAR          reduce using rule 95 (generarEra -> .)
+    NAME            reduce using rule 95 (generarEra -> .)
+    RPAREN          reduce using rule 95 (generarEra -> .)
 
     generarEra                     shift and go to state 222
 
@@ -3226,9 +3228,9 @@ state 207
 state 208
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO . gotoIf CUERPO terminarWhile
-    (113) gotoIf -> .
+    (114) gotoIf -> .
 
-    LBRACKET        reduce using rule 113 (gotoIf -> .)
+    LBRACKET        reduce using rule 114 (gotoIf -> .)
 
     gotoIf                         shift and go to state 224
 
@@ -3244,7 +3246,7 @@ state 209
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -3261,9 +3263,9 @@ state 209
 state 210
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 . agregarLocalVar CUERPO terminarFunc
-    (97) agregarLocalVar -> .
+    (98) agregarLocalVar -> .
 
-    LBRACKET        reduce using rule 97 (agregarLocalVar -> .)
+    LBRACKET        reduce using rule 98 (agregarLocalVar -> .)
 
     agregarLocalVar                shift and go to state 226
 
@@ -3302,30 +3304,30 @@ state 213
 state 214
 
     (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET . verificarArreglo quitarFondoFalso
-    (100) verificarArreglo -> .
+    (101) verificarArreglo -> .
 
-    COMMA           reduce using rule 100 (verificarArreglo -> .)
-    FUNC            reduce using rule 100 (verificarArreglo -> .)
-    MAIN            reduce using rule 100 (verificarArreglo -> .)
-    LBRACKET        reduce using rule 100 (verificarArreglo -> .)
-    RPAREN          reduce using rule 100 (verificarArreglo -> .)
-    EQUALS          reduce using rule 100 (verificarArreglo -> .)
-    DIVIDE          reduce using rule 100 (verificarArreglo -> .)
-    MULTIPLY        reduce using rule 100 (verificarArreglo -> .)
-    PLUS            reduce using rule 100 (verificarArreglo -> .)
-    MINUS           reduce using rule 100 (verificarArreglo -> .)
-    GREATER_OR_EQUAL reduce using rule 100 (verificarArreglo -> .)
-    LESS_OR_EQUAL   reduce using rule 100 (verificarArreglo -> .)
-    GREATER_THAN    reduce using rule 100 (verificarArreglo -> .)
-    LESS_THAN       reduce using rule 100 (verificarArreglo -> .)
-    IS_EQUAL        reduce using rule 100 (verificarArreglo -> .)
-    NOT_EQUAL       reduce using rule 100 (verificarArreglo -> .)
-    AND             reduce using rule 100 (verificarArreglo -> .)
-    OR              reduce using rule 100 (verificarArreglo -> .)
-    SEMICOLON       reduce using rule 100 (verificarArreglo -> .)
-    RSBRACKET       reduce using rule 100 (verificarArreglo -> .)
-    TO              reduce using rule 100 (verificarArreglo -> .)
-    DO              reduce using rule 100 (verificarArreglo -> .)
+    COMMA           reduce using rule 101 (verificarArreglo -> .)
+    FUNC            reduce using rule 101 (verificarArreglo -> .)
+    MAIN            reduce using rule 101 (verificarArreglo -> .)
+    LBRACKET        reduce using rule 101 (verificarArreglo -> .)
+    RPAREN          reduce using rule 101 (verificarArreglo -> .)
+    EQUALS          reduce using rule 101 (verificarArreglo -> .)
+    DIVIDE          reduce using rule 101 (verificarArreglo -> .)
+    MULTIPLY        reduce using rule 101 (verificarArreglo -> .)
+    PLUS            reduce using rule 101 (verificarArreglo -> .)
+    MINUS           reduce using rule 101 (verificarArreglo -> .)
+    GREATER_OR_EQUAL reduce using rule 101 (verificarArreglo -> .)
+    LESS_OR_EQUAL   reduce using rule 101 (verificarArreglo -> .)
+    GREATER_THAN    reduce using rule 101 (verificarArreglo -> .)
+    LESS_THAN       reduce using rule 101 (verificarArreglo -> .)
+    IS_EQUAL        reduce using rule 101 (verificarArreglo -> .)
+    NOT_EQUAL       reduce using rule 101 (verificarArreglo -> .)
+    AND             reduce using rule 101 (verificarArreglo -> .)
+    OR              reduce using rule 101 (verificarArreglo -> .)
+    SEMICOLON       reduce using rule 101 (verificarArreglo -> .)
+    RSBRACKET       reduce using rule 101 (verificarArreglo -> .)
+    TO              reduce using rule 101 (verificarArreglo -> .)
+    DO              reduce using rule 101 (verificarArreglo -> .)
 
     verificarArreglo               shift and go to state 228
 
@@ -3455,7 +3457,7 @@ state 221
 
 state 222
 
-    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra . E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra . E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
     (46) E4 -> . EXP generarParam
     (47) E4 -> . EXP generarParam COMMA E4
     (48) E4 -> . empty
@@ -3469,7 +3471,7 @@ state 222
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     RPAREN          reduce using rule 90 (empty -> .)
     LPAREN          shift and go to state 98
@@ -3518,9 +3520,9 @@ state 224
 state 225
 
     (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP . popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (125) popIgual -> .
+    (126) popIgual -> .
 
-    TO              reduce using rule 125 (popIgual -> .)
+    TO              reduce using rule 126 (popIgual -> .)
 
     popIgual                       shift and go to state 236
 
@@ -3544,39 +3546,39 @@ state 227
 state 228
 
     (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo . quitarFondoFalso
-    (119) quitarFondoFalso -> .
+    (120) quitarFondoFalso -> .
 
-    COMMA           reduce using rule 119 (quitarFondoFalso -> .)
-    FUNC            reduce using rule 119 (quitarFondoFalso -> .)
-    MAIN            reduce using rule 119 (quitarFondoFalso -> .)
-    LBRACKET        reduce using rule 119 (quitarFondoFalso -> .)
-    RPAREN          reduce using rule 119 (quitarFondoFalso -> .)
-    EQUALS          reduce using rule 119 (quitarFondoFalso -> .)
-    DIVIDE          reduce using rule 119 (quitarFondoFalso -> .)
-    MULTIPLY        reduce using rule 119 (quitarFondoFalso -> .)
-    PLUS            reduce using rule 119 (quitarFondoFalso -> .)
-    MINUS           reduce using rule 119 (quitarFondoFalso -> .)
-    GREATER_OR_EQUAL reduce using rule 119 (quitarFondoFalso -> .)
-    LESS_OR_EQUAL   reduce using rule 119 (quitarFondoFalso -> .)
-    GREATER_THAN    reduce using rule 119 (quitarFondoFalso -> .)
-    LESS_THAN       reduce using rule 119 (quitarFondoFalso -> .)
-    IS_EQUAL        reduce using rule 119 (quitarFondoFalso -> .)
-    NOT_EQUAL       reduce using rule 119 (quitarFondoFalso -> .)
-    AND             reduce using rule 119 (quitarFondoFalso -> .)
-    OR              reduce using rule 119 (quitarFondoFalso -> .)
-    SEMICOLON       reduce using rule 119 (quitarFondoFalso -> .)
-    RSBRACKET       reduce using rule 119 (quitarFondoFalso -> .)
-    TO              reduce using rule 119 (quitarFondoFalso -> .)
-    DO              reduce using rule 119 (quitarFondoFalso -> .)
+    COMMA           reduce using rule 120 (quitarFondoFalso -> .)
+    FUNC            reduce using rule 120 (quitarFondoFalso -> .)
+    MAIN            reduce using rule 120 (quitarFondoFalso -> .)
+    LBRACKET        reduce using rule 120 (quitarFondoFalso -> .)
+    RPAREN          reduce using rule 120 (quitarFondoFalso -> .)
+    EQUALS          reduce using rule 120 (quitarFondoFalso -> .)
+    DIVIDE          reduce using rule 120 (quitarFondoFalso -> .)
+    MULTIPLY        reduce using rule 120 (quitarFondoFalso -> .)
+    PLUS            reduce using rule 120 (quitarFondoFalso -> .)
+    MINUS           reduce using rule 120 (quitarFondoFalso -> .)
+    GREATER_OR_EQUAL reduce using rule 120 (quitarFondoFalso -> .)
+    LESS_OR_EQUAL   reduce using rule 120 (quitarFondoFalso -> .)
+    GREATER_THAN    reduce using rule 120 (quitarFondoFalso -> .)
+    LESS_THAN       reduce using rule 120 (quitarFondoFalso -> .)
+    IS_EQUAL        reduce using rule 120 (quitarFondoFalso -> .)
+    NOT_EQUAL       reduce using rule 120 (quitarFondoFalso -> .)
+    AND             reduce using rule 120 (quitarFondoFalso -> .)
+    OR              reduce using rule 120 (quitarFondoFalso -> .)
+    SEMICOLON       reduce using rule 120 (quitarFondoFalso -> .)
+    RSBRACKET       reduce using rule 120 (quitarFondoFalso -> .)
+    TO              reduce using rule 120 (quitarFondoFalso -> .)
+    DO              reduce using rule 120 (quitarFondoFalso -> .)
 
     quitarFondoFalso               shift and go to state 238
 
 state 229
 
     (45) LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN . quitarFondoFalso generarGosub SEMICOLON
-    (119) quitarFondoFalso -> .
+    (120) quitarFondoFalso -> .
 
-    SEMICOLON       reduce using rule 119 (quitarFondoFalso -> .)
+    SEMICOLON       reduce using rule 120 (quitarFondoFalso -> .)
 
     quitarFondoFalso               shift and go to state 239
 
@@ -3596,7 +3598,7 @@ state 230
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     RPAREN          reduce using rule 90 (empty -> .)
     LPAREN          shift and go to state 98
@@ -3615,35 +3617,35 @@ state 230
 
 state 231
 
-    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 . verificarParam RPAREN generarGosub quitarFondoFalso
-    (92) verificarParam -> .
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 . verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+    (93) verificarParam -> .
 
-    RPAREN          reduce using rule 92 (verificarParam -> .)
+    RPAREN          reduce using rule 93 (verificarParam -> .)
 
     verificarParam                 shift and go to state 241
 
 state 232
 
     (57) CONDICION -> IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 . terminarGoto
-    (114) terminarGoto -> .
+    (115) terminarGoto -> .
 
-    NAME            reduce using rule 114 (terminarGoto -> .)
-    RETURN          reduce using rule 114 (terminarGoto -> .)
-    READ            reduce using rule 114 (terminarGoto -> .)
-    PRINT           reduce using rule 114 (terminarGoto -> .)
-    IF              reduce using rule 114 (terminarGoto -> .)
-    WHILE           reduce using rule 114 (terminarGoto -> .)
-    FROM            reduce using rule 114 (terminarGoto -> .)
-    RBRACKET        reduce using rule 114 (terminarGoto -> .)
+    NAME            reduce using rule 115 (terminarGoto -> .)
+    RETURN          reduce using rule 115 (terminarGoto -> .)
+    READ            reduce using rule 115 (terminarGoto -> .)
+    PRINT           reduce using rule 115 (terminarGoto -> .)
+    IF              reduce using rule 115 (terminarGoto -> .)
+    WHILE           reduce using rule 115 (terminarGoto -> .)
+    FROM            reduce using rule 115 (terminarGoto -> .)
+    RBRACKET        reduce using rule 115 (terminarGoto -> .)
 
     terminarGoto                   shift and go to state 242
 
 state 233
 
     (58) ELSE1 -> ELSE . gotoElse CUERPO
-    (117) gotoElse -> .
+    (118) gotoElse -> .
 
-    LBRACKET        reduce using rule 117 (gotoElse -> .)
+    LBRACKET        reduce using rule 118 (gotoElse -> .)
 
     gotoElse                       shift and go to state 243
 
@@ -3664,16 +3666,16 @@ state 234
 state 235
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO . terminarWhile
-    (116) terminarWhile -> .
+    (117) terminarWhile -> .
 
-    NAME            reduce using rule 116 (terminarWhile -> .)
-    RETURN          reduce using rule 116 (terminarWhile -> .)
-    READ            reduce using rule 116 (terminarWhile -> .)
-    PRINT           reduce using rule 116 (terminarWhile -> .)
-    IF              reduce using rule 116 (terminarWhile -> .)
-    WHILE           reduce using rule 116 (terminarWhile -> .)
-    FROM            reduce using rule 116 (terminarWhile -> .)
-    RBRACKET        reduce using rule 116 (terminarWhile -> .)
+    NAME            reduce using rule 117 (terminarWhile -> .)
+    RETURN          reduce using rule 117 (terminarWhile -> .)
+    READ            reduce using rule 117 (terminarWhile -> .)
+    PRINT           reduce using rule 117 (terminarWhile -> .)
+    IF              reduce using rule 117 (terminarWhile -> .)
+    WHILE           reduce using rule 117 (terminarWhile -> .)
+    FROM            reduce using rule 117 (terminarWhile -> .)
+    RBRACKET        reduce using rule 117 (terminarWhile -> .)
 
     terminarWhile                  shift and go to state 244
 
@@ -3687,10 +3689,10 @@ state 236
 state 237
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO . terminarFunc
-    (96) terminarFunc -> .
+    (97) terminarFunc -> .
 
-    FUNC            reduce using rule 96 (terminarFunc -> .)
-    MAIN            reduce using rule 96 (terminarFunc -> .)
+    FUNC            reduce using rule 97 (terminarFunc -> .)
+    MAIN            reduce using rule 97 (terminarFunc -> .)
 
     terminarFunc                   shift and go to state 246
 
@@ -3740,7 +3742,7 @@ state 240
 
 state 241
 
-    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam . RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam . RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     RPAREN          shift and go to state 248
 
@@ -3794,7 +3796,7 @@ state 245
     (88) FACTOR -> . VARIABLE
     (89) FACTOR -> . LLAMADAF
     (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     LPAREN          shift and go to state 98
     C_INT           shift and go to state 102
@@ -3825,7 +3827,103 @@ state 247
 
 state 248
 
-    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN . generarGosub quitarFondoFalso
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN . quitarFondoFalso verificarLlamada generarGosub
+    (120) quitarFondoFalso -> .
+
+    DIVIDE          reduce using rule 120 (quitarFondoFalso -> .)
+    MULTIPLY        reduce using rule 120 (quitarFondoFalso -> .)
+    PLUS            reduce using rule 120 (quitarFondoFalso -> .)
+    MINUS           reduce using rule 120 (quitarFondoFalso -> .)
+    RPAREN          reduce using rule 120 (quitarFondoFalso -> .)
+    COMMA           reduce using rule 120 (quitarFondoFalso -> .)
+    GREATER_OR_EQUAL reduce using rule 120 (quitarFondoFalso -> .)
+    LESS_OR_EQUAL   reduce using rule 120 (quitarFondoFalso -> .)
+    GREATER_THAN    reduce using rule 120 (quitarFondoFalso -> .)
+    LESS_THAN       reduce using rule 120 (quitarFondoFalso -> .)
+    IS_EQUAL        reduce using rule 120 (quitarFondoFalso -> .)
+    NOT_EQUAL       reduce using rule 120 (quitarFondoFalso -> .)
+    AND             reduce using rule 120 (quitarFondoFalso -> .)
+    OR              reduce using rule 120 (quitarFondoFalso -> .)
+    SEMICOLON       reduce using rule 120 (quitarFondoFalso -> .)
+    RSBRACKET       reduce using rule 120 (quitarFondoFalso -> .)
+    TO              reduce using rule 120 (quitarFondoFalso -> .)
+    DO              reduce using rule 120 (quitarFondoFalso -> .)
+
+    quitarFondoFalso               shift and go to state 252
+
+state 249
+
+    (58) ELSE1 -> ELSE gotoElse CUERPO .
+
+    NAME            reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+    RETURN          reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+    READ            reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+    PRINT           reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+    IF              reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+    WHILE           reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+    FROM            reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+    RBRACKET        reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
+
+
+state 250
+
+    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP . crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (104) crearCompFrom -> .
+
+    DO              reduce using rule 104 (crearCompFrom -> .)
+
+    crearCompFrom                  shift and go to state 253
+
+state 251
+
+    (45) LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .
+
+    NAME            reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+    RETURN          reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+    READ            reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+    PRINT           reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+    IF              reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+    WHILE           reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+    FROM            reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+    RBRACKET        reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
+
+
+state 252
+
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso . verificarLlamada generarGosub
+    (92) verificarLlamada -> .
+
+    DIVIDE          reduce using rule 92 (verificarLlamada -> .)
+    MULTIPLY        reduce using rule 92 (verificarLlamada -> .)
+    PLUS            reduce using rule 92 (verificarLlamada -> .)
+    MINUS           reduce using rule 92 (verificarLlamada -> .)
+    RPAREN          reduce using rule 92 (verificarLlamada -> .)
+    COMMA           reduce using rule 92 (verificarLlamada -> .)
+    GREATER_OR_EQUAL reduce using rule 92 (verificarLlamada -> .)
+    LESS_OR_EQUAL   reduce using rule 92 (verificarLlamada -> .)
+    GREATER_THAN    reduce using rule 92 (verificarLlamada -> .)
+    LESS_THAN       reduce using rule 92 (verificarLlamada -> .)
+    IS_EQUAL        reduce using rule 92 (verificarLlamada -> .)
+    NOT_EQUAL       reduce using rule 92 (verificarLlamada -> .)
+    AND             reduce using rule 92 (verificarLlamada -> .)
+    OR              reduce using rule 92 (verificarLlamada -> .)
+    SEMICOLON       reduce using rule 92 (verificarLlamada -> .)
+    RSBRACKET       reduce using rule 92 (verificarLlamada -> .)
+    TO              reduce using rule 92 (verificarLlamada -> .)
+    DO              reduce using rule 92 (verificarLlamada -> .)
+
+    verificarLlamada               shift and go to state 254
+
+state 253
+
+    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom . DO gotoIf CUERPO sumarFrom terminarWhile
+
+    DO              shift and go to state 255
+
+
+state 254
+
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada . generarGosub
     (91) generarGosub -> .
 
     DIVIDE          reduce using rule 91 (generarGosub -> .)
@@ -3847,153 +3945,83 @@ state 248
     TO              reduce using rule 91 (generarGosub -> .)
     DO              reduce using rule 91 (generarGosub -> .)
 
-    generarGosub                   shift and go to state 252
-
-state 249
-
-    (58) ELSE1 -> ELSE gotoElse CUERPO .
-
-    NAME            reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-    RETURN          reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-    READ            reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-    PRINT           reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-    IF              reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-    WHILE           reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-    FROM            reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-    RBRACKET        reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
-
-
-state 250
-
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP . crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (103) crearCompFrom -> .
-
-    DO              reduce using rule 103 (crearCompFrom -> .)
-
-    crearCompFrom                  shift and go to state 253
-
-state 251
-
-    (45) LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .
-
-    NAME            reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-    RETURN          reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-    READ            reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-    PRINT           reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-    IF              reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-    WHILE           reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-    FROM            reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-    RBRACKET        reduce using rule 45 (LLAMADA -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
-
-
-state 252
-
-    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub . quitarFondoFalso
-    (119) quitarFondoFalso -> .
-
-    DIVIDE          reduce using rule 119 (quitarFondoFalso -> .)
-    MULTIPLY        reduce using rule 119 (quitarFondoFalso -> .)
-    PLUS            reduce using rule 119 (quitarFondoFalso -> .)
-    MINUS           reduce using rule 119 (quitarFondoFalso -> .)
-    RPAREN          reduce using rule 119 (quitarFondoFalso -> .)
-    COMMA           reduce using rule 119 (quitarFondoFalso -> .)
-    GREATER_OR_EQUAL reduce using rule 119 (quitarFondoFalso -> .)
-    LESS_OR_EQUAL   reduce using rule 119 (quitarFondoFalso -> .)
-    GREATER_THAN    reduce using rule 119 (quitarFondoFalso -> .)
-    LESS_THAN       reduce using rule 119 (quitarFondoFalso -> .)
-    IS_EQUAL        reduce using rule 119 (quitarFondoFalso -> .)
-    NOT_EQUAL       reduce using rule 119 (quitarFondoFalso -> .)
-    AND             reduce using rule 119 (quitarFondoFalso -> .)
-    OR              reduce using rule 119 (quitarFondoFalso -> .)
-    SEMICOLON       reduce using rule 119 (quitarFondoFalso -> .)
-    RSBRACKET       reduce using rule 119 (quitarFondoFalso -> .)
-    TO              reduce using rule 119 (quitarFondoFalso -> .)
-    DO              reduce using rule 119 (quitarFondoFalso -> .)
-
-    quitarFondoFalso               shift and go to state 254
-
-state 253
-
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom . DO gotoIf CUERPO sumarFrom terminarWhile
-
-    DO              shift and go to state 255
-
-
-state 254
-
-    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .
-
-    DIVIDE          reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    MULTIPLY        reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    PLUS            reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    MINUS           reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    RPAREN          reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    COMMA           reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    GREATER_OR_EQUAL reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    LESS_OR_EQUAL   reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    GREATER_THAN    reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    LESS_THAN       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    IS_EQUAL        reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    NOT_EQUAL       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    AND             reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    OR              reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    SEMICOLON       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    RSBRACKET       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    TO              reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-    DO              reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN generarGosub quitarFondoFalso .)
-
+    generarGosub                   shift and go to state 256
 
 state 255
 
     (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO . gotoIf CUERPO sumarFrom terminarWhile
-    (113) gotoIf -> .
+    (114) gotoIf -> .
 
-    LBRACKET        reduce using rule 113 (gotoIf -> .)
+    LBRACKET        reduce using rule 114 (gotoIf -> .)
 
-    gotoIf                         shift and go to state 256
+    gotoIf                         shift and go to state 257
 
 state 256
+
+    (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .
+
+    DIVIDE          reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    MULTIPLY        reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    PLUS            reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    MINUS           reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    RPAREN          reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    COMMA           reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    GREATER_OR_EQUAL reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    LESS_OR_EQUAL   reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    GREATER_THAN    reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    LESS_THAN       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    IS_EQUAL        reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    NOT_EQUAL       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    AND             reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    OR              reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    SEMICOLON       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    RSBRACKET       reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    TO              reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+    DO              reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
+
+
+state 257
 
     (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf . CUERPO sumarFrom terminarWhile
     (17) CUERPO -> . LBRACKET E RBRACKET
 
     LBRACKET        shift and go to state 44
 
-    CUERPO                         shift and go to state 257
-
-state 257
-
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO . sumarFrom terminarWhile
-    (104) sumarFrom -> .
-
-    NAME            reduce using rule 104 (sumarFrom -> .)
-    RETURN          reduce using rule 104 (sumarFrom -> .)
-    READ            reduce using rule 104 (sumarFrom -> .)
-    PRINT           reduce using rule 104 (sumarFrom -> .)
-    IF              reduce using rule 104 (sumarFrom -> .)
-    WHILE           reduce using rule 104 (sumarFrom -> .)
-    FROM            reduce using rule 104 (sumarFrom -> .)
-    RBRACKET        reduce using rule 104 (sumarFrom -> .)
-
-    sumarFrom                      shift and go to state 258
+    CUERPO                         shift and go to state 258
 
 state 258
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom . terminarWhile
-    (116) terminarWhile -> .
+    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO . sumarFrom terminarWhile
+    (105) sumarFrom -> .
 
-    NAME            reduce using rule 116 (terminarWhile -> .)
-    RETURN          reduce using rule 116 (terminarWhile -> .)
-    READ            reduce using rule 116 (terminarWhile -> .)
-    PRINT           reduce using rule 116 (terminarWhile -> .)
-    IF              reduce using rule 116 (terminarWhile -> .)
-    WHILE           reduce using rule 116 (terminarWhile -> .)
-    FROM            reduce using rule 116 (terminarWhile -> .)
-    RBRACKET        reduce using rule 116 (terminarWhile -> .)
+    NAME            reduce using rule 105 (sumarFrom -> .)
+    RETURN          reduce using rule 105 (sumarFrom -> .)
+    READ            reduce using rule 105 (sumarFrom -> .)
+    PRINT           reduce using rule 105 (sumarFrom -> .)
+    IF              reduce using rule 105 (sumarFrom -> .)
+    WHILE           reduce using rule 105 (sumarFrom -> .)
+    FROM            reduce using rule 105 (sumarFrom -> .)
+    RBRACKET        reduce using rule 105 (sumarFrom -> .)
 
-    terminarWhile                  shift and go to state 259
+    sumarFrom                      shift and go to state 259
 
 state 259
+
+    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom . terminarWhile
+    (117) terminarWhile -> .
+
+    NAME            reduce using rule 117 (terminarWhile -> .)
+    RETURN          reduce using rule 117 (terminarWhile -> .)
+    READ            reduce using rule 117 (terminarWhile -> .)
+    PRINT           reduce using rule 117 (terminarWhile -> .)
+    IF              reduce using rule 117 (terminarWhile -> .)
+    WHILE           reduce using rule 117 (terminarWhile -> .)
+    FROM            reduce using rule 117 (terminarWhile -> .)
+    RBRACKET        reduce using rule 117 (terminarWhile -> .)
+
+    terminarWhile                  shift and go to state 260
+
+state 260
 
     (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .
 
