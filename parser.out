@@ -3,7 +3,7 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> PROGRAMA
-Rule 1     PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
+Rule 1     PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo
 Rule 2     F -> FUNCION F
 Rule 3     F -> empty
 Rule 4     VARS -> borrarListaVar VAR V1
@@ -63,11 +63,11 @@ Rule 57    CONDICION -> IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminar
 Rule 58    ELSE1 -> ELSE gotoElse CUERPO
 Rule 59    ELSE1 -> empty
 Rule 60    CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
-Rule 61    CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+Rule 61    CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
 Rule 62    H_EXP -> T_EXP
-Rule 63    H_EXP -> T_EXP OR H_EXP
+Rule 63    H_EXP -> T_EXP OR meterOperador H_EXP popComp
 Rule 64    T_EXP -> G_EXP
-Rule 65    T_EXP -> G_EXP AND T_EXP
+Rule 65    T_EXP -> G_EXP AND meterOperador T_EXP popComp
 Rule 66    G_EXP -> EXP B popBool
 Rule 67    B -> GREATER_OR_EQUAL meterOperador G_EXP
 Rule 68    B -> LESS_OR_EQUAL meterOperador G_EXP
@@ -129,23 +129,24 @@ Rule 123   agregarPilaOp -> <empty>
 Rule 124   popPrint -> <empty>
 Rule 125   popRead -> <empty>
 Rule 126   popReturn -> <empty>
-Rule 127   popBool -> <empty>
-Rule 128   popIgual -> <empty>
-Rule 129   popMultDiv -> <empty>
-Rule 130   popSumaResta -> <empty>
-Rule 131   meterIgual -> <empty>
-Rule 132   meterBool -> <empty>
-Rule 133   meterMultDiv -> <empty>
-Rule 134   meterSumaResta -> <empty>
-Rule 135   meterOperador -> <empty>
-Rule 136   crearFuncGlobal -> <empty>
-Rule 137   crearFuncMain -> <empty>
-Rule 138   agregarFunc -> <empty>
-Rule 139   agregarVariables -> <empty>
-Rule 140   printFunciones -> <empty>
-Rule 141   printTodo -> <empty>
-Rule 142   agregarVarLista -> <empty>
-Rule 143   borrarListaVar -> <empty>
+Rule 127   popComp -> <empty>
+Rule 128   popBool -> <empty>
+Rule 129   popIgual -> <empty>
+Rule 130   popMultDiv -> <empty>
+Rule 131   popSumaResta -> <empty>
+Rule 132   meterIgual -> <empty>
+Rule 133   meterBool -> <empty>
+Rule 134   meterMultDiv -> <empty>
+Rule 135   meterSumaResta -> <empty>
+Rule 136   meterOperador -> <empty>
+Rule 137   crearFuncGlobal -> <empty>
+Rule 138   crearFuncMain -> <empty>
+Rule 139   agregarFunc -> <empty>
+Rule 140   agregarVariables -> <empty>
+Rule 141   printFunciones -> <empty>
+Rule 142   printTodo -> <empty>
+Rule 143   agregarVarLista -> <empty>
+Rule 144   borrarListaVar -> <empty>
 
 Terminals, with rules where they appear
 
@@ -270,9 +271,10 @@ meterBool            :
 meterFondoFalso      : 31 45 49 84
 meterIgual           : 
 meterMultDiv         : 
-meterOperador        : 44 61 67 68 69 70 71 72 77 78 81 82
+meterOperador        : 44 61 63 65 67 68 69 70 71 72 77 78 81 82
 meterSumaResta       : 
 popBool              : 66
+popComp              : 63 65
 popIgual             : 44 61
 popMultDiv           : 80
 popPrint             : 55 56
@@ -280,7 +282,7 @@ popRead              : 52 53
 popReturn            : 50
 popSumaResta         : 76
 printFunciones       : 
-printTodo            : 
+printTodo            : 1
 quitarFondoFalso     : 31 45 49 84
 scopeConst           : 
 scopeGlobal          : 1
@@ -301,10 +303,10 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . PROGRAMA
-    (1) PROGRAMA -> . crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
-    (136) crearFuncGlobal -> .
+    (1) PROGRAMA -> . crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo
+    (137) crearFuncGlobal -> .
 
-    PROGRAM         reduce using rule 136 (crearFuncGlobal -> .)
+    PROGRAM         reduce using rule 137 (crearFuncGlobal -> .)
 
     PROGRAMA                       shift and go to state 1
     crearFuncGlobal                shift and go to state 2
@@ -317,28 +319,28 @@ state 1
 
 state 2
 
-    (1) PROGRAMA -> crearFuncGlobal . PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal . PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo
 
     PROGRAM         shift and go to state 3
 
 
 state 3
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM . NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM . NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo
 
     NAME            shift and go to state 4
 
 
 state 4
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME . SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME . SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo
 
     SEMICOLON       shift and go to state 5
 
 
 state 5
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON . scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON . scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo
     (112) scopeGlobal -> .
 
     VAR             reduce using rule 112 (scopeGlobal -> .)
@@ -347,18 +349,18 @@ state 5
 
 state 6
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal . VARS F agregarLocalVarGlobal PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal . VARS F agregarLocalVarGlobal PRINCIPAL printTodo
     (4) VARS -> . borrarListaVar VAR V1
-    (143) borrarListaVar -> .
+    (144) borrarListaVar -> .
 
-    VAR             reduce using rule 143 (borrarListaVar -> .)
+    VAR             reduce using rule 144 (borrarListaVar -> .)
 
     VARS                           shift and go to state 7
     borrarListaVar                 shift and go to state 8
 
 state 7
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS . F agregarLocalVarGlobal PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS . F agregarLocalVarGlobal PRINCIPAL printTodo
     (2) F -> . FUNCION F
     (3) F -> . empty
     (10) FUNCION -> . FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
@@ -380,7 +382,7 @@ state 8
 
 state 9
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F . agregarLocalVarGlobal PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F . agregarLocalVarGlobal PRINCIPAL printTodo
     (100) agregarLocalVarGlobal -> .
 
     MAIN            reduce using rule 100 (agregarLocalVarGlobal -> .)
@@ -441,7 +443,7 @@ state 13
 
 state 14
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal . PRINCIPAL
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal . PRINCIPAL printTodo
     (29) PRINCIPAL -> . MAIN LPAREN crearFuncMain RPAREN CUERPO terminarFunc
 
     MAIN            shift and go to state 27
@@ -531,26 +533,28 @@ state 25
 
 state 26
 
-    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL .
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL . printTodo
+    (142) printTodo -> .
 
-    $end            reduce using rule 1 (PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL .)
+    $end            reduce using rule 142 (printTodo -> .)
 
+    printTodo                      shift and go to state 31
 
 state 27
 
     (29) PRINCIPAL -> MAIN . LPAREN crearFuncMain RPAREN CUERPO terminarFunc
 
-    LPAREN          shift and go to state 31
+    LPAREN          shift and go to state 32
 
 
 state 28
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME . agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (138) agregarFunc -> .
+    (139) agregarFunc -> .
 
-    LPAREN          reduce using rule 138 (agregarFunc -> .)
+    LPAREN          reduce using rule 139 (agregarFunc -> .)
 
-    agregarFunc                    shift and go to state 32
+    agregarFunc                    shift and go to state 33
 
 state 29
 
@@ -559,92 +563,99 @@ state 29
     (7) V2 -> . empty
     (90) empty -> .
 
-    COMMA           shift and go to state 34
+    COMMA           shift and go to state 35
     SEMICOLON       reduce using rule 90 (empty -> .)
 
-    V2                             shift and go to state 33
-    empty                          shift and go to state 35
+    V2                             shift and go to state 34
+    empty                          shift and go to state 36
 
 state 30
 
     (33) VARIABLEDer -> NAME . agregarVarLista agregarVariables borrarListaVar E2Der
-    (142) agregarVarLista -> .
+    (143) agregarVarLista -> .
 
-    LSBRACKET       reduce using rule 142 (agregarVarLista -> .)
-    COMMA           reduce using rule 142 (agregarVarLista -> .)
-    SEMICOLON       reduce using rule 142 (agregarVarLista -> .)
+    LSBRACKET       reduce using rule 143 (agregarVarLista -> .)
+    COMMA           reduce using rule 143 (agregarVarLista -> .)
+    SEMICOLON       reduce using rule 143 (agregarVarLista -> .)
 
-    agregarVarLista                shift and go to state 36
+    agregarVarLista                shift and go to state 37
 
 state 31
 
-    (29) PRINCIPAL -> MAIN LPAREN . crearFuncMain RPAREN CUERPO terminarFunc
-    (137) crearFuncMain -> .
+    (1) PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo .
 
-    RPAREN          reduce using rule 137 (crearFuncMain -> .)
+    $end            reduce using rule 1 (PROGRAMA -> crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo .)
 
-    crearFuncMain                  shift and go to state 37
 
 state 32
 
-    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc . LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
+    (29) PRINCIPAL -> MAIN LPAREN . crearFuncMain RPAREN CUERPO terminarFunc
+    (138) crearFuncMain -> .
 
-    LPAREN          shift and go to state 38
+    RPAREN          reduce using rule 138 (crearFuncMain -> .)
 
+    crearFuncMain                  shift and go to state 38
 
 state 33
 
-    (5) V1 -> TIPO VARIABLEDer V2 . SEMICOLON V3
+    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc . LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
 
-    SEMICOLON       shift and go to state 39
+    LPAREN          shift and go to state 39
 
 
 state 34
+
+    (5) V1 -> TIPO VARIABLEDer V2 . SEMICOLON V3
+
+    SEMICOLON       shift and go to state 40
+
+
+state 35
 
     (6) V2 -> COMMA . VARIABLEDer V2
     (33) VARIABLEDer -> . NAME agregarVarLista agregarVariables borrarListaVar E2Der
 
     NAME            shift and go to state 30
 
-    VARIABLEDer                    shift and go to state 40
+    VARIABLEDer                    shift and go to state 41
 
-state 35
+state 36
 
     (7) V2 -> empty .
 
     SEMICOLON       reduce using rule 7 (V2 -> empty .)
 
 
-state 36
-
-    (33) VARIABLEDer -> NAME agregarVarLista . agregarVariables borrarListaVar E2Der
-    (139) agregarVariables -> .
-
-    LSBRACKET       reduce using rule 139 (agregarVariables -> .)
-    COMMA           reduce using rule 139 (agregarVariables -> .)
-    SEMICOLON       reduce using rule 139 (agregarVariables -> .)
-
-    agregarVariables               shift and go to state 41
-
 state 37
 
-    (29) PRINCIPAL -> MAIN LPAREN crearFuncMain . RPAREN CUERPO terminarFunc
+    (33) VARIABLEDer -> NAME agregarVarLista . agregarVariables borrarListaVar E2Der
+    (140) agregarVariables -> .
 
-    RPAREN          shift and go to state 42
+    LSBRACKET       reduce using rule 140 (agregarVariables -> .)
+    COMMA           reduce using rule 140 (agregarVariables -> .)
+    SEMICOLON       reduce using rule 140 (agregarVariables -> .)
 
+    agregarVariables               shift and go to state 42
 
 state 38
 
-    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN . borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (143) borrarListaVar -> .
+    (29) PRINCIPAL -> MAIN LPAREN crearFuncMain . RPAREN CUERPO terminarFunc
 
-    INT             reduce using rule 143 (borrarListaVar -> .)
-    FLOAT           reduce using rule 143 (borrarListaVar -> .)
-    CHAR            reduce using rule 143 (borrarListaVar -> .)
+    RPAREN          shift and go to state 43
 
-    borrarListaVar                 shift and go to state 43
 
 state 39
+
+    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN . borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
+    (144) borrarListaVar -> .
+
+    INT             reduce using rule 144 (borrarListaVar -> .)
+    FLOAT           reduce using rule 144 (borrarListaVar -> .)
+    CHAR            reduce using rule 144 (borrarListaVar -> .)
+
+    borrarListaVar                 shift and go to state 44
+
+state 40
 
     (5) V1 -> TIPO VARIABLEDer V2 SEMICOLON . V3
     (8) V3 -> . V1
@@ -662,51 +673,51 @@ state 39
     MAIN            reduce using rule 90 (empty -> .)
     LBRACKET        reduce using rule 90 (empty -> .)
     RPAREN          reduce using rule 90 (empty -> .)
-    NAME            shift and go to state 48
+    NAME            shift and go to state 49
     INT             shift and go to state 23
     FLOAT           shift and go to state 24
     CHAR            shift and go to state 25
 
     TIPO                           shift and go to state 22
-    V3                             shift and go to state 44
-    V1                             shift and go to state 45
-    empty                          shift and go to state 46
-    VARIABLE                       shift and go to state 47
+    V3                             shift and go to state 45
+    V1                             shift and go to state 46
+    empty                          shift and go to state 47
+    VARIABLE                       shift and go to state 48
 
-state 40
+state 41
 
     (6) V2 -> COMMA VARIABLEDer . V2
     (6) V2 -> . COMMA VARIABLEDer V2
     (7) V2 -> . empty
     (90) empty -> .
 
-    COMMA           shift and go to state 34
+    COMMA           shift and go to state 35
     SEMICOLON       reduce using rule 90 (empty -> .)
 
-    V2                             shift and go to state 49
-    empty                          shift and go to state 35
-
-state 41
-
-    (33) VARIABLEDer -> NAME agregarVarLista agregarVariables . borrarListaVar E2Der
-    (143) borrarListaVar -> .
-
-    LSBRACKET       reduce using rule 143 (borrarListaVar -> .)
-    COMMA           reduce using rule 143 (borrarListaVar -> .)
-    SEMICOLON       reduce using rule 143 (borrarListaVar -> .)
-
-    borrarListaVar                 shift and go to state 50
+    V2                             shift and go to state 50
+    empty                          shift and go to state 36
 
 state 42
+
+    (33) VARIABLEDer -> NAME agregarVarLista agregarVariables . borrarListaVar E2Der
+    (144) borrarListaVar -> .
+
+    LSBRACKET       reduce using rule 144 (borrarListaVar -> .)
+    COMMA           reduce using rule 144 (borrarListaVar -> .)
+    SEMICOLON       reduce using rule 144 (borrarListaVar -> .)
+
+    borrarListaVar                 shift and go to state 51
+
+state 43
 
     (29) PRINCIPAL -> MAIN LPAREN crearFuncMain RPAREN . CUERPO terminarFunc
     (17) CUERPO -> . LBRACKET E RBRACKET
 
-    LBRACKET        shift and go to state 52
+    LBRACKET        shift and go to state 53
 
-    CUERPO                         shift and go to state 51
+    CUERPO                         shift and go to state 52
 
-state 43
+state 44
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar . scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
     (113) scopeLocal -> .
@@ -715,9 +726,9 @@ state 43
     FLOAT           reduce using rule 113 (scopeLocal -> .)
     CHAR            reduce using rule 113 (scopeLocal -> .)
 
-    scopeLocal                     shift and go to state 53
+    scopeLocal                     shift and go to state 54
 
-state 44
+state 45
 
     (5) V1 -> TIPO VARIABLEDer V2 SEMICOLON V3 .
 
@@ -727,7 +738,7 @@ state 44
     RPAREN          reduce using rule 5 (V1 -> TIPO VARIABLEDer V2 SEMICOLON V3 .)
 
 
-state 45
+state 46
 
     (8) V3 -> V1 .
 
@@ -737,7 +748,7 @@ state 45
     RPAREN          reduce using rule 8 (V3 -> V1 .)
 
 
-state 46
+state 47
 
     (9) V3 -> empty .
 
@@ -747,7 +758,7 @@ state 46
     RPAREN          reduce using rule 9 (V3 -> empty .)
 
 
-state 47
+state 48
 
     (52) V3 -> VARIABLE . popRead COMMA V3
     (53) V3 -> VARIABLE . popRead
@@ -759,9 +770,9 @@ state 47
     LBRACKET        reduce using rule 125 (popRead -> .)
     RPAREN          reduce using rule 125 (popRead -> .)
 
-    popRead                        shift and go to state 54
+    popRead                        shift and go to state 55
 
-state 48
+state 49
 
     (30) VARIABLE -> NAME . agregarPilaOp E2
     (123) agregarPilaOp -> .
@@ -774,39 +785,39 @@ state 48
     RPAREN          reduce using rule 123 (agregarPilaOp -> .)
     EQUALS          reduce using rule 123 (agregarPilaOp -> .)
 
-    agregarPilaOp                  shift and go to state 55
+    agregarPilaOp                  shift and go to state 56
 
-state 49
+state 50
 
     (6) V2 -> COMMA VARIABLEDer V2 .
 
     SEMICOLON       reduce using rule 6 (V2 -> COMMA VARIABLEDer V2 .)
 
 
-state 50
+state 51
 
     (33) VARIABLEDer -> NAME agregarVarLista agregarVariables borrarListaVar . E2Der
     (34) E2Der -> . LSBRACKET C_INT declararArray RSBRACKET
     (35) E2Der -> . empty
     (90) empty -> .
 
-    LSBRACKET       shift and go to state 57
+    LSBRACKET       shift and go to state 58
     COMMA           reduce using rule 90 (empty -> .)
     SEMICOLON       reduce using rule 90 (empty -> .)
 
-    E2Der                          shift and go to state 56
-    empty                          shift and go to state 58
+    E2Der                          shift and go to state 57
+    empty                          shift and go to state 59
 
-state 51
+state 52
 
     (29) PRINCIPAL -> MAIN LPAREN crearFuncMain RPAREN CUERPO . terminarFunc
     (98) terminarFunc -> .
 
     $end            reduce using rule 98 (terminarFunc -> .)
 
-    terminarFunc                   shift and go to state 59
+    terminarFunc                   shift and go to state 60
 
-state 52
+state 53
 
     (17) CUERPO -> LBRACKET . E RBRACKET
     (18) E -> . E1
@@ -829,33 +840,33 @@ state 52
     (54) ESCRITURA -> . PRINT LPAREN E3 RPAREN SEMICOLON
     (57) CONDICION -> . IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto
     (60) CICLO_W -> . WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
-    (61) CICLO_F -> . FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> . FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
     (30) VARIABLE -> . NAME agregarPilaOp E2
 
     RBRACKET        reduce using rule 90 (empty -> .)
-    NAME            shift and go to state 73
-    RETURN          shift and go to state 74
-    READ            shift and go to state 75
-    PRINT           shift and go to state 76
-    IF              shift and go to state 77
-    WHILE           shift and go to state 78
-    FROM            shift and go to state 79
+    NAME            shift and go to state 74
+    RETURN          shift and go to state 75
+    READ            shift and go to state 76
+    PRINT           shift and go to state 77
+    IF              shift and go to state 78
+    WHILE           shift and go to state 79
+    FROM            shift and go to state 80
 
-    E                              shift and go to state 60
-    E1                             shift and go to state 61
-    empty                          shift and go to state 62
-    ESTATUTO                       shift and go to state 63
-    ASIGNACION                     shift and go to state 64
-    LLAMADA                        shift and go to state 65
-    RETORNO                        shift and go to state 66
-    LECTURA                        shift and go to state 67
-    ESCRITURA                      shift and go to state 68
-    CONDICION                      shift and go to state 69
-    CICLO_W                        shift and go to state 70
-    CICLO_F                        shift and go to state 71
-    VARIABLE                       shift and go to state 72
+    E                              shift and go to state 61
+    E1                             shift and go to state 62
+    empty                          shift and go to state 63
+    ESTATUTO                       shift and go to state 64
+    ASIGNACION                     shift and go to state 65
+    LLAMADA                        shift and go to state 66
+    RETORNO                        shift and go to state 67
+    LECTURA                        shift and go to state 68
+    ESCRITURA                      shift and go to state 69
+    CONDICION                      shift and go to state 70
+    CICLO_W                        shift and go to state 71
+    CICLO_F                        shift and go to state 72
+    VARIABLE                       shift and go to state 73
 
-state 53
+state 54
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal . PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
     (13) PARAMS -> . TIPO NAME agregarVarLista P1
@@ -867,29 +878,29 @@ state 53
     FLOAT           shift and go to state 24
     CHAR            shift and go to state 25
 
-    PARAMS                         shift and go to state 80
-    TIPO                           shift and go to state 81
+    PARAMS                         shift and go to state 81
+    TIPO                           shift and go to state 82
 
-state 54
+state 55
 
     (52) V3 -> VARIABLE popRead . COMMA V3
     (53) V3 -> VARIABLE popRead .
 
-    COMMA           shift and go to state 82
+    COMMA           shift and go to state 83
     FUNC            reduce using rule 53 (V3 -> VARIABLE popRead .)
     MAIN            reduce using rule 53 (V3 -> VARIABLE popRead .)
     LBRACKET        reduce using rule 53 (V3 -> VARIABLE popRead .)
     RPAREN          reduce using rule 53 (V3 -> VARIABLE popRead .)
 
 
-state 55
+state 56
 
     (30) VARIABLE -> NAME agregarPilaOp . E2
     (31) E2 -> . LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso
     (32) E2 -> . empty
     (90) empty -> .
 
-    LSBRACKET       shift and go to state 84
+    LSBRACKET       shift and go to state 85
     COMMA           reduce using rule 90 (empty -> .)
     FUNC            reduce using rule 90 (empty -> .)
     MAIN            reduce using rule 90 (empty -> .)
@@ -913,10 +924,10 @@ state 55
     TO              reduce using rule 90 (empty -> .)
     DO              reduce using rule 90 (empty -> .)
 
-    E2                             shift and go to state 83
-    empty                          shift and go to state 85
+    E2                             shift and go to state 84
+    empty                          shift and go to state 86
 
-state 56
+state 57
 
     (33) VARIABLEDer -> NAME agregarVarLista agregarVariables borrarListaVar E2Der .
 
@@ -924,14 +935,14 @@ state 56
     SEMICOLON       reduce using rule 33 (VARIABLEDer -> NAME agregarVarLista agregarVariables borrarListaVar E2Der .)
 
 
-state 57
+state 58
 
     (34) E2Der -> LSBRACKET . C_INT declararArray RSBRACKET
 
-    C_INT           shift and go to state 86
+    C_INT           shift and go to state 87
 
 
-state 58
+state 59
 
     (35) E2Der -> empty .
 
@@ -939,35 +950,35 @@ state 58
     SEMICOLON       reduce using rule 35 (E2Der -> empty .)
 
 
-state 59
+state 60
 
     (29) PRINCIPAL -> MAIN LPAREN crearFuncMain RPAREN CUERPO terminarFunc .
 
     $end            reduce using rule 29 (PRINCIPAL -> MAIN LPAREN crearFuncMain RPAREN CUERPO terminarFunc .)
 
 
-state 60
+state 61
 
     (17) CUERPO -> LBRACKET E . RBRACKET
 
-    RBRACKET        shift and go to state 87
+    RBRACKET        shift and go to state 88
 
 
-state 61
+state 62
 
     (18) E -> E1 .
 
     RBRACKET        reduce using rule 18 (E -> E1 .)
 
 
-state 62
+state 63
 
     (19) E -> empty .
 
     RBRACKET        reduce using rule 19 (E -> empty .)
 
 
-state 63
+state 64
 
     (20) E1 -> ESTATUTO .
     (21) E1 -> ESTATUTO . E1
@@ -988,31 +999,31 @@ state 63
     (54) ESCRITURA -> . PRINT LPAREN E3 RPAREN SEMICOLON
     (57) CONDICION -> . IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto
     (60) CICLO_W -> . WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
-    (61) CICLO_F -> . FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> . FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
     (30) VARIABLE -> . NAME agregarPilaOp E2
 
     RBRACKET        reduce using rule 20 (E1 -> ESTATUTO .)
-    NAME            shift and go to state 73
-    RETURN          shift and go to state 74
-    READ            shift and go to state 75
-    PRINT           shift and go to state 76
-    IF              shift and go to state 77
-    WHILE           shift and go to state 78
-    FROM            shift and go to state 79
+    NAME            shift and go to state 74
+    RETURN          shift and go to state 75
+    READ            shift and go to state 76
+    PRINT           shift and go to state 77
+    IF              shift and go to state 78
+    WHILE           shift and go to state 79
+    FROM            shift and go to state 80
 
-    ESTATUTO                       shift and go to state 63
-    E1                             shift and go to state 88
-    ASIGNACION                     shift and go to state 64
-    LLAMADA                        shift and go to state 65
-    RETORNO                        shift and go to state 66
-    LECTURA                        shift and go to state 67
-    ESCRITURA                      shift and go to state 68
-    CONDICION                      shift and go to state 69
-    CICLO_W                        shift and go to state 70
-    CICLO_F                        shift and go to state 71
-    VARIABLE                       shift and go to state 72
+    ESTATUTO                       shift and go to state 64
+    E1                             shift and go to state 89
+    ASIGNACION                     shift and go to state 65
+    LLAMADA                        shift and go to state 66
+    RETORNO                        shift and go to state 67
+    LECTURA                        shift and go to state 68
+    ESCRITURA                      shift and go to state 69
+    CONDICION                      shift and go to state 70
+    CICLO_W                        shift and go to state 71
+    CICLO_F                        shift and go to state 72
+    VARIABLE                       shift and go to state 73
 
-state 64
+state 65
 
     (36) ESTATUTO -> ASIGNACION .
 
@@ -1026,7 +1037,7 @@ state 64
     RBRACKET        reduce using rule 36 (ESTATUTO -> ASIGNACION .)
 
 
-state 65
+state 66
 
     (37) ESTATUTO -> LLAMADA .
 
@@ -1040,7 +1051,7 @@ state 65
     RBRACKET        reduce using rule 37 (ESTATUTO -> LLAMADA .)
 
 
-state 66
+state 67
 
     (38) ESTATUTO -> RETORNO .
 
@@ -1054,7 +1065,7 @@ state 66
     RBRACKET        reduce using rule 38 (ESTATUTO -> RETORNO .)
 
 
-state 67
+state 68
 
     (39) ESTATUTO -> LECTURA .
 
@@ -1068,7 +1079,7 @@ state 67
     RBRACKET        reduce using rule 39 (ESTATUTO -> LECTURA .)
 
 
-state 68
+state 69
 
     (40) ESTATUTO -> ESCRITURA .
 
@@ -1082,7 +1093,7 @@ state 68
     RBRACKET        reduce using rule 40 (ESTATUTO -> ESCRITURA .)
 
 
-state 69
+state 70
 
     (41) ESTATUTO -> CONDICION .
 
@@ -1096,7 +1107,7 @@ state 69
     RBRACKET        reduce using rule 41 (ESTATUTO -> CONDICION .)
 
 
-state 70
+state 71
 
     (42) ESTATUTO -> CICLO_W .
 
@@ -1110,7 +1121,7 @@ state 70
     RBRACKET        reduce using rule 42 (ESTATUTO -> CICLO_W .)
 
 
-state 71
+state 72
 
     (43) ESTATUTO -> CICLO_F .
 
@@ -1124,14 +1135,14 @@ state 71
     RBRACKET        reduce using rule 43 (ESTATUTO -> CICLO_F .)
 
 
-state 72
+state 73
 
     (44) ASIGNACION -> VARIABLE . EQUALS meterOperador EXP popIgual SEMICOLON
 
-    EQUALS          shift and go to state 89
+    EQUALS          shift and go to state 90
 
 
-state 73
+state 74
 
     (45) LLAMADA -> NAME . verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
     (30) VARIABLE -> NAME . agregarPilaOp E2
@@ -1142,72 +1153,72 @@ state 73
     LSBRACKET       reduce using rule 123 (agregarPilaOp -> .)
     EQUALS          reduce using rule 123 (agregarPilaOp -> .)
 
-    verificarFuncVoid              shift and go to state 90
-    agregarPilaOp                  shift and go to state 55
-
-state 74
-
-    (50) RETORNO -> RETURN . LPAREN EXP popReturn RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 91
-
+    verificarFuncVoid              shift and go to state 91
+    agregarPilaOp                  shift and go to state 56
 
 state 75
 
-    (51) LECTURA -> READ . LPAREN V3 RPAREN SEMICOLON
+    (50) RETORNO -> RETURN . LPAREN EXP popReturn RPAREN SEMICOLON
 
     LPAREN          shift and go to state 92
 
 
 state 76
 
-    (54) ESCRITURA -> PRINT . LPAREN E3 RPAREN SEMICOLON
+    (51) LECTURA -> READ . LPAREN V3 RPAREN SEMICOLON
 
     LPAREN          shift and go to state 93
 
 
 state 77
 
-    (57) CONDICION -> IF . LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto
+    (54) ESCRITURA -> PRINT . LPAREN E3 RPAREN SEMICOLON
 
     LPAREN          shift and go to state 94
 
 
 state 78
 
+    (57) CONDICION -> IF . LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto
+
+    LPAREN          shift and go to state 95
+
+
+state 79
+
     (60) CICLO_W -> WHILE . agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
     (118) agregarWhile -> .
 
     LPAREN          reduce using rule 118 (agregarWhile -> .)
 
-    agregarWhile                   shift and go to state 95
-
-state 79
-
-    (61) CICLO_F -> FROM . agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (118) agregarWhile -> .
-
-    NAME            reduce using rule 118 (agregarWhile -> .)
-
     agregarWhile                   shift and go to state 96
 
 state 80
+
+    (61) CICLO_F -> FROM . VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (30) VARIABLE -> . NAME agregarPilaOp E2
+
+    NAME            shift and go to state 49
+
+    VARIABLE                       shift and go to state 97
+
+state 81
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS . agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
     (101) agregarParamTable -> .
 
     RPAREN          reduce using rule 101 (agregarParamTable -> .)
 
-    agregarParamTable              shift and go to state 97
+    agregarParamTable              shift and go to state 98
 
-state 81
+state 82
 
     (13) PARAMS -> TIPO . NAME agregarVarLista P1
 
-    NAME            shift and go to state 98
+    NAME            shift and go to state 99
 
 
-state 82
+state 83
 
     (52) V3 -> VARIABLE popRead COMMA . V3
     (8) V3 -> . V1
@@ -1225,18 +1236,18 @@ state 82
     MAIN            reduce using rule 90 (empty -> .)
     LBRACKET        reduce using rule 90 (empty -> .)
     RPAREN          reduce using rule 90 (empty -> .)
-    NAME            shift and go to state 48
+    NAME            shift and go to state 49
     INT             shift and go to state 23
     FLOAT           shift and go to state 24
     CHAR            shift and go to state 25
 
-    VARIABLE                       shift and go to state 47
-    V3                             shift and go to state 99
-    V1                             shift and go to state 45
-    empty                          shift and go to state 46
+    VARIABLE                       shift and go to state 48
+    V3                             shift and go to state 100
+    V1                             shift and go to state 46
+    empty                          shift and go to state 47
     TIPO                           shift and go to state 22
 
-state 83
+state 84
 
     (30) VARIABLE -> NAME agregarPilaOp E2 .
 
@@ -1264,7 +1275,7 @@ state 83
     DO              reduce using rule 30 (VARIABLE -> NAME agregarPilaOp E2 .)
 
 
-state 84
+state 85
 
     (31) E2 -> LSBRACKET . guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso
     (102) guardarArreglo -> .
@@ -1275,9 +1286,9 @@ state 84
     C_CHAR          reduce using rule 102 (guardarArreglo -> .)
     NAME            reduce using rule 102 (guardarArreglo -> .)
 
-    guardarArreglo                 shift and go to state 100
+    guardarArreglo                 shift and go to state 101
 
-state 85
+state 86
 
     (32) E2 -> empty .
 
@@ -1305,16 +1316,16 @@ state 85
     DO              reduce using rule 32 (E2 -> empty .)
 
 
-state 86
+state 87
 
     (34) E2Der -> LSBRACKET C_INT . declararArray RSBRACKET
     (104) declararArray -> .
 
     RSBRACKET       reduce using rule 104 (declararArray -> .)
 
-    declararArray                  shift and go to state 101
+    declararArray                  shift and go to state 102
 
-state 87
+state 88
 
     (17) CUERPO -> LBRACKET E RBRACKET .
 
@@ -1332,34 +1343,34 @@ state 87
     MAIN            reduce using rule 17 (CUERPO -> LBRACKET E RBRACKET .)
 
 
-state 88
+state 89
 
     (21) E1 -> ESTATUTO E1 .
 
     RBRACKET        reduce using rule 21 (E1 -> ESTATUTO E1 .)
 
 
-state 89
+state 90
 
     (44) ASIGNACION -> VARIABLE EQUALS . meterOperador EXP popIgual SEMICOLON
-    (135) meterOperador -> .
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
-    meterOperador                  shift and go to state 102
+    meterOperador                  shift and go to state 103
 
-state 90
+state 91
 
     (45) LLAMADA -> NAME verificarFuncVoid . LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
 
-    LPAREN          shift and go to state 103
+    LPAREN          shift and go to state 104
 
 
-state 91
+state 92
 
     (50) RETORNO -> RETURN LPAREN . EXP popReturn RPAREN SEMICOLON
     (76) EXP -> . TERMINO popSumaResta T
@@ -1373,19 +1384,19 @@ state 91
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    EXP                            shift and go to state 105
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    EXP                            shift and go to state 106
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 92
+state 93
 
     (51) LECTURA -> READ LPAREN . V3 RPAREN SEMICOLON
     (8) V3 -> . V1
@@ -1400,18 +1411,18 @@ state 92
     (24) TIPO -> . CHAR
 
     RPAREN          reduce using rule 90 (empty -> .)
-    NAME            shift and go to state 48
+    NAME            shift and go to state 49
     INT             shift and go to state 23
     FLOAT           shift and go to state 24
     CHAR            shift and go to state 25
 
-    V3                             shift and go to state 114
-    V1                             shift and go to state 45
-    empty                          shift and go to state 46
-    VARIABLE                       shift and go to state 47
+    V3                             shift and go to state 115
+    V1                             shift and go to state 46
+    empty                          shift and go to state 47
+    VARIABLE                       shift and go to state 48
     TIPO                           shift and go to state 22
 
-state 93
+state 94
 
     (54) ESCRITURA -> PRINT LPAREN . E3 RPAREN SEMICOLON
     (55) E3 -> . S_EXP popPrint
@@ -1429,28 +1440,28 @@ state 93
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    C_STRING        shift and go to state 117
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    C_STRING        shift and go to state 118
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    E3                             shift and go to state 115
-    S_EXP                          shift and go to state 116
-    EXP                            shift and go to state 118
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    E3                             shift and go to state 116
+    S_EXP                          shift and go to state 117
+    EXP                            shift and go to state 119
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 94
+state 95
 
     (57) CONDICION -> IF LPAREN . H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto
     (62) H_EXP -> . T_EXP
-    (63) H_EXP -> . T_EXP OR H_EXP
+    (63) H_EXP -> . T_EXP OR meterOperador H_EXP popComp
     (64) T_EXP -> . G_EXP
-    (65) T_EXP -> . G_EXP AND T_EXP
+    (65) T_EXP -> . G_EXP AND meterOperador T_EXP popComp
     (66) G_EXP -> . EXP B popBool
     (76) EXP -> . TERMINO popSumaResta T
     (80) TERMINO -> . FACTOR popMultDiv F2
@@ -1463,57 +1474,57 @@ state 94
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    H_EXP                          shift and go to state 119
-    T_EXP                          shift and go to state 120
-    G_EXP                          shift and go to state 121
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
-
-state 95
-
-    (60) CICLO_W -> WHILE agregarWhile . LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
-
-    LPAREN          shift and go to state 123
-
+    H_EXP                          shift and go to state 120
+    T_EXP                          shift and go to state 121
+    G_EXP                          shift and go to state 122
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
 state 96
 
-    (61) CICLO_F -> FROM agregarWhile . VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (30) VARIABLE -> . NAME agregarPilaOp E2
+    (60) CICLO_W -> WHILE agregarWhile . LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile
 
-    NAME            shift and go to state 48
+    LPAREN          shift and go to state 124
 
-    VARIABLE                       shift and go to state 124
 
 state 97
 
-    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable . agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
-    (139) agregarVariables -> .
+    (61) CICLO_F -> FROM VARIABLE . agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (105) agregarFrom -> .
 
-    RPAREN          reduce using rule 139 (agregarVariables -> .)
+    EQUALS          reduce using rule 105 (agregarFrom -> .)
 
-    agregarVariables               shift and go to state 125
+    agregarFrom                    shift and go to state 125
 
 state 98
 
-    (13) PARAMS -> TIPO NAME . agregarVarLista P1
-    (142) agregarVarLista -> .
+    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable . agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc
+    (140) agregarVariables -> .
 
-    COMMA           reduce using rule 142 (agregarVarLista -> .)
-    RPAREN          reduce using rule 142 (agregarVarLista -> .)
+    RPAREN          reduce using rule 140 (agregarVariables -> .)
 
-    agregarVarLista                shift and go to state 126
+    agregarVariables               shift and go to state 126
 
 state 99
+
+    (13) PARAMS -> TIPO NAME . agregarVarLista P1
+    (143) agregarVarLista -> .
+
+    COMMA           reduce using rule 143 (agregarVarLista -> .)
+    RPAREN          reduce using rule 143 (agregarVarLista -> .)
+
+    agregarVarLista                shift and go to state 127
+
+state 100
 
     (52) V3 -> VARIABLE popRead COMMA V3 .
 
@@ -1523,7 +1534,7 @@ state 99
     RPAREN          reduce using rule 52 (V3 -> VARIABLE popRead COMMA V3 .)
 
 
-state 100
+state 101
 
     (31) E2 -> LSBRACKET guardarArreglo . meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso
     (121) meterFondoFalso -> .
@@ -1534,16 +1545,16 @@ state 100
     C_CHAR          reduce using rule 121 (meterFondoFalso -> .)
     NAME            reduce using rule 121 (meterFondoFalso -> .)
 
-    meterFondoFalso                shift and go to state 127
+    meterFondoFalso                shift and go to state 128
 
-state 101
+state 102
 
     (34) E2Der -> LSBRACKET C_INT declararArray . RSBRACKET
 
-    RSBRACKET       shift and go to state 128
+    RSBRACKET       shift and go to state 129
 
 
-state 102
+state 103
 
     (44) ASIGNACION -> VARIABLE EQUALS meterOperador . EXP popIgual SEMICOLON
     (76) EXP -> . TERMINO popSumaResta T
@@ -1557,19 +1568,19 @@ state 102
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    VARIABLE                       shift and go to state 111
-    EXP                            shift and go to state 129
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    LLAMADAF                       shift and go to state 112
+    VARIABLE                       shift and go to state 112
+    EXP                            shift and go to state 130
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    LLAMADAF                       shift and go to state 113
 
-state 103
+state 104
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN . meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
     (121) meterFondoFalso -> .
@@ -1581,9 +1592,9 @@ state 103
     NAME            reduce using rule 121 (meterFondoFalso -> .)
     RPAREN          reduce using rule 121 (meterFondoFalso -> .)
 
-    meterFondoFalso                shift and go to state 130
+    meterFondoFalso                shift and go to state 131
 
-state 104
+state 105
 
     (84) FACTOR -> LPAREN . meterFondoFalso H_EXP RPAREN quitarFondoFalso
     (121) meterFondoFalso -> .
@@ -1594,68 +1605,68 @@ state 104
     C_CHAR          reduce using rule 121 (meterFondoFalso -> .)
     NAME            reduce using rule 121 (meterFondoFalso -> .)
 
-    meterFondoFalso                shift and go to state 131
+    meterFondoFalso                shift and go to state 132
 
-state 105
+state 106
 
     (50) RETORNO -> RETURN LPAREN EXP . popReturn RPAREN SEMICOLON
     (126) popReturn -> .
 
     RPAREN          reduce using rule 126 (popReturn -> .)
 
-    popReturn                      shift and go to state 132
-
-state 106
-
-    (76) EXP -> TERMINO . popSumaResta T
-    (130) popSumaResta -> .
-
-    PLUS            reduce using rule 130 (popSumaResta -> .)
-    MINUS           reduce using rule 130 (popSumaResta -> .)
-    RPAREN          reduce using rule 130 (popSumaResta -> .)
-    COMMA           reduce using rule 130 (popSumaResta -> .)
-    GREATER_OR_EQUAL reduce using rule 130 (popSumaResta -> .)
-    LESS_OR_EQUAL   reduce using rule 130 (popSumaResta -> .)
-    GREATER_THAN    reduce using rule 130 (popSumaResta -> .)
-    LESS_THAN       reduce using rule 130 (popSumaResta -> .)
-    IS_EQUAL        reduce using rule 130 (popSumaResta -> .)
-    NOT_EQUAL       reduce using rule 130 (popSumaResta -> .)
-    AND             reduce using rule 130 (popSumaResta -> .)
-    OR              reduce using rule 130 (popSumaResta -> .)
-    SEMICOLON       reduce using rule 130 (popSumaResta -> .)
-    RSBRACKET       reduce using rule 130 (popSumaResta -> .)
-    TO              reduce using rule 130 (popSumaResta -> .)
-    DO              reduce using rule 130 (popSumaResta -> .)
-
-    popSumaResta                   shift and go to state 133
+    popReturn                      shift and go to state 133
 
 state 107
 
-    (80) TERMINO -> FACTOR . popMultDiv F2
-    (129) popMultDiv -> .
+    (76) EXP -> TERMINO . popSumaResta T
+    (131) popSumaResta -> .
 
-    DIVIDE          reduce using rule 129 (popMultDiv -> .)
-    MULTIPLY        reduce using rule 129 (popMultDiv -> .)
-    PLUS            reduce using rule 129 (popMultDiv -> .)
-    MINUS           reduce using rule 129 (popMultDiv -> .)
-    RPAREN          reduce using rule 129 (popMultDiv -> .)
-    COMMA           reduce using rule 129 (popMultDiv -> .)
-    GREATER_OR_EQUAL reduce using rule 129 (popMultDiv -> .)
-    LESS_OR_EQUAL   reduce using rule 129 (popMultDiv -> .)
-    GREATER_THAN    reduce using rule 129 (popMultDiv -> .)
-    LESS_THAN       reduce using rule 129 (popMultDiv -> .)
-    IS_EQUAL        reduce using rule 129 (popMultDiv -> .)
-    NOT_EQUAL       reduce using rule 129 (popMultDiv -> .)
-    AND             reduce using rule 129 (popMultDiv -> .)
-    OR              reduce using rule 129 (popMultDiv -> .)
-    SEMICOLON       reduce using rule 129 (popMultDiv -> .)
-    RSBRACKET       reduce using rule 129 (popMultDiv -> .)
-    TO              reduce using rule 129 (popMultDiv -> .)
-    DO              reduce using rule 129 (popMultDiv -> .)
+    PLUS            reduce using rule 131 (popSumaResta -> .)
+    MINUS           reduce using rule 131 (popSumaResta -> .)
+    RPAREN          reduce using rule 131 (popSumaResta -> .)
+    COMMA           reduce using rule 131 (popSumaResta -> .)
+    GREATER_OR_EQUAL reduce using rule 131 (popSumaResta -> .)
+    LESS_OR_EQUAL   reduce using rule 131 (popSumaResta -> .)
+    GREATER_THAN    reduce using rule 131 (popSumaResta -> .)
+    LESS_THAN       reduce using rule 131 (popSumaResta -> .)
+    IS_EQUAL        reduce using rule 131 (popSumaResta -> .)
+    NOT_EQUAL       reduce using rule 131 (popSumaResta -> .)
+    AND             reduce using rule 131 (popSumaResta -> .)
+    OR              reduce using rule 131 (popSumaResta -> .)
+    SEMICOLON       reduce using rule 131 (popSumaResta -> .)
+    RSBRACKET       reduce using rule 131 (popSumaResta -> .)
+    TO              reduce using rule 131 (popSumaResta -> .)
+    DO              reduce using rule 131 (popSumaResta -> .)
 
-    popMultDiv                     shift and go to state 134
+    popSumaResta                   shift and go to state 134
 
 state 108
+
+    (80) TERMINO -> FACTOR . popMultDiv F2
+    (130) popMultDiv -> .
+
+    DIVIDE          reduce using rule 130 (popMultDiv -> .)
+    MULTIPLY        reduce using rule 130 (popMultDiv -> .)
+    PLUS            reduce using rule 130 (popMultDiv -> .)
+    MINUS           reduce using rule 130 (popMultDiv -> .)
+    RPAREN          reduce using rule 130 (popMultDiv -> .)
+    COMMA           reduce using rule 130 (popMultDiv -> .)
+    GREATER_OR_EQUAL reduce using rule 130 (popMultDiv -> .)
+    LESS_OR_EQUAL   reduce using rule 130 (popMultDiv -> .)
+    GREATER_THAN    reduce using rule 130 (popMultDiv -> .)
+    LESS_THAN       reduce using rule 130 (popMultDiv -> .)
+    IS_EQUAL        reduce using rule 130 (popMultDiv -> .)
+    NOT_EQUAL       reduce using rule 130 (popMultDiv -> .)
+    AND             reduce using rule 130 (popMultDiv -> .)
+    OR              reduce using rule 130 (popMultDiv -> .)
+    SEMICOLON       reduce using rule 130 (popMultDiv -> .)
+    RSBRACKET       reduce using rule 130 (popMultDiv -> .)
+    TO              reduce using rule 130 (popMultDiv -> .)
+    DO              reduce using rule 130 (popMultDiv -> .)
+
+    popMultDiv                     shift and go to state 135
+
+state 109
 
     (85) FACTOR -> C_INT . agregarConstInt
     (108) agregarConstInt -> .
@@ -1679,9 +1690,9 @@ state 108
     TO              reduce using rule 108 (agregarConstInt -> .)
     DO              reduce using rule 108 (agregarConstInt -> .)
 
-    agregarConstInt                shift and go to state 135
+    agregarConstInt                shift and go to state 136
 
-state 109
+state 110
 
     (86) FACTOR -> C_FLOAT . agregarConstFloat
     (109) agregarConstFloat -> .
@@ -1705,9 +1716,9 @@ state 109
     TO              reduce using rule 109 (agregarConstFloat -> .)
     DO              reduce using rule 109 (agregarConstFloat -> .)
 
-    agregarConstFloat              shift and go to state 136
+    agregarConstFloat              shift and go to state 137
 
-state 110
+state 111
 
     (87) FACTOR -> C_CHAR . agregarConstChar
     (110) agregarConstChar -> .
@@ -1731,9 +1742,9 @@ state 110
     TO              reduce using rule 110 (agregarConstChar -> .)
     DO              reduce using rule 110 (agregarConstChar -> .)
 
-    agregarConstChar               shift and go to state 137
+    agregarConstChar               shift and go to state 138
 
-state 111
+state 112
 
     (88) FACTOR -> VARIABLE .
 
@@ -1757,7 +1768,7 @@ state 111
     DO              reduce using rule 88 (FACTOR -> VARIABLE .)
 
 
-state 112
+state 113
 
     (89) FACTOR -> LLAMADAF .
 
@@ -1781,7 +1792,7 @@ state 112
     DO              reduce using rule 89 (FACTOR -> LLAMADAF .)
 
 
-state 113
+state 114
 
     (30) VARIABLE -> NAME . agregarPilaOp E2
     (49) LLAMADAF -> NAME . verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
@@ -1809,24 +1820,24 @@ state 113
     DO              reduce using rule 123 (agregarPilaOp -> .)
     LPAREN          reduce using rule 96 (verificarFunc -> .)
 
-    agregarPilaOp                  shift and go to state 55
-    verificarFunc                  shift and go to state 138
-
-state 114
-
-    (51) LECTURA -> READ LPAREN V3 . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 139
-
+    agregarPilaOp                  shift and go to state 56
+    verificarFunc                  shift and go to state 139
 
 state 115
 
-    (54) ESCRITURA -> PRINT LPAREN E3 . RPAREN SEMICOLON
+    (51) LECTURA -> READ LPAREN V3 . RPAREN SEMICOLON
 
     RPAREN          shift and go to state 140
 
 
 state 116
+
+    (54) ESCRITURA -> PRINT LPAREN E3 . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 141
+
+
+state 117
 
     (55) E3 -> S_EXP . popPrint
     (56) E3 -> S_EXP . popPrint COMMA E3
@@ -1835,9 +1846,9 @@ state 116
     COMMA           reduce using rule 124 (popPrint -> .)
     RPAREN          reduce using rule 124 (popPrint -> .)
 
-    popPrint                       shift and go to state 141
+    popPrint                       shift and go to state 142
 
-state 117
+state 118
 
     (74) S_EXP -> C_STRING . agregarConstString
     (111) agregarConstString -> .
@@ -1845,9 +1856,9 @@ state 117
     COMMA           reduce using rule 111 (agregarConstString -> .)
     RPAREN          reduce using rule 111 (agregarConstString -> .)
 
-    agregarConstString             shift and go to state 142
+    agregarConstString             shift and go to state 143
 
-state 118
+state 119
 
     (75) S_EXP -> EXP .
 
@@ -1855,33 +1866,33 @@ state 118
     RPAREN          reduce using rule 75 (S_EXP -> EXP .)
 
 
-state 119
+state 120
 
     (57) CONDICION -> IF LPAREN H_EXP . RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto
 
-    RPAREN          shift and go to state 143
-
-
-state 120
-
-    (62) H_EXP -> T_EXP .
-    (63) H_EXP -> T_EXP . OR H_EXP
-
-    RPAREN          reduce using rule 62 (H_EXP -> T_EXP .)
-    OR              shift and go to state 144
+    RPAREN          shift and go to state 144
 
 
 state 121
 
-    (64) T_EXP -> G_EXP .
-    (65) T_EXP -> G_EXP . AND T_EXP
+    (62) H_EXP -> T_EXP .
+    (63) H_EXP -> T_EXP . OR meterOperador H_EXP popComp
 
-    OR              reduce using rule 64 (T_EXP -> G_EXP .)
-    RPAREN          reduce using rule 64 (T_EXP -> G_EXP .)
-    AND             shift and go to state 145
+    RPAREN          reduce using rule 62 (H_EXP -> T_EXP .)
+    OR              shift and go to state 145
 
 
 state 122
+
+    (64) T_EXP -> G_EXP .
+    (65) T_EXP -> G_EXP . AND meterOperador T_EXP popComp
+
+    OR              reduce using rule 64 (T_EXP -> G_EXP .)
+    RPAREN          reduce using rule 64 (T_EXP -> G_EXP .)
+    AND             shift and go to state 146
+
+
+state 123
 
     (66) G_EXP -> EXP . B popBool
     (67) B -> . GREATER_OR_EQUAL meterOperador G_EXP
@@ -1893,26 +1904,26 @@ state 122
     (73) B -> . empty
     (90) empty -> .
 
-    GREATER_OR_EQUAL shift and go to state 147
-    LESS_OR_EQUAL   shift and go to state 148
-    GREATER_THAN    shift and go to state 149
-    LESS_THAN       shift and go to state 150
-    IS_EQUAL        shift and go to state 151
-    NOT_EQUAL       shift and go to state 152
+    GREATER_OR_EQUAL shift and go to state 148
+    LESS_OR_EQUAL   shift and go to state 149
+    GREATER_THAN    shift and go to state 150
+    LESS_THAN       shift and go to state 151
+    IS_EQUAL        shift and go to state 152
+    NOT_EQUAL       shift and go to state 153
     AND             reduce using rule 90 (empty -> .)
     OR              reduce using rule 90 (empty -> .)
     RPAREN          reduce using rule 90 (empty -> .)
 
-    B                              shift and go to state 146
-    empty                          shift and go to state 153
+    B                              shift and go to state 147
+    empty                          shift and go to state 154
 
-state 123
+state 124
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN . H_EXP RPAREN DO gotoIf CUERPO terminarWhile
     (62) H_EXP -> . T_EXP
-    (63) H_EXP -> . T_EXP OR H_EXP
+    (63) H_EXP -> . T_EXP OR meterOperador H_EXP popComp
     (64) T_EXP -> . G_EXP
-    (65) T_EXP -> . G_EXP AND T_EXP
+    (65) T_EXP -> . G_EXP AND meterOperador T_EXP popComp
     (66) G_EXP -> . EXP B popBool
     (76) EXP -> . TERMINO popSumaResta T
     (80) TERMINO -> . FACTOR popMultDiv F2
@@ -1925,38 +1936,36 @@ state 123
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    H_EXP                          shift and go to state 154
-    T_EXP                          shift and go to state 120
-    G_EXP                          shift and go to state 121
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
-
-state 124
-
-    (61) CICLO_F -> FROM agregarWhile VARIABLE . agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (105) agregarFrom -> .
-
-    EQUALS          reduce using rule 105 (agregarFrom -> .)
-
-    agregarFrom                    shift and go to state 155
+    H_EXP                          shift and go to state 155
+    T_EXP                          shift and go to state 121
+    G_EXP                          shift and go to state 122
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
 state 125
 
-    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables . RPAREN V4 agregarLocalVar CUERPO terminarFunc
+    (61) CICLO_F -> FROM VARIABLE agregarFrom . EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
 
-    RPAREN          shift and go to state 156
+    EQUALS          shift and go to state 156
 
 
 state 126
+
+    (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables . RPAREN V4 agregarLocalVar CUERPO terminarFunc
+
+    RPAREN          shift and go to state 157
+
+
+state 127
 
     (13) PARAMS -> TIPO NAME agregarVarLista . P1
     (14) P1 -> . P2
@@ -1965,16 +1974,16 @@ state 126
     (90) empty -> .
 
   ! shift/reduce conflict for COMMA resolved as shift
-    COMMA           shift and go to state 160
+    COMMA           shift and go to state 161
     RPAREN          reduce using rule 90 (empty -> .)
 
   ! COMMA           [ reduce using rule 90 (empty -> .) ]
 
-    P1                             shift and go to state 157
-    P2                             shift and go to state 158
-    empty                          shift and go to state 159
+    P1                             shift and go to state 158
+    P2                             shift and go to state 159
+    empty                          shift and go to state 160
 
-state 127
+state 128
 
     (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso . EXP RSBRACKET verificarArreglo quitarFondoFalso
     (76) EXP -> . TERMINO popSumaResta T
@@ -1988,19 +1997,19 @@ state 127
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    EXP                            shift and go to state 161
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    EXP                            shift and go to state 162
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 128
+state 129
 
     (34) E2Der -> LSBRACKET C_INT declararArray RSBRACKET .
 
@@ -2008,16 +2017,16 @@ state 128
     SEMICOLON       reduce using rule 34 (E2Der -> LSBRACKET C_INT declararArray RSBRACKET .)
 
 
-state 129
+state 130
 
     (44) ASIGNACION -> VARIABLE EQUALS meterOperador EXP . popIgual SEMICOLON
-    (128) popIgual -> .
+    (129) popIgual -> .
 
-    SEMICOLON       reduce using rule 128 (popIgual -> .)
+    SEMICOLON       reduce using rule 129 (popIgual -> .)
 
-    popIgual                       shift and go to state 162
+    popIgual                       shift and go to state 163
 
-state 130
+state 131
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso . generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
     (95) generarEra -> .
@@ -2029,15 +2038,15 @@ state 130
     NAME            reduce using rule 95 (generarEra -> .)
     RPAREN          reduce using rule 95 (generarEra -> .)
 
-    generarEra                     shift and go to state 163
+    generarEra                     shift and go to state 164
 
-state 131
+state 132
 
     (84) FACTOR -> LPAREN meterFondoFalso . H_EXP RPAREN quitarFondoFalso
     (62) H_EXP -> . T_EXP
-    (63) H_EXP -> . T_EXP OR H_EXP
+    (63) H_EXP -> . T_EXP OR meterOperador H_EXP popComp
     (64) T_EXP -> . G_EXP
-    (65) T_EXP -> . G_EXP AND T_EXP
+    (65) T_EXP -> . G_EXP AND meterOperador T_EXP popComp
     (66) G_EXP -> . EXP B popBool
     (76) EXP -> . TERMINO popSumaResta T
     (80) TERMINO -> . FACTOR popMultDiv F2
@@ -2050,29 +2059,29 @@ state 131
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    H_EXP                          shift and go to state 164
-    T_EXP                          shift and go to state 120
-    G_EXP                          shift and go to state 121
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    H_EXP                          shift and go to state 165
+    T_EXP                          shift and go to state 121
+    G_EXP                          shift and go to state 122
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 132
+state 133
 
     (50) RETORNO -> RETURN LPAREN EXP popReturn . RPAREN SEMICOLON
 
-    RPAREN          shift and go to state 165
+    RPAREN          shift and go to state 166
 
 
-state 133
+state 134
 
     (76) EXP -> TERMINO popSumaResta . T
     (77) T -> . PLUS meterOperador EXP
@@ -2080,8 +2089,8 @@ state 133
     (79) T -> . empty
     (90) empty -> .
 
-    PLUS            shift and go to state 167
-    MINUS           shift and go to state 168
+    PLUS            shift and go to state 168
+    MINUS           shift and go to state 169
     RPAREN          reduce using rule 90 (empty -> .)
     COMMA           reduce using rule 90 (empty -> .)
     GREATER_OR_EQUAL reduce using rule 90 (empty -> .)
@@ -2097,10 +2106,10 @@ state 133
     TO              reduce using rule 90 (empty -> .)
     DO              reduce using rule 90 (empty -> .)
 
-    T                              shift and go to state 166
-    empty                          shift and go to state 169
+    T                              shift and go to state 167
+    empty                          shift and go to state 170
 
-state 134
+state 135
 
     (80) TERMINO -> FACTOR popMultDiv . F2
     (81) F2 -> . DIVIDE meterOperador TERMINO
@@ -2108,8 +2117,8 @@ state 134
     (83) F2 -> . empty
     (90) empty -> .
 
-    DIVIDE          shift and go to state 171
-    MULTIPLY        shift and go to state 172
+    DIVIDE          shift and go to state 172
+    MULTIPLY        shift and go to state 173
     PLUS            reduce using rule 90 (empty -> .)
     MINUS           reduce using rule 90 (empty -> .)
     RPAREN          reduce using rule 90 (empty -> .)
@@ -2127,10 +2136,10 @@ state 134
     TO              reduce using rule 90 (empty -> .)
     DO              reduce using rule 90 (empty -> .)
 
-    F2                             shift and go to state 170
-    empty                          shift and go to state 173
+    F2                             shift and go to state 171
+    empty                          shift and go to state 174
 
-state 135
+state 136
 
     (85) FACTOR -> C_INT agregarConstInt .
 
@@ -2154,7 +2163,7 @@ state 135
     DO              reduce using rule 85 (FACTOR -> C_INT agregarConstInt .)
 
 
-state 136
+state 137
 
     (86) FACTOR -> C_FLOAT agregarConstFloat .
 
@@ -2178,7 +2187,7 @@ state 136
     DO              reduce using rule 86 (FACTOR -> C_FLOAT agregarConstFloat .)
 
 
-state 137
+state 138
 
     (87) FACTOR -> C_CHAR agregarConstChar .
 
@@ -2202,37 +2211,37 @@ state 137
     DO              reduce using rule 87 (FACTOR -> C_CHAR agregarConstChar .)
 
 
-state 138
+state 139
 
     (49) LLAMADAF -> NAME verificarFunc . LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 174
-
-
-state 139
-
-    (51) LECTURA -> READ LPAREN V3 RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 175
+    LPAREN          shift and go to state 175
 
 
 state 140
 
-    (54) ESCRITURA -> PRINT LPAREN E3 RPAREN . SEMICOLON
+    (51) LECTURA -> READ LPAREN V3 RPAREN . SEMICOLON
 
     SEMICOLON       shift and go to state 176
 
 
 state 141
 
+    (54) ESCRITURA -> PRINT LPAREN E3 RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 177
+
+
+state 142
+
     (55) E3 -> S_EXP popPrint .
     (56) E3 -> S_EXP popPrint . COMMA E3
 
     RPAREN          reduce using rule 55 (E3 -> S_EXP popPrint .)
-    COMMA           shift and go to state 177
+    COMMA           shift and go to state 178
 
 
-state 142
+state 143
 
     (74) S_EXP -> C_STRING agregarConstString .
 
@@ -2240,170 +2249,131 @@ state 142
     RPAREN          reduce using rule 74 (S_EXP -> C_STRING agregarConstString .)
 
 
-state 143
+state 144
 
     (57) CONDICION -> IF LPAREN H_EXP RPAREN . gotoIf THEN CUERPO ELSE1 terminarGoto
     (116) gotoIf -> .
 
     THEN            reduce using rule 116 (gotoIf -> .)
 
-    gotoIf                         shift and go to state 178
-
-state 144
-
-    (63) H_EXP -> T_EXP OR . H_EXP
-    (62) H_EXP -> . T_EXP
-    (63) H_EXP -> . T_EXP OR H_EXP
-    (64) T_EXP -> . G_EXP
-    (65) T_EXP -> . G_EXP AND T_EXP
-    (66) G_EXP -> . EXP B popBool
-    (76) EXP -> . TERMINO popSumaResta T
-    (80) TERMINO -> . FACTOR popMultDiv F2
-    (84) FACTOR -> . LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
-    (85) FACTOR -> . C_INT agregarConstInt
-    (86) FACTOR -> . C_FLOAT agregarConstFloat
-    (87) FACTOR -> . C_CHAR agregarConstChar
-    (88) FACTOR -> . VARIABLE
-    (89) FACTOR -> . LLAMADAF
-    (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
-
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
-
-    T_EXP                          shift and go to state 120
-    H_EXP                          shift and go to state 179
-    G_EXP                          shift and go to state 121
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    gotoIf                         shift and go to state 179
 
 state 145
 
-    (65) T_EXP -> G_EXP AND . T_EXP
-    (64) T_EXP -> . G_EXP
-    (65) T_EXP -> . G_EXP AND T_EXP
-    (66) G_EXP -> . EXP B popBool
-    (76) EXP -> . TERMINO popSumaResta T
-    (80) TERMINO -> . FACTOR popMultDiv F2
-    (84) FACTOR -> . LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
-    (85) FACTOR -> . C_INT agregarConstInt
-    (86) FACTOR -> . C_FLOAT agregarConstFloat
-    (87) FACTOR -> . C_CHAR agregarConstChar
-    (88) FACTOR -> . VARIABLE
-    (89) FACTOR -> . LLAMADAF
-    (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+    (63) H_EXP -> T_EXP OR . meterOperador H_EXP popComp
+    (136) meterOperador -> .
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
-    G_EXP                          shift and go to state 121
-    T_EXP                          shift and go to state 180
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    meterOperador                  shift and go to state 180
 
 state 146
 
-    (66) G_EXP -> EXP B . popBool
-    (127) popBool -> .
+    (65) T_EXP -> G_EXP AND . meterOperador T_EXP popComp
+    (136) meterOperador -> .
 
-    AND             reduce using rule 127 (popBool -> .)
-    OR              reduce using rule 127 (popBool -> .)
-    RPAREN          reduce using rule 127 (popBool -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
-    popBool                        shift and go to state 181
+    meterOperador                  shift and go to state 181
 
 state 147
 
-    (67) B -> GREATER_OR_EQUAL . meterOperador G_EXP
-    (135) meterOperador -> .
+    (66) G_EXP -> EXP B . popBool
+    (128) popBool -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    AND             reduce using rule 128 (popBool -> .)
+    OR              reduce using rule 128 (popBool -> .)
+    RPAREN          reduce using rule 128 (popBool -> .)
 
-    meterOperador                  shift and go to state 182
+    popBool                        shift and go to state 182
 
 state 148
 
-    (68) B -> LESS_OR_EQUAL . meterOperador G_EXP
-    (135) meterOperador -> .
+    (67) B -> GREATER_OR_EQUAL . meterOperador G_EXP
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
     meterOperador                  shift and go to state 183
 
 state 149
 
-    (69) B -> GREATER_THAN . meterOperador G_EXP
-    (135) meterOperador -> .
+    (68) B -> LESS_OR_EQUAL . meterOperador G_EXP
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
     meterOperador                  shift and go to state 184
 
 state 150
 
-    (70) B -> LESS_THAN . meterOperador G_EXP
-    (135) meterOperador -> .
+    (69) B -> GREATER_THAN . meterOperador G_EXP
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
     meterOperador                  shift and go to state 185
 
 state 151
 
-    (71) B -> IS_EQUAL . meterOperador G_EXP
-    (135) meterOperador -> .
+    (70) B -> LESS_THAN . meterOperador G_EXP
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
     meterOperador                  shift and go to state 186
 
 state 152
 
-    (72) B -> NOT_EQUAL . meterOperador G_EXP
-    (135) meterOperador -> .
+    (71) B -> IS_EQUAL . meterOperador G_EXP
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
     meterOperador                  shift and go to state 187
 
 state 153
+
+    (72) B -> NOT_EQUAL . meterOperador G_EXP
+    (136) meterOperador -> .
+
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
+
+    meterOperador                  shift and go to state 188
+
+state 154
 
     (73) B -> empty .
 
@@ -2412,38 +2382,44 @@ state 153
     RPAREN          reduce using rule 73 (B -> empty .)
 
 
-state 154
+state 155
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP . RPAREN DO gotoIf CUERPO terminarWhile
 
-    RPAREN          shift and go to state 188
-
-
-state 155
-
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom . EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-
-    EQUALS          shift and go to state 189
+    RPAREN          shift and go to state 189
 
 
 state 156
+
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS . meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (136) meterOperador -> .
+
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
+
+    meterOperador                  shift and go to state 190
+
+state 157
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN . V4 agregarLocalVar CUERPO terminarFunc
     (11) V4 -> . VARS
     (12) V4 -> . empty
     (4) VARS -> . borrarListaVar VAR V1
     (90) empty -> .
-    (143) borrarListaVar -> .
+    (144) borrarListaVar -> .
 
     LBRACKET        reduce using rule 90 (empty -> .)
-    VAR             reduce using rule 143 (borrarListaVar -> .)
+    VAR             reduce using rule 144 (borrarListaVar -> .)
 
     borrarListaVar                 shift and go to state 8
-    V4                             shift and go to state 190
-    VARS                           shift and go to state 191
-    empty                          shift and go to state 192
+    V4                             shift and go to state 191
+    VARS                           shift and go to state 192
+    empty                          shift and go to state 193
 
-state 157
+state 158
 
     (13) PARAMS -> TIPO NAME agregarVarLista P1 .
 
@@ -2451,7 +2427,7 @@ state 157
     COMMA           reduce using rule 13 (PARAMS -> TIPO NAME agregarVarLista P1 .)
 
 
-state 158
+state 159
 
     (14) P1 -> P2 .
 
@@ -2459,7 +2435,7 @@ state 158
     RPAREN          reduce using rule 14 (P1 -> P2 .)
 
 
-state 159
+state 160
 
     (15) P1 -> empty .
 
@@ -2467,7 +2443,7 @@ state 159
     RPAREN          reduce using rule 15 (P1 -> empty .)
 
 
-state 160
+state 161
 
     (16) P2 -> COMMA . PARAMS P1
     (13) PARAMS -> . TIPO NAME agregarVarLista P1
@@ -2479,24 +2455,24 @@ state 160
     FLOAT           shift and go to state 24
     CHAR            shift and go to state 25
 
-    PARAMS                         shift and go to state 193
-    TIPO                           shift and go to state 81
-
-state 161
-
-    (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP . RSBRACKET verificarArreglo quitarFondoFalso
-
-    RSBRACKET       shift and go to state 194
-
+    PARAMS                         shift and go to state 194
+    TIPO                           shift and go to state 82
 
 state 162
 
-    (44) ASIGNACION -> VARIABLE EQUALS meterOperador EXP popIgual . SEMICOLON
+    (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP . RSBRACKET verificarArreglo quitarFondoFalso
 
-    SEMICOLON       shift and go to state 195
+    RSBRACKET       shift and go to state 195
 
 
 state 163
+
+    (44) ASIGNACION -> VARIABLE EQUALS meterOperador EXP popIgual . SEMICOLON
+
+    SEMICOLON       shift and go to state 196
+
+
+state 164
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra . E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
     (46) E4 -> . EXP generarParam
@@ -2515,35 +2491,35 @@ state 163
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     RPAREN          reduce using rule 90 (empty -> .)
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    E4                             shift and go to state 196
-    EXP                            shift and go to state 197
-    empty                          shift and go to state 198
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
-
-state 164
-
-    (84) FACTOR -> LPAREN meterFondoFalso H_EXP . RPAREN quitarFondoFalso
-
-    RPAREN          shift and go to state 199
-
+    E4                             shift and go to state 197
+    EXP                            shift and go to state 198
+    empty                          shift and go to state 199
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
 state 165
 
-    (50) RETORNO -> RETURN LPAREN EXP popReturn RPAREN . SEMICOLON
+    (84) FACTOR -> LPAREN meterFondoFalso H_EXP . RPAREN quitarFondoFalso
 
-    SEMICOLON       shift and go to state 200
+    RPAREN          shift and go to state 200
 
 
 state 166
+
+    (50) RETORNO -> RETURN LPAREN EXP popReturn RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 201
+
+
+state 167
 
     (76) EXP -> TERMINO popSumaResta T .
 
@@ -2563,33 +2539,33 @@ state 166
     DO              reduce using rule 76 (EXP -> TERMINO popSumaResta T .)
 
 
-state 167
-
-    (77) T -> PLUS . meterOperador EXP
-    (135) meterOperador -> .
-
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
-
-    meterOperador                  shift and go to state 201
-
 state 168
 
-    (78) T -> MINUS . meterOperador EXP
-    (135) meterOperador -> .
+    (77) T -> PLUS . meterOperador EXP
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
     meterOperador                  shift and go to state 202
 
 state 169
+
+    (78) T -> MINUS . meterOperador EXP
+    (136) meterOperador -> .
+
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
+
+    meterOperador                  shift and go to state 203
+
+state 170
 
     (79) T -> empty .
 
@@ -2609,7 +2585,7 @@ state 169
     DO              reduce using rule 79 (T -> empty .)
 
 
-state 170
+state 171
 
     (80) TERMINO -> FACTOR popMultDiv F2 .
 
@@ -2631,33 +2607,33 @@ state 170
     DO              reduce using rule 80 (TERMINO -> FACTOR popMultDiv F2 .)
 
 
-state 171
-
-    (81) F2 -> DIVIDE . meterOperador TERMINO
-    (135) meterOperador -> .
-
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
-
-    meterOperador                  shift and go to state 203
-
 state 172
 
-    (82) F2 -> MULTIPLY . meterOperador TERMINO
-    (135) meterOperador -> .
+    (81) F2 -> DIVIDE . meterOperador TERMINO
+    (136) meterOperador -> .
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
 
     meterOperador                  shift and go to state 204
 
 state 173
+
+    (82) F2 -> MULTIPLY . meterOperador TERMINO
+    (136) meterOperador -> .
+
+    LPAREN          reduce using rule 136 (meterOperador -> .)
+    C_INT           reduce using rule 136 (meterOperador -> .)
+    C_FLOAT         reduce using rule 136 (meterOperador -> .)
+    C_CHAR          reduce using rule 136 (meterOperador -> .)
+    NAME            reduce using rule 136 (meterOperador -> .)
+
+    meterOperador                  shift and go to state 205
+
+state 174
 
     (83) F2 -> empty .
 
@@ -2679,7 +2655,7 @@ state 173
     DO              reduce using rule 83 (F2 -> empty .)
 
 
-state 174
+state 175
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN . meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
     (121) meterFondoFalso -> .
@@ -2691,9 +2667,9 @@ state 174
     NAME            reduce using rule 121 (meterFondoFalso -> .)
     RPAREN          reduce using rule 121 (meterFondoFalso -> .)
 
-    meterFondoFalso                shift and go to state 205
+    meterFondoFalso                shift and go to state 206
 
-state 175
+state 176
 
     (51) LECTURA -> READ LPAREN V3 RPAREN SEMICOLON .
 
@@ -2707,7 +2683,7 @@ state 175
     RBRACKET        reduce using rule 51 (LECTURA -> READ LPAREN V3 RPAREN SEMICOLON .)
 
 
-state 176
+state 177
 
     (54) ESCRITURA -> PRINT LPAREN E3 RPAREN SEMICOLON .
 
@@ -2721,7 +2697,7 @@ state 176
     RBRACKET        reduce using rule 54 (ESCRITURA -> PRINT LPAREN E3 RPAREN SEMICOLON .)
 
 
-state 177
+state 178
 
     (56) E3 -> S_EXP popPrint COMMA . E3
     (55) E3 -> . S_EXP popPrint
@@ -2739,44 +2715,94 @@ state 177
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    C_STRING        shift and go to state 117
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    C_STRING        shift and go to state 118
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    S_EXP                          shift and go to state 116
-    E3                             shift and go to state 206
-    EXP                            shift and go to state 118
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
-
-state 178
-
-    (57) CONDICION -> IF LPAREN H_EXP RPAREN gotoIf . THEN CUERPO ELSE1 terminarGoto
-
-    THEN            shift and go to state 207
-
+    S_EXP                          shift and go to state 117
+    E3                             shift and go to state 207
+    EXP                            shift and go to state 119
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
 state 179
 
-    (63) H_EXP -> T_EXP OR H_EXP .
+    (57) CONDICION -> IF LPAREN H_EXP RPAREN gotoIf . THEN CUERPO ELSE1 terminarGoto
 
-    RPAREN          reduce using rule 63 (H_EXP -> T_EXP OR H_EXP .)
+    THEN            shift and go to state 208
 
 
 state 180
 
-    (65) T_EXP -> G_EXP AND T_EXP .
+    (63) H_EXP -> T_EXP OR meterOperador . H_EXP popComp
+    (62) H_EXP -> . T_EXP
+    (63) H_EXP -> . T_EXP OR meterOperador H_EXP popComp
+    (64) T_EXP -> . G_EXP
+    (65) T_EXP -> . G_EXP AND meterOperador T_EXP popComp
+    (66) G_EXP -> . EXP B popBool
+    (76) EXP -> . TERMINO popSumaResta T
+    (80) TERMINO -> . FACTOR popMultDiv F2
+    (84) FACTOR -> . LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
+    (85) FACTOR -> . C_INT agregarConstInt
+    (86) FACTOR -> . C_FLOAT agregarConstFloat
+    (87) FACTOR -> . C_CHAR agregarConstChar
+    (88) FACTOR -> . VARIABLE
+    (89) FACTOR -> . LLAMADAF
+    (30) VARIABLE -> . NAME agregarPilaOp E2
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    OR              reduce using rule 65 (T_EXP -> G_EXP AND T_EXP .)
-    RPAREN          reduce using rule 65 (T_EXP -> G_EXP AND T_EXP .)
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
+    T_EXP                          shift and go to state 121
+    H_EXP                          shift and go to state 209
+    G_EXP                          shift and go to state 122
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
 state 181
+
+    (65) T_EXP -> G_EXP AND meterOperador . T_EXP popComp
+    (64) T_EXP -> . G_EXP
+    (65) T_EXP -> . G_EXP AND meterOperador T_EXP popComp
+    (66) G_EXP -> . EXP B popBool
+    (76) EXP -> . TERMINO popSumaResta T
+    (80) TERMINO -> . FACTOR popMultDiv F2
+    (84) FACTOR -> . LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
+    (85) FACTOR -> . C_INT agregarConstInt
+    (86) FACTOR -> . C_FLOAT agregarConstFloat
+    (87) FACTOR -> . C_CHAR agregarConstChar
+    (88) FACTOR -> . VARIABLE
+    (89) FACTOR -> . LLAMADAF
+    (30) VARIABLE -> . NAME agregarPilaOp E2
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
+
+    G_EXP                          shift and go to state 122
+    T_EXP                          shift and go to state 210
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
+
+state 182
 
     (66) G_EXP -> EXP B popBool .
 
@@ -2785,7 +2811,7 @@ state 181
     RPAREN          reduce using rule 66 (G_EXP -> EXP B popBool .)
 
 
-state 182
+state 183
 
     (67) B -> GREATER_OR_EQUAL meterOperador . G_EXP
     (66) G_EXP -> . EXP B popBool
@@ -2800,20 +2826,20 @@ state 182
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    G_EXP                          shift and go to state 208
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    G_EXP                          shift and go to state 211
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 183
+state 184
 
     (68) B -> LESS_OR_EQUAL meterOperador . G_EXP
     (66) G_EXP -> . EXP B popBool
@@ -2828,20 +2854,20 @@ state 183
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    G_EXP                          shift and go to state 209
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    G_EXP                          shift and go to state 212
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 184
+state 185
 
     (69) B -> GREATER_THAN meterOperador . G_EXP
     (66) G_EXP -> . EXP B popBool
@@ -2856,20 +2882,20 @@ state 184
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    G_EXP                          shift and go to state 210
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    G_EXP                          shift and go to state 213
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 185
+state 186
 
     (70) B -> LESS_THAN meterOperador . G_EXP
     (66) G_EXP -> . EXP B popBool
@@ -2884,20 +2910,20 @@ state 185
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    G_EXP                          shift and go to state 211
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    G_EXP                          shift and go to state 214
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 186
+state 187
 
     (71) B -> IS_EQUAL meterOperador . G_EXP
     (66) G_EXP -> . EXP B popBool
@@ -2912,20 +2938,20 @@ state 186
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    G_EXP                          shift and go to state 212
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    G_EXP                          shift and go to state 215
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 187
+state 188
 
     (72) B -> NOT_EQUAL meterOperador . G_EXP
     (66) G_EXP -> . EXP B popBool
@@ -2940,63 +2966,76 @@ state 187
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    G_EXP                          shift and go to state 213
-    EXP                            shift and go to state 122
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
-
-state 188
-
-    (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN . DO gotoIf CUERPO terminarWhile
-
-    DO              shift and go to state 214
-
+    G_EXP                          shift and go to state 216
+    EXP                            shift and go to state 123
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
 state 189
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS . meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (135) meterOperador -> .
+    (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN . DO gotoIf CUERPO terminarWhile
 
-    LPAREN          reduce using rule 135 (meterOperador -> .)
-    C_INT           reduce using rule 135 (meterOperador -> .)
-    C_FLOAT         reduce using rule 135 (meterOperador -> .)
-    C_CHAR          reduce using rule 135 (meterOperador -> .)
-    NAME            reduce using rule 135 (meterOperador -> .)
+    DO              shift and go to state 217
 
-    meterOperador                  shift and go to state 215
 
 state 190
+
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador . EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (76) EXP -> . TERMINO popSumaResta T
+    (80) TERMINO -> . FACTOR popMultDiv F2
+    (84) FACTOR -> . LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
+    (85) FACTOR -> . C_INT agregarConstInt
+    (86) FACTOR -> . C_FLOAT agregarConstFloat
+    (87) FACTOR -> . C_CHAR agregarConstChar
+    (88) FACTOR -> . VARIABLE
+    (89) FACTOR -> . LLAMADAF
+    (30) VARIABLE -> . NAME agregarPilaOp E2
+    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
+
+    VARIABLE                       shift and go to state 112
+    EXP                            shift and go to state 218
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    LLAMADAF                       shift and go to state 113
+
+state 191
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 . agregarLocalVar CUERPO terminarFunc
     (99) agregarLocalVar -> .
 
     LBRACKET        reduce using rule 99 (agregarLocalVar -> .)
 
-    agregarLocalVar                shift and go to state 216
+    agregarLocalVar                shift and go to state 219
 
-state 191
+state 192
 
     (11) V4 -> VARS .
 
     LBRACKET        reduce using rule 11 (V4 -> VARS .)
 
 
-state 192
+state 193
 
     (12) V4 -> empty .
 
     LBRACKET        reduce using rule 12 (V4 -> empty .)
 
 
-state 193
+state 194
 
     (16) P2 -> COMMA PARAMS . P1
     (14) P1 -> . P2
@@ -3005,16 +3044,16 @@ state 193
     (90) empty -> .
 
   ! shift/reduce conflict for COMMA resolved as shift
-    COMMA           shift and go to state 160
+    COMMA           shift and go to state 161
     RPAREN          reduce using rule 90 (empty -> .)
 
   ! COMMA           [ reduce using rule 90 (empty -> .) ]
 
-    P1                             shift and go to state 217
-    P2                             shift and go to state 158
-    empty                          shift and go to state 159
+    P1                             shift and go to state 220
+    P2                             shift and go to state 159
+    empty                          shift and go to state 160
 
-state 194
+state 195
 
     (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET . verificarArreglo quitarFondoFalso
     (103) verificarArreglo -> .
@@ -3042,9 +3081,9 @@ state 194
     TO              reduce using rule 103 (verificarArreglo -> .)
     DO              reduce using rule 103 (verificarArreglo -> .)
 
-    verificarArreglo               shift and go to state 218
+    verificarArreglo               shift and go to state 221
 
-state 195
+state 196
 
     (44) ASIGNACION -> VARIABLE EQUALS meterOperador EXP popIgual SEMICOLON .
 
@@ -3058,16 +3097,16 @@ state 195
     RBRACKET        reduce using rule 44 (ASIGNACION -> VARIABLE EQUALS meterOperador EXP popIgual SEMICOLON .)
 
 
-state 196
+state 197
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 . verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
     (93) verificarParam -> .
 
     RPAREN          reduce using rule 93 (verificarParam -> .)
 
-    verificarParam                 shift and go to state 219
+    verificarParam                 shift and go to state 222
 
-state 197
+state 198
 
     (46) E4 -> EXP . generarParam
     (47) E4 -> EXP . generarParam COMMA E4
@@ -3076,16 +3115,16 @@ state 197
     COMMA           reduce using rule 94 (generarParam -> .)
     RPAREN          reduce using rule 94 (generarParam -> .)
 
-    generarParam                   shift and go to state 220
+    generarParam                   shift and go to state 223
 
-state 198
+state 199
 
     (48) E4 -> empty .
 
     RPAREN          reduce using rule 48 (E4 -> empty .)
 
 
-state 199
+state 200
 
     (84) FACTOR -> LPAREN meterFondoFalso H_EXP RPAREN . quitarFondoFalso
     (122) quitarFondoFalso -> .
@@ -3109,9 +3148,9 @@ state 199
     TO              reduce using rule 122 (quitarFondoFalso -> .)
     DO              reduce using rule 122 (quitarFondoFalso -> .)
 
-    quitarFondoFalso               shift and go to state 221
+    quitarFondoFalso               shift and go to state 224
 
-state 200
+state 201
 
     (50) RETORNO -> RETURN LPAREN EXP popReturn RPAREN SEMICOLON .
 
@@ -3125,7 +3164,7 @@ state 200
     RBRACKET        reduce using rule 50 (RETORNO -> RETURN LPAREN EXP popReturn RPAREN SEMICOLON .)
 
 
-state 201
+state 202
 
     (77) T -> PLUS meterOperador . EXP
     (76) EXP -> . TERMINO popSumaResta T
@@ -3139,19 +3178,19 @@ state 201
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    EXP                            shift and go to state 222
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    EXP                            shift and go to state 225
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 202
+state 203
 
     (78) T -> MINUS meterOperador . EXP
     (76) EXP -> . TERMINO popSumaResta T
@@ -3165,19 +3204,19 @@ state 202
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    EXP                            shift and go to state 223
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    EXP                            shift and go to state 226
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 203
+state 204
 
     (81) F2 -> DIVIDE meterOperador . TERMINO
     (80) TERMINO -> . FACTOR popMultDiv F2
@@ -3190,18 +3229,18 @@ state 203
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    TERMINO                        shift and go to state 224
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    TERMINO                        shift and go to state 227
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 204
+state 205
 
     (82) F2 -> MULTIPLY meterOperador . TERMINO
     (80) TERMINO -> . FACTOR popMultDiv F2
@@ -3214,18 +3253,18 @@ state 204
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    TERMINO                        shift and go to state 225
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    TERMINO                        shift and go to state 228
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 205
+state 206
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso . generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
     (95) generarEra -> .
@@ -3237,25 +3276,44 @@ state 205
     NAME            reduce using rule 95 (generarEra -> .)
     RPAREN          reduce using rule 95 (generarEra -> .)
 
-    generarEra                     shift and go to state 226
+    generarEra                     shift and go to state 229
 
-state 206
+state 207
 
     (56) E3 -> S_EXP popPrint COMMA E3 .
 
     RPAREN          reduce using rule 56 (E3 -> S_EXP popPrint COMMA E3 .)
 
 
-state 207
+state 208
 
     (57) CONDICION -> IF LPAREN H_EXP RPAREN gotoIf THEN . CUERPO ELSE1 terminarGoto
     (17) CUERPO -> . LBRACKET E RBRACKET
 
-    LBRACKET        shift and go to state 52
+    LBRACKET        shift and go to state 53
 
-    CUERPO                         shift and go to state 227
+    CUERPO                         shift and go to state 230
 
-state 208
+state 209
+
+    (63) H_EXP -> T_EXP OR meterOperador H_EXP . popComp
+    (127) popComp -> .
+
+    RPAREN          reduce using rule 127 (popComp -> .)
+
+    popComp                        shift and go to state 231
+
+state 210
+
+    (65) T_EXP -> G_EXP AND meterOperador T_EXP . popComp
+    (127) popComp -> .
+
+    OR              reduce using rule 127 (popComp -> .)
+    RPAREN          reduce using rule 127 (popComp -> .)
+
+    popComp                        shift and go to state 232
+
+state 211
 
     (67) B -> GREATER_OR_EQUAL meterOperador G_EXP .
 
@@ -3264,7 +3322,7 @@ state 208
     RPAREN          reduce using rule 67 (B -> GREATER_OR_EQUAL meterOperador G_EXP .)
 
 
-state 209
+state 212
 
     (68) B -> LESS_OR_EQUAL meterOperador G_EXP .
 
@@ -3273,7 +3331,7 @@ state 209
     RPAREN          reduce using rule 68 (B -> LESS_OR_EQUAL meterOperador G_EXP .)
 
 
-state 210
+state 213
 
     (69) B -> GREATER_THAN meterOperador G_EXP .
 
@@ -3282,7 +3340,7 @@ state 210
     RPAREN          reduce using rule 69 (B -> GREATER_THAN meterOperador G_EXP .)
 
 
-state 211
+state 214
 
     (70) B -> LESS_THAN meterOperador G_EXP .
 
@@ -3291,7 +3349,7 @@ state 211
     RPAREN          reduce using rule 70 (B -> LESS_THAN meterOperador G_EXP .)
 
 
-state 212
+state 215
 
     (71) B -> IS_EQUAL meterOperador G_EXP .
 
@@ -3300,7 +3358,7 @@ state 212
     RPAREN          reduce using rule 71 (B -> IS_EQUAL meterOperador G_EXP .)
 
 
-state 213
+state 216
 
     (72) B -> NOT_EQUAL meterOperador G_EXP .
 
@@ -3309,51 +3367,34 @@ state 213
     RPAREN          reduce using rule 72 (B -> NOT_EQUAL meterOperador G_EXP .)
 
 
-state 214
+state 217
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO . gotoIf CUERPO terminarWhile
     (116) gotoIf -> .
 
     LBRACKET        reduce using rule 116 (gotoIf -> .)
 
-    gotoIf                         shift and go to state 228
+    gotoIf                         shift and go to state 233
 
-state 215
+state 218
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador . EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (76) EXP -> . TERMINO popSumaResta T
-    (80) TERMINO -> . FACTOR popMultDiv F2
-    (84) FACTOR -> . LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
-    (85) FACTOR -> . C_INT agregarConstInt
-    (86) FACTOR -> . C_FLOAT agregarConstFloat
-    (87) FACTOR -> . C_CHAR agregarConstChar
-    (88) FACTOR -> . VARIABLE
-    (89) FACTOR -> . LLAMADAF
-    (30) VARIABLE -> . NAME agregarPilaOp E2
-    (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP . popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (129) popIgual -> .
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    TO              reduce using rule 129 (popIgual -> .)
 
-    VARIABLE                       shift and go to state 111
-    EXP                            shift and go to state 229
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    LLAMADAF                       shift and go to state 112
+    popIgual                       shift and go to state 234
 
-state 216
+state 219
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar . CUERPO terminarFunc
     (17) CUERPO -> . LBRACKET E RBRACKET
 
-    LBRACKET        shift and go to state 52
+    LBRACKET        shift and go to state 53
 
-    CUERPO                         shift and go to state 230
+    CUERPO                         shift and go to state 235
 
-state 217
+state 220
 
     (16) P2 -> COMMA PARAMS P1 .
 
@@ -3361,7 +3402,7 @@ state 217
     RPAREN          reduce using rule 16 (P2 -> COMMA PARAMS P1 .)
 
 
-state 218
+state 221
 
     (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo . quitarFondoFalso
     (122) quitarFondoFalso -> .
@@ -3389,25 +3430,25 @@ state 218
     TO              reduce using rule 122 (quitarFondoFalso -> .)
     DO              reduce using rule 122 (quitarFondoFalso -> .)
 
-    quitarFondoFalso               shift and go to state 231
+    quitarFondoFalso               shift and go to state 236
 
-state 219
+state 222
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam . RPAREN quitarFondoFalso generarGosub SEMICOLON
 
-    RPAREN          shift and go to state 232
+    RPAREN          shift and go to state 237
 
 
-state 220
+state 223
 
     (46) E4 -> EXP generarParam .
     (47) E4 -> EXP generarParam . COMMA E4
 
     RPAREN          reduce using rule 46 (E4 -> EXP generarParam .)
-    COMMA           shift and go to state 233
+    COMMA           shift and go to state 238
 
 
-state 221
+state 224
 
     (84) FACTOR -> LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso .
 
@@ -3431,7 +3472,7 @@ state 221
     DO              reduce using rule 84 (FACTOR -> LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso .)
 
 
-state 222
+state 225
 
     (77) T -> PLUS meterOperador EXP .
 
@@ -3451,7 +3492,7 @@ state 222
     DO              reduce using rule 77 (T -> PLUS meterOperador EXP .)
 
 
-state 223
+state 226
 
     (78) T -> MINUS meterOperador EXP .
 
@@ -3471,7 +3512,7 @@ state 223
     DO              reduce using rule 78 (T -> MINUS meterOperador EXP .)
 
 
-state 224
+state 227
 
     (81) F2 -> DIVIDE meterOperador TERMINO .
 
@@ -3493,7 +3534,7 @@ state 224
     DO              reduce using rule 81 (F2 -> DIVIDE meterOperador TERMINO .)
 
 
-state 225
+state 228
 
     (82) F2 -> MULTIPLY meterOperador TERMINO .
 
@@ -3515,7 +3556,7 @@ state 225
     DO              reduce using rule 82 (F2 -> MULTIPLY meterOperador TERMINO .)
 
 
-state 226
+state 229
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra . E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
     (46) E4 -> . EXP generarParam
@@ -3534,28 +3575,28 @@ state 226
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     RPAREN          reduce using rule 90 (empty -> .)
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    E4                             shift and go to state 234
-    EXP                            shift and go to state 197
-    empty                          shift and go to state 198
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    E4                             shift and go to state 239
+    EXP                            shift and go to state 198
+    empty                          shift and go to state 199
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 227
+state 230
 
     (57) CONDICION -> IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO . ELSE1 terminarGoto
     (58) ELSE1 -> . ELSE gotoElse CUERPO
     (59) ELSE1 -> . empty
     (90) empty -> .
 
-    ELSE            shift and go to state 236
+    ELSE            shift and go to state 241
     NAME            reduce using rule 90 (empty -> .)
     RETURN          reduce using rule 90 (empty -> .)
     READ            reduce using rule 90 (empty -> .)
@@ -3565,28 +3606,43 @@ state 227
     FROM            reduce using rule 90 (empty -> .)
     RBRACKET        reduce using rule 90 (empty -> .)
 
-    ELSE1                          shift and go to state 235
-    empty                          shift and go to state 237
+    ELSE1                          shift and go to state 240
+    empty                          shift and go to state 242
 
-state 228
+state 231
+
+    (63) H_EXP -> T_EXP OR meterOperador H_EXP popComp .
+
+    RPAREN          reduce using rule 63 (H_EXP -> T_EXP OR meterOperador H_EXP popComp .)
+
+
+state 232
+
+    (65) T_EXP -> G_EXP AND meterOperador T_EXP popComp .
+
+    OR              reduce using rule 65 (T_EXP -> G_EXP AND meterOperador T_EXP popComp .)
+    RPAREN          reduce using rule 65 (T_EXP -> G_EXP AND meterOperador T_EXP popComp .)
+
+
+state 233
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf . CUERPO terminarWhile
     (17) CUERPO -> . LBRACKET E RBRACKET
 
-    LBRACKET        shift and go to state 52
+    LBRACKET        shift and go to state 53
 
-    CUERPO                         shift and go to state 238
+    CUERPO                         shift and go to state 243
 
-state 229
+state 234
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP . popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
-    (128) popIgual -> .
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual . agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (118) agregarWhile -> .
 
-    TO              reduce using rule 128 (popIgual -> .)
+    TO              reduce using rule 118 (agregarWhile -> .)
 
-    popIgual                       shift and go to state 239
+    agregarWhile                   shift and go to state 244
 
-state 230
+state 235
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO . terminarFunc
     (98) terminarFunc -> .
@@ -3594,9 +3650,9 @@ state 230
     FUNC            reduce using rule 98 (terminarFunc -> .)
     MAIN            reduce using rule 98 (terminarFunc -> .)
 
-    terminarFunc                   shift and go to state 240
+    terminarFunc                   shift and go to state 245
 
-state 231
+state 236
 
     (31) E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso .
 
@@ -3624,16 +3680,16 @@ state 231
     DO              reduce using rule 31 (E2 -> LSBRACKET guardarArreglo meterFondoFalso EXP RSBRACKET verificarArreglo quitarFondoFalso .)
 
 
-state 232
+state 237
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN . quitarFondoFalso generarGosub SEMICOLON
     (122) quitarFondoFalso -> .
 
     SEMICOLON       reduce using rule 122 (quitarFondoFalso -> .)
 
-    quitarFondoFalso               shift and go to state 241
+    quitarFondoFalso               shift and go to state 246
 
-state 233
+state 238
 
     (47) E4 -> EXP generarParam COMMA . E4
     (46) E4 -> . EXP generarParam
@@ -3652,30 +3708,30 @@ state 233
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
     RPAREN          reduce using rule 90 (empty -> .)
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    EXP                            shift and go to state 197
-    E4                             shift and go to state 242
-    empty                          shift and go to state 198
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    VARIABLE                       shift and go to state 111
-    LLAMADAF                       shift and go to state 112
+    EXP                            shift and go to state 198
+    E4                             shift and go to state 247
+    empty                          shift and go to state 199
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    VARIABLE                       shift and go to state 112
+    LLAMADAF                       shift and go to state 113
 
-state 234
+state 239
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 . verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
     (93) verificarParam -> .
 
     RPAREN          reduce using rule 93 (verificarParam -> .)
 
-    verificarParam                 shift and go to state 243
+    verificarParam                 shift and go to state 248
 
-state 235
+state 240
 
     (57) CONDICION -> IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 . terminarGoto
     (117) terminarGoto -> .
@@ -3689,18 +3745,18 @@ state 235
     FROM            reduce using rule 117 (terminarGoto -> .)
     RBRACKET        reduce using rule 117 (terminarGoto -> .)
 
-    terminarGoto                   shift and go to state 244
+    terminarGoto                   shift and go to state 249
 
-state 236
+state 241
 
     (58) ELSE1 -> ELSE . gotoElse CUERPO
     (120) gotoElse -> .
 
     LBRACKET        reduce using rule 120 (gotoElse -> .)
 
-    gotoElse                       shift and go to state 245
+    gotoElse                       shift and go to state 250
 
-state 237
+state 242
 
     (59) ELSE1 -> empty .
 
@@ -3714,7 +3770,7 @@ state 237
     RBRACKET        reduce using rule 59 (ELSE1 -> empty .)
 
 
-state 238
+state 243
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO . terminarWhile
     (119) terminarWhile -> .
@@ -3728,16 +3784,16 @@ state 238
     FROM            reduce using rule 119 (terminarWhile -> .)
     RBRACKET        reduce using rule 119 (terminarWhile -> .)
 
-    terminarWhile                  shift and go to state 246
+    terminarWhile                  shift and go to state 251
 
-state 239
+state 244
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual . TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile . TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
 
-    TO              shift and go to state 247
+    TO              shift and go to state 252
 
 
-state 240
+state 245
 
     (10) FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc .
 
@@ -3745,30 +3801,30 @@ state 240
     MAIN            reduce using rule 10 (FUNCION -> FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc .)
 
 
-state 241
+state 246
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso . generarGosub SEMICOLON
     (91) generarGosub -> .
 
     SEMICOLON       reduce using rule 91 (generarGosub -> .)
 
-    generarGosub                   shift and go to state 248
+    generarGosub                   shift and go to state 253
 
-state 242
+state 247
 
     (47) E4 -> EXP generarParam COMMA E4 .
 
     RPAREN          reduce using rule 47 (E4 -> EXP generarParam COMMA E4 .)
 
 
-state 243
+state 248
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam . RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    RPAREN          shift and go to state 249
+    RPAREN          shift and go to state 254
 
 
-state 244
+state 249
 
     (57) CONDICION -> IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto .
 
@@ -3782,16 +3838,16 @@ state 244
     RBRACKET        reduce using rule 57 (CONDICION -> IF LPAREN H_EXP RPAREN gotoIf THEN CUERPO ELSE1 terminarGoto .)
 
 
-state 245
+state 250
 
     (58) ELSE1 -> ELSE gotoElse . CUERPO
     (17) CUERPO -> . LBRACKET E RBRACKET
 
-    LBRACKET        shift and go to state 52
+    LBRACKET        shift and go to state 53
 
-    CUERPO                         shift and go to state 250
+    CUERPO                         shift and go to state 255
 
-state 246
+state 251
 
     (60) CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile .
 
@@ -3805,9 +3861,9 @@ state 246
     RBRACKET        reduce using rule 60 (CICLO_W -> WHILE agregarWhile LPAREN H_EXP RPAREN DO gotoIf CUERPO terminarWhile .)
 
 
-state 247
+state 252
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO . EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO . EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
     (76) EXP -> . TERMINO popSumaResta T
     (80) TERMINO -> . FACTOR popMultDiv F2
     (84) FACTOR -> . LPAREN meterFondoFalso H_EXP RPAREN quitarFondoFalso
@@ -3819,26 +3875,26 @@ state 247
     (30) VARIABLE -> . NAME agregarPilaOp E2
     (49) LLAMADAF -> . NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub
 
-    LPAREN          shift and go to state 104
-    C_INT           shift and go to state 108
-    C_FLOAT         shift and go to state 109
-    C_CHAR          shift and go to state 110
-    NAME            shift and go to state 113
+    LPAREN          shift and go to state 105
+    C_INT           shift and go to state 109
+    C_FLOAT         shift and go to state 110
+    C_CHAR          shift and go to state 111
+    NAME            shift and go to state 114
 
-    VARIABLE                       shift and go to state 111
-    EXP                            shift and go to state 251
-    TERMINO                        shift and go to state 106
-    FACTOR                         shift and go to state 107
-    LLAMADAF                       shift and go to state 112
+    VARIABLE                       shift and go to state 112
+    EXP                            shift and go to state 256
+    TERMINO                        shift and go to state 107
+    FACTOR                         shift and go to state 108
+    LLAMADAF                       shift and go to state 113
 
-state 248
+state 253
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub . SEMICOLON
 
-    SEMICOLON       shift and go to state 252
+    SEMICOLON       shift and go to state 257
 
 
-state 249
+state 254
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN . quitarFondoFalso verificarLlamada generarGosub
     (122) quitarFondoFalso -> .
@@ -3862,9 +3918,9 @@ state 249
     TO              reduce using rule 122 (quitarFondoFalso -> .)
     DO              reduce using rule 122 (quitarFondoFalso -> .)
 
-    quitarFondoFalso               shift and go to state 253
+    quitarFondoFalso               shift and go to state 258
 
-state 250
+state 255
 
     (58) ELSE1 -> ELSE gotoElse CUERPO .
 
@@ -3878,16 +3934,16 @@ state 250
     RBRACKET        reduce using rule 58 (ELSE1 -> ELSE gotoElse CUERPO .)
 
 
-state 251
+state 256
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP . crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP . crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
     (106) crearCompFrom -> .
 
     DO              reduce using rule 106 (crearCompFrom -> .)
 
-    crearCompFrom                  shift and go to state 254
+    crearCompFrom                  shift and go to state 259
 
-state 252
+state 257
 
     (45) LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .
 
@@ -3901,7 +3957,7 @@ state 252
     RBRACKET        reduce using rule 45 (LLAMADA -> NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON .)
 
 
-state 253
+state 258
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso . verificarLlamada generarGosub
     (92) verificarLlamada -> .
@@ -3925,16 +3981,16 @@ state 253
     TO              reduce using rule 92 (verificarLlamada -> .)
     DO              reduce using rule 92 (verificarLlamada -> .)
 
-    verificarLlamada               shift and go to state 255
+    verificarLlamada               shift and go to state 260
 
-state 254
+state 259
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom . DO gotoIf CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom . DO gotoIf CUERPO sumarFrom terminarWhile
 
-    DO              shift and go to state 256
+    DO              shift and go to state 261
 
 
-state 255
+state 260
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada . generarGosub
     (91) generarGosub -> .
@@ -3958,18 +4014,18 @@ state 255
     TO              reduce using rule 91 (generarGosub -> .)
     DO              reduce using rule 91 (generarGosub -> .)
 
-    generarGosub                   shift and go to state 257
+    generarGosub                   shift and go to state 262
 
-state 256
+state 261
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO . gotoIf CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO . gotoIf CUERPO sumarFrom terminarWhile
     (116) gotoIf -> .
 
     LBRACKET        reduce using rule 116 (gotoIf -> .)
 
-    gotoIf                         shift and go to state 258
+    gotoIf                         shift and go to state 263
 
-state 257
+state 262
 
     (49) LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .
 
@@ -3993,18 +4049,18 @@ state 257
     DO              reduce using rule 49 (LLAMADAF -> NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso verificarLlamada generarGosub .)
 
 
-state 258
+state 263
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf . CUERPO sumarFrom terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf . CUERPO sumarFrom terminarWhile
     (17) CUERPO -> . LBRACKET E RBRACKET
 
-    LBRACKET        shift and go to state 52
+    LBRACKET        shift and go to state 53
 
-    CUERPO                         shift and go to state 259
+    CUERPO                         shift and go to state 264
 
-state 259
+state 264
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO . sumarFrom terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO . sumarFrom terminarWhile
     (107) sumarFrom -> .
 
     NAME            reduce using rule 107 (sumarFrom -> .)
@@ -4016,11 +4072,11 @@ state 259
     FROM            reduce using rule 107 (sumarFrom -> .)
     RBRACKET        reduce using rule 107 (sumarFrom -> .)
 
-    sumarFrom                      shift and go to state 260
+    sumarFrom                      shift and go to state 265
 
-state 260
+state 265
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom . terminarWhile
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom . terminarWhile
     (119) terminarWhile -> .
 
     NAME            reduce using rule 119 (terminarWhile -> .)
@@ -4032,23 +4088,23 @@ state 260
     FROM            reduce using rule 119 (terminarWhile -> .)
     RBRACKET        reduce using rule 119 (terminarWhile -> .)
 
-    terminarWhile                  shift and go to state 261
+    terminarWhile                  shift and go to state 266
 
-state 261
+state 266
 
-    (61) CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .
+    (61) CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .
 
-    NAME            reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
-    RETURN          reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
-    READ            reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
-    PRINT           reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
-    IF              reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
-    WHILE           reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
-    FROM            reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
-    RBRACKET        reduce using rule 61 (CICLO_F -> FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    NAME            reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    RETURN          reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    READ            reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    PRINT           reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    IF              reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    WHILE           reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    FROM            reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
+    RBRACKET        reduce using rule 61 (CICLO_F -> FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for COMMA in state 126 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 193 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 127 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 194 resolved as shift

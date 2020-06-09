@@ -13,4 +13,5 @@ class Memoria:
         for x in range(nBool):
             self.bools[x] = True
 
-    
+    def printMem(self):
+        print("ints:", self.ints, "floats:", self.floats, "chars:", self.chars, "bools:", self.bools)

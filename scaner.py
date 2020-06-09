@@ -91,7 +91,8 @@ def t_C_INT(t):
     return t
 
 def t_C_STRING(t):
-    r'\".*\"'
+    #r'\".*\"'
+    r'"([^"\n]|(\\"))*"'
     return t
 
 def t_C_CHAR(t):

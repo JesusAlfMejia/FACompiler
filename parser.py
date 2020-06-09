@@ -45,7 +45,7 @@ pilaLlamadasFuncion = []
 
 def p_PROGRAMA(p):
     '''
-    PROGRAMA : crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
+    PROGRAMA : crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL printTodo
     F : FUNCION F
     | empty
     '''
@@ -218,19 +218,19 @@ def p_CICLO_W(p):
 
 def p_CICLO_F(p):
     '''
-    CICLO_F : FROM agregarWhile VARIABLE agregarFrom EQUALS meterOperador EXP popIgual TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
+    CICLO_F : FROM VARIABLE agregarFrom EQUALS meterOperador EXP popIgual agregarWhile TO EXP crearCompFrom DO gotoIf CUERPO sumarFrom terminarWhile
     '''
 
 def p_H_EXP(p):
     '''
     H_EXP : T_EXP
-    | T_EXP OR H_EXP
+    | T_EXP OR meterOperador H_EXP popComp
     '''
 
 def p_T_EXP(p):
     '''
     T_EXP : G_EXP
-    | G_EXP AND T_EXP
+    | G_EXP AND meterOperador T_EXP popComp
     '''
 
 def p_G_EXP(p):
@@ -329,7 +329,7 @@ def p_verificarParam(p):
     global pilaLlamadasFuncion
     nombreFuncion = pilaLlamadasFuncion[-1]
     if directorioFunc.obtenerParam(nombreFuncion, dirParamCounter[nombreFuncion]) != None:
-        print("Syntax error: El número de parametros en la función", nombreFuncion, "no es el correcto en linea", p.lineno(0))
+        print("Syntax error: El número de parametros en la funcion", nombreFuncion, "no es el correcto en linea", p.lineno(0))
         sys.exit()
 
 
@@ -345,10 +345,10 @@ def p_generarParam(p):
     tipoArgumento = pilaTipos.pop()
     numParams = directorioFunc.obtenerNumParams(nombreFuncion)
     if numParams < dirParamCounter[nombreFuncion] + 1:
-        print("Syntax error: El número de parametros en la función",nombreFuncion,"es mayor al requerido en linea", p.lineno(0))
+        print("Syntax error: El número de parametros en la funcion",nombreFuncion,"es mayor al requerido en linea", p.lineno(0))
         sys.exit()
     if directorioFunc.obtenerParam(nombreFuncion, dirParamCounter[nombreFuncion]) != tipoArgumento:
-        print("Type mismatch: El paramentro #", dirParamCounter[nombreFuncion]+1, "de la función", nombreFuncion, "es del tipo incorrecto en linea", p.lineno(0))
+        print("Type mismatch: El paramentro #", dirParamCounter[nombreFuncion]+1, "de la funcion", nombreFuncion, "es del tipo incorrecto en linea", p.lineno(0))
         sys.exit()
     else:
         dirParamCounter[nombreFuncion] += 1
@@ -406,7 +406,7 @@ def p_terminarFunc(p):
     global nombreFuncion
     global dicDirecciones
     if tipoFuncionLeido != "void" and tieneReturn == False:
-        print("Syntax error: La función", nombreFuncion, "necesita de un estatuto return")
+        print("Syntax error: La funcion", nombreFuncion, "necesita de un estatuto return")
         sys.exit()
     
     tieneReturn = False
@@ -476,6 +476,8 @@ def p_verificarArreglo(p):
     tipo = pilaTipos.pop()
     nuevaDir = dicDirecciones["tempInt"].obtenerDir()
     cuadruplos.generarCuad("addArray", aux1, dirArray, nuevaDir)
+    nuevaDir = str(nuevaDir)
+    nuevaDir = "(" + nuevaDir + ")"
     pilaOp.append(nuevaDir)
     pilaTipos.append(tipoArray)
 
@@ -766,12 +768,50 @@ def p_popReturn(p):
     elemTipo = pilaTipos.pop()
     tieneReturn = True
     if tipoFuncionLeido != elemTipo:
-        print("Type mismatch: El elemento retornado es diferente al tipo de función declarada")
+        print("Type mismatch: El elemento retornado es diferente al tipo de funcion declarada")
         sys.exit()
     variable = directorioFunc.buscarVariable(nombreFuncion, "global")
     dirVariable = variable["dir"]
     cuadruplos.generarCuad("return", elem, -1, dirVariable)
     #cuadruplos.generarCuad("=", elem, -1, dirVariable)
+
+def p_popComp(p):
+    '''popComp : '''
+    global pilaPoper
+    global pilaOp
+    global pilaTipos
+    global cuadruplos
+    global cuboSem
+    global dicDirecciones
+    if len(pilaPoper) > 0:
+        topPoper = pilaPoper[-1]
+    else: topPoper = "None"
+    if topPoper != '(':
+        if  topPoper == '&&' or topPoper == '||':
+            op = pilaPoper.pop()
+            opdo_der = pilaOp.pop()
+            opdo_izq = pilaOp.pop()
+            tipo_der = pilaTipos.pop()
+            tipo_izq = pilaTipos.pop()
+            tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
+            if  tipoRes == "error":
+                print("Type mismatch error: Los tipos de los operandos no son compatibles")
+                sys.exit()
+            nuevaDir = 0
+            if tipoRes == "int":
+                nuevaDir = dicDirecciones["tempInt"].obtenerDir()
+            elif tipoRes == "float":
+                nuevaDir = dicDirecciones["tempFloat"].obtenerDir()
+            elif tipoRes == "char":
+                nuevaDir = dicDirecciones["tempChar"].obtenerDir()
+            elif tipoRes == "bool":
+                nuevaDir = dicDirecciones["tempBool"].obtenerDir()
+            if nuevaDir == -1:
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                sys.exit()
+            cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
+            pilaOp.append(nuevaDir)
+            pilaTipos.append(tipoRes)
 
 def p_popBool(p):
     '''popBool : '''
@@ -960,7 +1000,9 @@ def p_crearFuncMain(p):
     global directorioFunc
     global nombreFuncion
     global cuadruplos
+    global tipoFuncionLeido
     nombreFuncion = "main"
+    tipoFuncionLeido = "void"
     directorioFunc.agregarFuncion(nombreFuncion, "void")
     directorioFunc.agregarDir(nombreFuncion, cuadruplos.contador)
 
@@ -1012,9 +1054,9 @@ def p_printTodo(p):
     global directorioFunc
     global cuadruplos
     global pilaOp
-    directorioFunc.printTodo()
-    cuadruplos.printCuads()
-    tablaConstantes.printConstantes()
+    #directorioFunc.printTodo()
+    #cuadruplos.printCuads()
+    #tablaConstantes.printConstantes()
     filename = "codigo.obj"
     cuadruplos.exportarCuad(filename)
     tablaConstantes.exportarConstantes(filename)

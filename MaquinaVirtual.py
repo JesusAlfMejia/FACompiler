@@ -11,7 +11,8 @@ nuevaMemLocal = ""
 nuevaMemTemp = ""
 pilaMemLocal = []
 pilaMemTemp = []
-nuevoInsPointer = 0
+pilaInsPointer = []
+insPointer = 0
 
 def readObj(info):
     actualLectura = ""
@@ -86,16 +87,31 @@ def analizarCuadruplos():
     global pilaMemTemp
     global nuevaMemLocal
     global nuevaMemTemp
-    global nuevoInsPointer
+    global pilaInsPointer
+    global insPointer
     memGlobal = Memoria(dirFunciones["global"]["numLocalInt"], dirFunciones["global"]["numLocalFloat"], dirFunciones["global"]["numLocalChar"], 0)
     memLocal = Memoria(0,0,0,0)
     memTemp = Memoria(dirFunciones["main"]["numTempInt"], dirFunciones["main"]["numTempFloat"], dirFunciones["main"]["numTempChar"], dirFunciones["main"]["numTempBool"])
     insPointer = dirFunciones["main"]["cuad"]
     while insPointer < len(cuadruplos):
+        #print("insPointer", insPointer)
+        #print("MemTemp")
+        #memTemp.printMem()
+        #print("MemGlobal")
+        #memGlobal.printMem()
         codeOp = cuadruplos[insPointer][0]
         opIzq = cuadruplos[insPointer][1]
+        if opIzq[0]  == "(":
+            opIzq = removeString(opIzq)
+            opIzq = regresarVal(opIzq)
         opDer = cuadruplos[insPointer][2]
+        if opDer[0]  == "(":
+            opDer = removeString(opDer)
+            opDer = regresarVal(opDer)
         resDir = cuadruplos[insPointer][3]
+        if resDir[0]  == "(":
+            resDir = removeString(resDir)
+            resDir = regresarVal(resDir)
         if codeOp == '+':
             res = regresarVal(opIzq) + regresarVal(opDer)
             asignarVal(resDir, res)
@@ -122,21 +138,28 @@ def analizarCuadruplos():
             asignarVal(resDir, res)
         elif codeOp == '<':
             res = regresarVal(opIzq) < regresarVal(opDer)
+            #print(regresarVal(opIzq), regresarVal(opDer), res)
             asignarVal(resDir, res)
         elif codeOp == '!=':
             res = regresarVal(opIzq) != regresarVal(opDer)
             asignarVal(resDir, res)
+        elif codeOp == '&&':
+            res = regresarVal(opIzq) and regresarVal(opDer)
+            asignarVal(resDir, res)
+        elif codeOp == '||':
+            res = regresarVal(opIzq) or regresarVal(opDer)
+            asignarVal(resDir, res)
         elif codeOp == '=':
-            res = regresarVal(resDir)
+            res = regresarVal(opIzq)
             asignarVal(resDir, res)
         elif codeOp == '=':
             res = regresarVal(opIzq)
             asignarVal(resDir, res)
         elif codeOp == "gotof":
             if regresarVal(opIzq) == False:
-                insPointer = int(resDir)
+                insPointer = int(resDir) - 1
         elif codeOp == "goto":
-            insPointer = int(resDir)
+            insPointer = int(resDir) - 1
         elif codeOp == "print":
             print(regresarVal(resDir))
         elif codeOp == "read":
@@ -144,8 +167,8 @@ def analizarCuadruplos():
            asignarVal(resDir, inp)
         elif codeOp == "addArray":
             nuevaDir = regresarVal(opIzq) + int(opDer)
-            res = regresarVal(nuevaDir)
-            asignarVal(resDir, res)
+            #res = regresarVal(nuevaDir)
+            asignarVal(resDir, nuevaDir)
         elif codeOp == "verify": 
             if regresarVal(resDir) > int(opIzq):
                 print("El indice del arreglo es mayor al declarado")
@@ -167,12 +190,12 @@ def analizarCuadruplos():
             #tempDic = Memoria(dirFunciones["main"]["numTempInt"]
             memLocal = nuevaMemLocal
             memTemp = nuevaMemTemp
-            nuevoInsPointer = insPointer + 1
+            pilaInsPointer.append(insPointer)
             insPointer = dirFunciones[opIzq]["cuad"] - 1
         elif codeOp == "Endfunc":
             memLocal = pilaMemLocal.pop()
             memTemp = pilaMemTemp.pop()
-            insPointer = nuevoInsPointer
+            insPointer = pilaInsPointer.pop()
         insPointer += 1
         
         

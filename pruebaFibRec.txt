@@ -1,0 +1,23 @@
+program foreveralone;
+var
+    int numero, i, Arreglo[120];
+    float prueba;
+
+func int fibonacci(int n){
+    if((n == 0) || (n==1)) then {
+        return(1);
+    }
+    else{
+        return(fibonacci(n-1) + fibonacci(n-2));
+    }
+}
+
+main(){
+    while(numero <= 1) do{
+        print("Introduce un numero mayor que 1");
+        read(numero);
+    }
+    from i = 0 to numero + 1 do{
+        print(fibonacci(i));
+    }
+}

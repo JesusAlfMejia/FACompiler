@@ -1,0 +1,19 @@
+program Fibonacci;
+var int numero, fibo1, fibo2, i;
+
+main(){
+    numero = 0;
+    while(numero <= 1) do{
+        print("Introduce un numero mayor que 1");
+        read(numero);
+    }
+    print("Los", numero, "primeros numeros de la seria de Fibonacci son:");
+    fibo1 = 0;
+    fibo2 = 1;
+    print(fibo1);
+    from i=2 to numero+1 do{
+        print(fibo2);
+        fibo2 = fibo1 + fibo2;
+        fibo1 = fibo2 - fibo1;
+    }
+}
