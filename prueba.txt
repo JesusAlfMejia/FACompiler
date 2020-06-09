@@ -17,6 +17,7 @@ var int i;
     }
 }
 
+
 func void inicia(int y)
 var int x;
 {
@@ -29,7 +30,7 @@ var int x;
 
 main(){
     read(p); j =p *2;
-    inicia(p);
+    fact(p);
     from i=0 to 9 do
         { Arreglo[i] = Arreglo[i] * fact(Arreglo [i] - p);}
     from i=0 to 9 do

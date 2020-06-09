@@ -53,12 +53,12 @@ class DirFunciones(object):
 
     def printTodo(self):
         for funciones in self.diccionario:
-            print("NombreFunc:", funciones, "Tipo", self.diccionario[funciones]["returnType"], "paramTable", self.diccionario[funciones]["paramTable"],
-            "numberParams", self.diccionario[funciones]["numberParams"], "numLocalInt", self.diccionario[funciones]["numLocalInt"], 
-            "numLocalFloat", self.diccionario[funciones]["numLocalFloat"], "numLocalChar", self.diccionario[funciones]["numLocalChar"],
-            "actualCuad", self.diccionario[funciones]["actualCuad"], "numTempInt:", self.diccionario[funciones]["numTempInt"],
-            "numTempFloat:", self.diccionario[funciones]["numTempFloat"], "numTempChar:", self.diccionario[funciones]["numTempChar"],
-            "numTempBool:", self.diccionario[funciones]["numTempBool"],)
+            #print("NombreFunc:", funciones, "Tipo", self.diccionario[funciones]["returnType"], "paramTable", self.diccionario[funciones]["paramTable"],
+            #"numberParams", self.diccionario[funciones]["numberParams"], "numLocalInt", self.diccionario[funciones]["numLocalInt"], 
+            #"numLocalFloat", self.diccionario[funciones]["numLocalFloat"], "numLocalChar", self.diccionario[funciones]["numLocalChar"],
+            #"actualCuad", self.diccionario[funciones]["actualCuad"], "numTempInt:", self.diccionario[funciones]["numTempInt"],
+            #"numTempFloat:", self.diccionario[funciones]["numTempFloat"], "numTempChar:", self.diccionario[funciones]["numTempChar"],
+            #"numTempBool:", self.diccionario[funciones]["numTempBool"],)
             self.diccionario[funciones]["varTable"].printVariables()
 
     def buscarVariable(self, name, nombreFuncion):
@@ -122,3 +122,27 @@ class DirFunciones(object):
 
     def obtenerTipoRetorno(self, nombreFunc):
         return self.diccionario[nombreFunc]["returnType"]
+
+    def exportarFunciones(self, filename):
+        f= open(filename,"a+")
+        f.write("DirFunciones:\n")
+        for name in self.diccionario:
+            funcString = str(name) + "~" + str(self.diccionario[name]["returnType"]) + "~" + str(self.diccionario[name]["actualCuad"]) + "~" + str(self.diccionario[name]["numLocalInt"]) + "~" + str(self.diccionario[name]["numLocalFloat"]) + "~" + str(self.diccionario[name]["numLocalChar"]) + "~" + str(self.diccionario[name]["numTempInt"]) + "~" + str(self.diccionario[name]["numTempFloat"]) + "~" + str(self.diccionario[name]["numTempChar"]) + "~" + str(self.diccionario[name]["numTempBool"]) + "~"
+            funcString+="["
+            contInt = 10000
+            contFloat = 13000
+            contChar = 16000
+            for param in self.diccionario[name]["paramTable"]:
+                if param != None:
+                    if param == "int":
+                        funcString += str(contInt) + ","
+                        contInt += 1
+                    elif param == "float":
+                        funcString += str(contFloat) + ","
+                        contFloat += 1
+                    elif param == "char":
+                        funcString += str(contChar) + ","
+                        contChar += 1
+            funcString += "]" + "\n"
+            f.write(funcString)
+        f.close() 

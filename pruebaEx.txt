@@ -1,0 +1,17 @@
+program foreveralone;
+var
+    int i, j, p;
+    int Arreglo[10], OtroArreglo[10];
+    float valor;
+
+func int leer(int k){
+    print("Ingresa el valor de k");
+    read(k);
+    print("K es igual a", k);
+    return(k);
+}
+
+main(){
+    i = 0;
+    i =leer(i);
+}

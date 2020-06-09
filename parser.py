@@ -45,7 +45,7 @@ pilaLlamadasFuncion = []
 
 def p_PROGRAMA(p):
     '''
-    PROGRAMA : crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F PRINCIPAL printTodo
+    PROGRAMA : crearFuncGlobal PROGRAM NAME SEMICOLON scopeGlobal VARS F agregarLocalVarGlobal PRINCIPAL
     F : FUNCION F
     | empty
     '''
@@ -128,7 +128,7 @@ def p_TIPO_FUNCION(p):
 
 def p_PRINCIPAL(p):
     '''
-    PRINCIPAL : MAIN LPAREN crearFuncMain RPAREN CUERPO
+    PRINCIPAL : MAIN LPAREN crearFuncMain RPAREN CUERPO terminarFunc
     '''
 
 def p_VARIABLE(p):
@@ -174,7 +174,7 @@ def p_ASIGNACION(p):
 
 def p_LLAMADA(p):
     '''
-    LLAMADA : NAME verificarFunc LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
+    LLAMADA : NAME verificarFuncVoid LPAREN meterFondoFalso generarEra E4 verificarParam RPAREN quitarFondoFalso generarGosub SEMICOLON
     E4 : EXP generarParam
     | EXP generarParam COMMA E4
     | empty
@@ -297,7 +297,6 @@ def p_generarGosub(p):
     variable = directorioFunc.buscarVariable(nombreFuncion, "global")
     dirVariable = variable["dir"]
     nuevaDir = 0
-    print("El return de", nombreFuncion, "es", tieneReturn)
     if tieneReturn == True:
         if tipoFuncionLeido == "int":
             nuevaDir = dicDirecciones["tempInt"].obtenerDir()
@@ -310,7 +309,6 @@ def p_generarGosub(p):
             sys.exit()
         cuadruplos.generarCuad("=", dirVariable, -1, nuevaDir)
         pilaOp.append(nuevaDir)
-        print("pilaop:", pilaOp)
         pilaTipos.append(tipoFuncionLeido)
 
 def p_verificarLlamada(p):
@@ -319,7 +317,6 @@ def p_verificarLlamada(p):
     global pilaLlamadasFuncion
     global tieneReturn
     nombreFuncion = pilaLlamadasFuncion[-1]
-    print(pilaPoper)
     if pilaPoper and tieneReturn == False:
         print("La funcion", nombreFuncion,"es de tipo void y no puede ser asignada en linea", p.lineno(0))
         sys.exit()
@@ -355,7 +352,7 @@ def p_generarParam(p):
         sys.exit()
     else:
         dirParamCounter[nombreFuncion] += 1
-        cuadruplos.generarCuad("parameter", argumento, -1, dirParamCounter[nombreFuncion])
+        cuadruplos.generarCuad("parameter", argumento, nombreFuncion, dirParamCounter[nombreFuncion])
 
 def p_generarEra(p):
     ''' generarEra : '''
@@ -380,6 +377,24 @@ def p_verificarFunc(p):
     tipoFuncionLeido = directorioFunc.obtenerTipoRetorno(nombreFuncion)
     if tipoFuncionLeido != "void":
         tieneReturn = True
+
+def p_verificarFuncVoid(p):
+    '''verificarFuncVoid : '''
+    global directorioFunc
+    global pilaLlamadasFuncion
+    global tipoFuncionLeido
+    global tieneReturn
+    pilaLlamadasFuncion.append(p[-1])
+    nombreFuncion = pilaLlamadasFuncion[-1]
+    if tipoFuncionLeido != "void":
+        print("La funcion", nombreFuncion, "tiene un valor de retorno y necesita ser asignado en linea", p.lineno(0))
+        sys.exit()
+    if directorioFunc.funcionExiste(nombreFuncion) == False:
+        print("Syntax error: La funcion", nombreFuncion, "no existe")
+        sys.exit()
+    tipoFuncionLeido = directorioFunc.obtenerTipoRetorno(nombreFuncion)
+    if tipoFuncionLeido != "void":
+        tieneReturn = True
     #print("El tipo de funcion leido es", nombreFuncion, tipoFuncionLeido)
 
 def p_terminarFunc(p):
@@ -395,7 +410,8 @@ def p_terminarFunc(p):
         sys.exit()
     
     tieneReturn = False
-    cuadruplos.generarCuad("Endfunc", -1, -1, -1)
+    if nombreFuncion != "main":
+        cuadruplos.generarCuad("Endfunc", -1, -1, -1)
     directorioFunc.calcularTemporales(nombreFuncion, dicDirecciones["tempInt"].calcularTam(), "int")
     directorioFunc.calcularTemporales(nombreFuncion, dicDirecciones["tempFloat"].calcularTam(), "float")
     directorioFunc.calcularTemporales(nombreFuncion, dicDirecciones["tempChar"].calcularTam(), "char")
@@ -412,6 +428,13 @@ def p_agregarLocalVar(p):
     global cuadruplos
     directorioFunc.calcularLocales(nombreFuncion)
     directorioFunc.agregarDir(nombreFuncion, cuadruplos.contador)
+
+def p_agregarLocalVarGlobal(p):
+    ''' agregarLocalVarGlobal : '''
+    global directorioFunc
+    global nombreFuncion
+    global cuadruplos
+    directorioFunc.calcularLocales("global")
 
 def p_agregarParamTable(p):
     '''agregarParamTable : '''
@@ -452,12 +475,8 @@ def p_verificarArreglo(p):
     aux1 = pilaOp.pop()
     tipo = pilaTipos.pop()
     nuevaDir = dicDirecciones["tempInt"].obtenerDir()
-    #dirArray = str(dirArray)
-    #dirArray = '(' + dirArray + ')'
     cuadruplos.generarCuad("addArray", aux1, dirArray, nuevaDir)
-    #print("nuevaDir:",nuevaDir)
     pilaOp.append(nuevaDir)
-    #print("pilaDeOperandos:", pilaOp)
     pilaTipos.append(tipoArray)
 
 def p_declararArray(p):
@@ -689,8 +708,6 @@ def p_gotoElse(p):
     cuadruplos.generarCuad("goto",-1,-1,-1)
     falso = pilaSaltos.pop()
     pilaSaltos.append(cuadruplos.contador - 1)
-    #print(cuadruplos.contador)
-    #cuadruplos.printCuads()
     cuadruplos.rellenar(falso, cuadruplos.contador)
 
 def p_meterFondoFalso(p):
@@ -751,10 +768,10 @@ def p_popReturn(p):
     if tipoFuncionLeido != elemTipo:
         print("Type mismatch: El elemento retornado es diferente al tipo de función declarada")
         sys.exit()
-    cuadruplos.generarCuad("return", -1, -1, elem)
     variable = directorioFunc.buscarVariable(nombreFuncion, "global")
     dirVariable = variable["dir"]
-    cuadruplos.generarCuad("=", elem, -1, dirVariable)
+    cuadruplos.generarCuad("return", elem, -1, dirVariable)
+    #cuadruplos.generarCuad("=", elem, -1, dirVariable)
 
 def p_popBool(p):
     '''popBool : '''
@@ -813,7 +830,6 @@ def p_popIgual(p):
             tipo_izq = pilaTipos.pop()
             tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
             if  tipoRes == "error":
-                print(op, opdo_izq, opdo_der, tipo_izq, tipo_der, tipoRes)
                 print("Type mismatch error: Se esta asignando un tipo de variable diferente a la declarada")
                 sys.exit()
             nuevaDir = 0
@@ -943,8 +959,10 @@ def p_crearFuncMain(p):
     '''crearFuncMain : '''
     global directorioFunc
     global nombreFuncion
+    global cuadruplos
     nombreFuncion = "main"
     directorioFunc.agregarFuncion(nombreFuncion, "void")
+    directorioFunc.agregarDir(nombreFuncion, cuadruplos.contador)
 
 def p_agregarFunc(p):
     ''' agregarFunc : '''
@@ -979,7 +997,6 @@ def p_agregarVariables(p):
     global directorioFunc
     global listaVariables
     global nombreFuncion
-    print(listaVariables)
     resultado = directorioFunc.agregarVariables(nombreFuncion, listaVariables)
     if resultado != "OK":
         print("Ya existe una variable con el nombre", resultado)
@@ -998,7 +1015,10 @@ def p_printTodo(p):
     directorioFunc.printTodo()
     cuadruplos.printCuads()
     tablaConstantes.printConstantes()
-    f= open("codigo.obj","w+")
+    filename = "codigo.obj"
+    cuadruplos.exportarCuad(filename)
+    tablaConstantes.exportarConstantes(filename)
+    directorioFunc.exportarFunciones(filename)
     
 
 def p_agregarVarLista(p):
@@ -1060,9 +1080,9 @@ parser = yacc.yacc()
     data = file.read().replace('\n', '') """
 
 
-filename = "prueba.txt"
+filename = sys.argv[1]
 
-f = open('prueba.txt','r')
+f = open(filename,'r')
 data = f.read()
 f.close()
 

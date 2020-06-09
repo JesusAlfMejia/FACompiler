@@ -15,3 +15,11 @@ class Cuadruplo:
 
     def rellenar(self, cont, res):
         self.quad[cont][3] = res
+
+    def exportarCuad(self, filename):
+        f= open(filename,"w+")
+        f.write("Cuadruplos:\n")
+        for i in self.quad:
+            quadString = str(i[0]) + "~" + str(i[1]) + "~" + str(i[2]) + "~" + str(i[3]) + "\n"
+            f.write(quadString)
+        f.close() 

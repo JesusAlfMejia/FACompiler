@@ -27,3 +27,11 @@ class TablaConstantes(object):
             return self.diccionario[elem]["dir"]
         else:
             return "ERROR"
+
+    def exportarConstantes(self, filename):
+        f= open(filename,"a+")
+        f.write("TablaConstantes:\n")
+        for name in self.diccionario:
+            cteString = str(name) + "~" + str(self.diccionario[name]["type"]) + "~" + str(self.diccionario[name]["dir"]) + "\n"
+            f.write(cteString)
+        f.close() 

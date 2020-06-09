@@ -1,0 +1,21 @@
+Cuadruplos:
+print~-1~-1~40000
+read~-1~-1~10000
+print~-1~-1~40001
+print~-1~-1~10000
+return~10000~-1~1023
+Endfunc~-1~-1~-1
+=~31000~-1~1000
+era~leer~-1~-1
+parameter~1000~leer~1
+gosub~leer~-1~0
+=~1023~-1~19001
+=~19001~-1~1000
+TablaConstantes:
+"Ingresa el valor de k"~string~40000
+"K es igual a"~string~40001
+0~int~31000
+DirFunciones:
+global~void~0~24~1~0~0~0~0~0~[]
+leer~int~0~1~0~0~0~0~0~0~[10000,]
+main~void~6~0~0~0~3~0~0~0~[]
