@@ -1,46 +1,16 @@
 program foreveralone; 
-var
-    int i, j, p;
-    int Arreglo[10], OtroArreglo[10];
-    float valor;
-
-
-func int fact(int j)
 var int i;
-{
-    i = j - j * j;
-    if(j == 1) then {
-        return(j);
+
+func void calificar(int x){
+    if(x >= 70) then{
+        print("Calificacion aprobatoria");
     }
     else{
-        return(j * fact(j-1));
+        print("Calificacion reprobatoria");
     }
-}
-
-func void inicia(int y)
-var int x;
-{
-    x = j = 0;
-    while(x<11) do
-    {
-        Arreglo[x] = y * x;
-        x = x + 1;}
 }
 
 main(){
-    read(p); j =p *2;
-    inicia(p * j - 5);
-    from i=0 to 9 do
-        { Arreglo[i] = Arreglo[i] * fact(Arreglo [i] - p);}
-    from i=0 to 9 do
-        {OtroArreglo[i] = Arreglo[i] - p;}
-    while(i>=0) do
-        { print("resultado", Arreglo[i], fact(i+2) * valor);
-            i = i - 1;
-        }
-    while (i < 10) do
-        {
-            print("Otros datos", OtroArreglo[i], p, i + OtroArreglo[i]);
-            i = i + 1;
-        }
+    read(i);
+    calificar(i);
 }

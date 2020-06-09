@@ -53,6 +53,7 @@ def p_PROGRAMA(p):
 def p_VARS(p):
     '''
     VARS : borrarListaVar VAR V1
+    | empty
     '''
     
 
@@ -77,9 +78,7 @@ def p_V3(p):
 
 def p_FUNCION(p):
     '''
-    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN V4 agregarLocalVar CUERPO terminarFunc 
-    V4 : VARS
-    | empty
+    FUNCION : FUNC TIPO_FUNCION NAME agregarFunc LPAREN borrarListaVar scopeLocal PARAMS agregarParamTable agregarVariables RPAREN VARS agregarLocalVar CUERPO terminarFunc 
     '''
 
 def p_PARAMS(p):
