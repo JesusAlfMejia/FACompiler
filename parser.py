@@ -304,7 +304,7 @@ def p_generarGosub(p):
         elif tipoFuncionLeido == "char":
             nuevaDir = dicDirecciones["tempChar"].obtenerDir()
         if nuevaDir == -1:
-            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea:", p.lineno(0))
             sys.exit()
         cuadruplos.generarCuad("=", dirVariable, -1, nuevaDir)
         pilaOp.append(nuevaDir)
@@ -371,7 +371,7 @@ def p_verificarFunc(p):
     pilaLlamadasFuncion.append(p[-1])
     nombreFuncion = pilaLlamadasFuncion[-1]
     if directorioFunc.funcionExiste(nombreFuncion) == False:
-        print("Syntax error: La funcion", nombreFuncion, "no existe")
+        print("Syntax error: La funcion", nombreFuncion, "no existe en linea:", p.lineno(0))
         sys.exit()
     tipoFuncionLeido = directorioFunc.obtenerTipoRetorno(nombreFuncion)
     if tipoFuncionLeido != "void":
@@ -389,7 +389,7 @@ def p_verificarFuncVoid(p):
         print("La funcion", nombreFuncion, "tiene un valor de retorno y necesita ser asignado en linea", p.lineno(0))
         sys.exit()
     if directorioFunc.funcionExiste(nombreFuncion) == False:
-        print("Syntax error: La funcion", nombreFuncion, "no existe")
+        print("Syntax error: La funcion", nombreFuncion, "no existe en linea:", p.lineno(0))
         sys.exit()
     tipoFuncionLeido = directorioFunc.obtenerTipoRetorno(nombreFuncion)
     if tipoFuncionLeido != "void":
@@ -405,7 +405,7 @@ def p_terminarFunc(p):
     global nombreFuncion
     global dicDirecciones
     if tipoFuncionLeido != "void" and tieneReturn == False:
-        print("Syntax error: La funcion", nombreFuncion, "necesita de un estatuto return")
+        print("Syntax error: La funcion", nombreFuncion, "necesita de un estatuto return en linea", p.lineno(0))
         sys.exit()
     
     tieneReturn = False
@@ -454,7 +454,7 @@ def p_guardarArreglo(p):
     variable = directorioFunc.buscarVariableDir(id, nombreFuncion)
     idArray = variable["isArray"]
     if idArray == False:
-        print("No se puede indexar una variable que no fue declarada como un arreglo")
+        print("No se puede indexar una variable que no fue declarada como un arreglo en linea", p.lineno(0))
         sys.exit()
     else:
         nombreVar = variable
@@ -505,7 +505,7 @@ def p_declararArray(p):
         elif tipoVarLeido == "char":
             nuevaDir = dicDirecciones["localChar"].aumentarDir(tamArray -1)
     if nuevaDir == -1:
-        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea:", p.lineno(0))
         sys.exit()
 
 
@@ -533,14 +533,14 @@ def p_crearCompFrom(p):
     tipoVar = pilaTipos.pop()
     tipoRes = cuboSem.obtenerSem(tipoVar, tipoLimit, ">")
     if tipoRes == "error":
-        print("Type mismatch: Las variables en el from no son compatibles")
+        print("Type mismatch: Las variables en el from no son compatibles en linea:", p.lineno(0))
         sys.exit()
     else:
         nuevaDir = 0
         if tipoRes == "bool":
             nuevaDir = dicDirecciones["tempBool"].obtenerDir()
         if nuevaDir == -1:
-            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea", p.lineno(0))
             sys.exit()
         cuadruplos.generarCuad("<", fromVar, limitante, nuevaDir)
         pilaOp.append(nuevaDir)
@@ -564,7 +564,7 @@ def p_sumarFrom(p):
     nuevaDir = 0
     tipoRes = cuboSem.obtenerSem(tipoFromVar, "int", "+")
     if tipoRes == "error":
-        print("Type mismatch: Las variables en el from no son compatibles")
+        print("Type mismatch: Las variables en el from no son compatibles en linea", p.lineno(0))
         sys.exit()
     else:
         if tipoRes == "int":
@@ -576,7 +576,7 @@ def p_sumarFrom(p):
         elif tipoRes == "bool":
             nuevaDir = dicDirecciones["tempBool"].obtenerDir()
         if nuevaDir == -1:
-            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+            print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea", p.lineno(0))
             sys.exit()
     cuadruplos.generarCuad("+", fromVar, constUno, nuevaDir)
     cuadruplos.generarCuad("=", nuevaDir, -1, fromVar)
@@ -674,7 +674,7 @@ def p_gotoIf(p):
     global cuadruplos
     expRes = pilaTipos.pop()
     if expRes != 'bool':
-        print("Type Mismatch error: La expresión asignada no es de tipo booleana")
+        print("Type Mismatch error: La expresión asignada no es de tipo booleana en linea:", p.lineno(0))
         sys.exit()
     else:
         res = pilaOp.pop()
@@ -767,7 +767,7 @@ def p_popReturn(p):
     elemTipo = pilaTipos.pop()
     tieneReturn = True
     if tipoFuncionLeido != elemTipo:
-        print("Type mismatch: El elemento retornado es diferente al tipo de funcion declarada")
+        print("Type mismatch: El elemento retornado es diferente al tipo de funcion declarada en linea", p.lineno(0))
         sys.exit()
     variable = directorioFunc.buscarVariable(nombreFuncion, "global")
     dirVariable = variable["dir"]
@@ -794,7 +794,7 @@ def p_popComp(p):
             tipo_izq = pilaTipos.pop()
             tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
             if  tipoRes == "error":
-                print("Type mismatch error: Los tipos de los operandos no son compatibles")
+                print("Type mismatch error: Los tipos de los operandos no son compatibles en linea:", p.lineno(0))
                 sys.exit()
             nuevaDir = 0
             if tipoRes == "int":
@@ -806,7 +806,7 @@ def p_popComp(p):
             elif tipoRes == "bool":
                 nuevaDir = dicDirecciones["tempBool"].obtenerDir()
             if nuevaDir == -1:
-                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea", p.lineno(0))
                 sys.exit()
             cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
             pilaOp.append(nuevaDir)
@@ -832,7 +832,7 @@ def p_popBool(p):
             tipo_izq = pilaTipos.pop()
             tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
             if  tipoRes == "error":
-                print("Type mismatch error: Los tipos de los operandos no son compatibles")
+                print("Type mismatch error: Los tipos de los operandos no son compatibles en linea", p.lineno(0))
                 sys.exit()
             nuevaDir = 0
             if tipoRes == "int":
@@ -844,7 +844,7 @@ def p_popBool(p):
             elif tipoRes == "bool":
                 nuevaDir = dicDirecciones["tempBool"].obtenerDir()
             if nuevaDir == -1:
-                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea", p.lineno(0))
                 sys.exit()
             cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
             pilaOp.append(nuevaDir)
@@ -869,7 +869,7 @@ def p_popIgual(p):
             tipo_izq = pilaTipos.pop()
             tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
             if  tipoRes == "error":
-                print("Type mismatch error: Se esta asignando un tipo de variable diferente a la declarada")
+                print("Type mismatch error: Se esta asignando un tipo de variable diferente a la declarada en linea:", p.lineno(0))
                 sys.exit()
             nuevaDir = 0
             if tipoRes == "int":
@@ -881,7 +881,7 @@ def p_popIgual(p):
             elif tipoRes == "bool":
                 nuevaDir = dicDirecciones["tempBool"].obtenerDir()
             if nuevaDir == -1:
-                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea", p.lineno(0))
                 sys.exit()
             cuadruplos.generarCuad(op, opdo_der, -1, opdo_izq)
             #pilaOp.append(nuevaDir)
@@ -906,7 +906,7 @@ def p_popMultDiv(p):
             tipo_izq = pilaTipos.pop()
             tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
             if  tipoRes == "error":
-                print("La muchacha no baila con el señor")
+                print("La muchacha no baila con el señor en linea:", p.lineno(0))
                 sys.exit()
             nuevaDir = 0
             if tipoRes == "int":
@@ -918,7 +918,7 @@ def p_popMultDiv(p):
             elif tipoRes == "bool":
                 nuevaDir = dicDirecciones["tempBool"].obtenerDir()
             if nuevaDir == -1:
-                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea", p.lineno(0))
                 sys.exit()
             cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
             pilaOp.append(nuevaDir)
@@ -943,7 +943,7 @@ def p_popSumaResta(p):
             tipo_izq = pilaTipos.pop()
             tipoRes = cuboSem.obtenerSem(tipo_izq, tipo_der, op)
             if  tipoRes == "error":
-                print("La muchacha no baila con el señor")
+                print("La muchacha no baila con el señor en linea", p.lineno(0))
                 sys.exit()
             nuevaDir = 0
             if tipoRes == "int":
@@ -955,7 +955,7 @@ def p_popSumaResta(p):
             elif tipoRes == "bool":
                 nuevaDir = dicDirecciones["tempBool"].obtenerDir()
             if nuevaDir == -1:
-                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+                print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea:", p.lineno(0))
                 sys.exit()
             cuadruplos.generarCuad(op, opdo_izq, opdo_der, nuevaDir)
             pilaOp.append(nuevaDir)
@@ -1013,13 +1013,13 @@ def p_agregarFunc(p):
     nombreFuncion = p[-1]
     resultado = directorioFunc.agregarFuncion(nombreFuncion, tipoFuncionLeido)
     if resultado == "global":
-        print("No se puede declarar una funcion con el nombre de global")
+        print("No se puede declarar una funcion con el nombre de global en linea:", p.lineno(0))
         sys.exit()
     elif resultado == "main":
-        print("No se puede declarar una funcion con el nombre de main")
+        print("No se puede declarar una funcion con el nombre de main", p.lineno(0))
         sys.exit()
     elif resultado != "OK":
-        print("Ya existe una funcion con el nombre ", resultado)
+        print("Ya existe una funcion con el nombre ", resultado, "en linea" , p.lineno(0))
         sys.exit()
     nuevaDir = 0
     if tipoFuncionLeido == "int":
@@ -1029,7 +1029,7 @@ def p_agregarFunc(p):
     elif tipoFuncionLeido == "char":
         nuevaDir = dicDirecciones["globalChar"].obtenerDir()
     if nuevaDir == -1:
-        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea", p.lineno(0))
         sys.exit()
     directorioFunc.agregarVariables("global", [[nombreFuncion, tipoFuncionLeido, nuevaDir]])
 
@@ -1040,7 +1040,7 @@ def p_agregarVariables(p):
     global nombreFuncion
     resultado = directorioFunc.agregarVariables(nombreFuncion, listaVariables)
     if resultado != "OK":
-        print("Ya existe una variable con el nombre", resultado)
+        print("Ya existe una variable con el nombre", resultado, "en linea:", p.lineno(0))
         sys.exit()
 
 def p_printFunciones(p):
@@ -1088,7 +1088,7 @@ def p_agregarVarLista(p):
         elif tipoVarLeido == "char":
             nuevaDir = dicDirecciones["localChar"].obtenerDir()
     if nuevaDir == -1:
-        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables")
+        print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea:", p.lineno(0))
         sys.exit()
     listaVariables.append([nombreVar, tipoVarLeido, nuevaDir])
     
