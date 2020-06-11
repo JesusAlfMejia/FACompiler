@@ -1,0 +1,29 @@
+program find;
+var int i, Arreglo[100], z;
+
+func char find(int y, int lon)
+var char boolVal;
+{
+    boolVal = 'F';
+    from i=0 to lon do{
+        if(Arreglo[i] == y)then{
+            boolVal = 'T';
+        }
+    }
+    return(boolVal);
+}
+
+main(){
+    from i=0 to 100 do{
+        Arreglo[i] = 1000 - i;
+    }
+    print("Ingresa entero a encontrar");
+    read(z);
+    if(find(z, 100) == 'T') then{
+        print("Se encontra el entero");
+    }
+    else{
+        print("No se encontro el entero");
+    }
+    
+}

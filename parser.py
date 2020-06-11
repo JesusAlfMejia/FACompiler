@@ -42,6 +42,7 @@ tieneReturn = False
 paramCounter = 0
 dirParamCounter = {}
 pilaLlamadasFuncion = []
+pilaCounter = []
 
 def p_PROGRAMA(p):
     '''
@@ -290,12 +291,15 @@ def p_generarGosub(p):
     global tipoFuncionLeido
     global pilaOp
     global pilaTipos
+    global pilaCounter
     nombreFuncion = pilaLlamadasFuncion.pop()
     dirInicial = directorioFunc.obtenerDireccion(nombreFuncion)
     cuadruplos.generarCuad("gosub", nombreFuncion, -1, dirInicial)
     variable = directorioFunc.buscarVariable(nombreFuncion, "global")
     dirVariable = variable["dir"]
     nuevaDir = 0
+    if pilaCounter:
+        pilaCounter.pop()
     if tieneReturn == True:
         if tipoFuncionLeido == "int":
             nuevaDir = dicDirecciones["tempInt"].obtenerDir()
@@ -326,9 +330,10 @@ def p_verificarParam(p):
     global dirParamCounter
     global directorioFunc
     global pilaLlamadasFuncion
+    global pilaCounter
     nombreFuncion = pilaLlamadasFuncion[-1]
-    if directorioFunc.obtenerParam(nombreFuncion, dirParamCounter[nombreFuncion]) != None:
-        print("Syntax error: El número de parametros en la funcion", nombreFuncion, "no es el correcto en linea", p.lineno(0))
+    if directorioFunc.obtenerParam(nombreFuncion, pilaCounter[-1]) != None:
+        print("Syntax error: El numero de parametros en la funcion", nombreFuncion, "no es el correcto en linea", p.lineno(0))
         sys.exit()
 
 
@@ -339,28 +344,31 @@ def p_generarParam(p):
     global directorioFunc
     global pilaLlamadasFuncion
     global dirParamCounter
+    global pilaCounter
+    global cuadruplos
     nombreFuncion = pilaLlamadasFuncion[-1]
     argumento = pilaOp.pop()
     tipoArgumento = pilaTipos.pop()
     numParams = directorioFunc.obtenerNumParams(nombreFuncion)
-    if numParams < dirParamCounter[nombreFuncion] + 1:
-        print("Syntax error: El número de parametros en la funcion",nombreFuncion,"es mayor al requerido en linea", p.lineno(0))
+    if numParams < pilaCounter[-1] + 1:
+        print("Syntax error: El numero de parametros en la funcion",nombreFuncion,"es mayor al requerido en linea", p.lineno(0))
         sys.exit()
-    if directorioFunc.obtenerParam(nombreFuncion, dirParamCounter[nombreFuncion]) != tipoArgumento:
-        print("Type mismatch: El paramentro #", dirParamCounter[nombreFuncion]+1, "de la funcion", nombreFuncion, "es del tipo incorrecto en linea", p.lineno(0))
+    if directorioFunc.obtenerParam(nombreFuncion, pilaCounter[-1]) != tipoArgumento:
+        print("Type mismatch: El paramentro #", pilaCounter[-1]+1, "de la funcion", nombreFuncion, "es del tipo incorrecto en linea", p.lineno(0))
         sys.exit()
     else:
-        dirParamCounter[nombreFuncion] += 1
-        cuadruplos.generarCuad("parameter", argumento, nombreFuncion, dirParamCounter[nombreFuncion])
+        pilaCounter[-1] += 1
+        cuadruplos.generarCuad("parameter", argumento, nombreFuncion, pilaCounter[-1])
 
 def p_generarEra(p):
     ''' generarEra : '''
     global cuadruplos
     global dirParamCounter
     global pilaLlamadasFuncion
+    global pilaCounter
     nombreFuncion = pilaLlamadasFuncion[-1]
     cuadruplos.generarCuad("era", nombreFuncion, -1, -1)
-    dirParamCounter[nombreFuncion] = 0
+    pilaCounter.append(0)
 
 def p_verificarFunc(p):
     '''verificarFunc : '''
@@ -418,6 +426,7 @@ def p_terminarFunc(p):
     dicDirecciones["localInt"].calcularTam()
     dicDirecciones["localFloat"].calcularTam()
     dicDirecciones["localChar"].calcularTam()
+
     
 
 def p_agregarLocalVar(p):
@@ -745,6 +754,7 @@ def p_popPrint(p):
     global pilaOp
     global cuadruplos
     elem = pilaOp.pop()
+    tipo = pilaTipos.pop()
     cuadruplos.generarCuad("print", -1, -1, elem)
 
 def p_popRead(p):

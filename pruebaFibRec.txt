@@ -12,12 +12,11 @@ func int fibonacci(int n){
     }
 }
 
+
 main(){
     while(numero <= 1) do{
         print("Introduce un numero mayor que 1");
         read(numero);
     }
-    from i = 0 to numero + 1 do{
-        print(fibonacci(i));
-    }
+    print(fibonacci(numero));
 }

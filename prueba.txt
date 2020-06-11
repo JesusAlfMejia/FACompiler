@@ -5,17 +5,16 @@ var
     float valor;
 
 
-func int fact(int j)
-var int i;
-{
-    i = j + (p - j* j);
-    if(j == 1) then {
-        return(j);
+func int fact(int x){
+    print("Entra fact");
+    if((x == 0) || (x==1)) then {
+        return(1);
     }
     else{
-        return(j * fact(j-1));
+        return(x * fact(x - 1));
     }
 }
+
 
 
 func void inicia(int y)
@@ -29,8 +28,10 @@ var int x;
 }
 
 main(){
-    read(p); j =p *2;
-    fact(p);
+    read(p); 
+    j = p *2;
+    print(j);
+    print(fact(p));
     from i=0 to 9 do
         { Arreglo[i] = Arreglo[i] * fact(Arreglo [i] - p);}
     from i=0 to 9 do
