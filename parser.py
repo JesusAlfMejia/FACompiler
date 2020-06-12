@@ -192,8 +192,8 @@ def p_RETORNO(p):
 
 def p_LECTURA(p):
     '''
-    LECTURA : READ LPAREN V3 RPAREN SEMICOLON
-    V3 : VARIABLE popRead COMMA V3
+    LECTURA : READ LPAREN V4 RPAREN SEMICOLON
+    V4 : VARIABLE popRead COMMA V4
     | VARIABLE popRead
     '''
 
@@ -282,6 +282,8 @@ def p_empty(p):
     empty :
     '''
 #Puntos Neuralgicos
+
+#Crea el cuadruplo gosub y otro cuadruplo con el operador "=" donde se le asigna la dirección de la variable global con el nombre de la función a una dirección temporal
 def p_generarGosub(p):
     ''' generarGosub : '''
     global cuadruplos
@@ -314,6 +316,7 @@ def p_generarGosub(p):
         pilaOp.append(nuevaDir)
         pilaTipos.append(tipoFuncionLeido)
 
+#Verifica que llamada no sea de tipo void
 def p_verificarLlamada(p):
     '''verificarLlamada : '''
     global pilaPoper
@@ -324,7 +327,7 @@ def p_verificarLlamada(p):
         print("La funcion", nombreFuncion,"es de tipo void y no puede ser asignada en linea", p.lineno(0))
         sys.exit()
 
-
+#Verifica que el número de parametros asignados sea igual al de los que fueron declarados en la función
 def p_verificarParam(p):
     ''' verificarParam : '''
     global dirParamCounter
@@ -336,7 +339,7 @@ def p_verificarParam(p):
         print("Syntax error: El numero de parametros en la funcion", nombreFuncion, "no es el correcto en linea", p.lineno(0))
         sys.exit()
 
-
+#Verifica que los parametros sean del mismo tipo que con los que fueron declarados y que no sobrepase el número de posibles parametros
 def p_generarParam(p):
     ''' generarParam : '''
     global pilaOp
@@ -360,6 +363,7 @@ def p_generarParam(p):
         pilaCounter[-1] += 1
         cuadruplos.generarCuad("parameter", argumento, nombreFuncion, pilaCounter[-1])
 
+#Genera el cuadruplo era y agrega un contador a la pila de contadores de parametros
 def p_generarEra(p):
     ''' generarEra : '''
     global cuadruplos
@@ -370,6 +374,7 @@ def p_generarEra(p):
     cuadruplos.generarCuad("era", nombreFuncion, -1, -1)
     pilaCounter.append(0)
 
+#Verifica que la función no exista previamente y si tiene un tipo de retorno diferente a void setea la variable tieneReturn a True
 def p_verificarFunc(p):
     '''verificarFunc : '''
     global directorioFunc
@@ -385,6 +390,7 @@ def p_verificarFunc(p):
     if tipoFuncionLeido != "void":
         tieneReturn = True
 
+#Verifica que la función exista y que si la función tiene un valor de retorno entones debe estar asignada a alguna dirección
 def p_verificarFuncVoid(p):
     '''verificarFuncVoid : '''
     global directorioFunc
@@ -402,8 +408,8 @@ def p_verificarFuncVoid(p):
     tipoFuncionLeido = directorioFunc.obtenerTipoRetorno(nombreFuncion)
     if tipoFuncionLeido != "void":
         tieneReturn = True
-    #print("El tipo de funcion leido es", nombreFuncion, tipoFuncionLeido)
-
+    
+#Verifica que si la función es diferente a void que tenga un estatuto return y crea el cuadruplo Endfunc
 def p_terminarFunc(p):
     ''' terminarFunc : '''
     global tipoFuncionLeido
@@ -428,7 +434,7 @@ def p_terminarFunc(p):
     dicDirecciones["localChar"].calcularTam()
 
     
-
+#Agrega las variables locales que necesitará la función en ejecución 
 def p_agregarLocalVar(p):
     ''' agregarLocalVar : '''
     global directorioFunc
@@ -437,6 +443,7 @@ def p_agregarLocalVar(p):
     directorioFunc.calcularLocales(nombreFuncion)
     directorioFunc.agregarDir(nombreFuncion, cuadruplos.contador)
 
+#Calcula las variables globales que se necesitarán en la ejecución
 def p_agregarLocalVarGlobal(p):
     ''' agregarLocalVarGlobal : '''
     global directorioFunc
@@ -444,6 +451,7 @@ def p_agregarLocalVarGlobal(p):
     global cuadruplos
     directorioFunc.calcularLocales("global")
 
+#Agrega los parametros declarados a la función que se encuentra en el directorio de funciones
 def p_agregarParamTable(p):
     '''agregarParamTable : '''
     global listaVariables
@@ -451,6 +459,7 @@ def p_agregarParamTable(p):
     global nombreFuncion
     directorioFunc.agregarParamTable(nombreFuncion, listaVariables)
 
+#Verifica que la variable que se llama sea un arreglo 
 def p_guardarArreglo(p):
     '''guardarArreglo : '''
     global pilaOp
@@ -468,7 +477,7 @@ def p_guardarArreglo(p):
     else:
         nombreVar = variable
     
-
+#Agrega el cuadruplo de verify y de addArray
 def p_verificarArreglo(p):
     '''verificarArreglo : '''
     global cuadruplos
@@ -489,6 +498,7 @@ def p_verificarArreglo(p):
     pilaOp.append(nuevaDir)
     pilaTipos.append(tipoArray)
 
+#Agrega el array declarado a la función en el directorio de funciones
 def p_declararArray(p):
     ''' declararArray : '''
     global directorioFunc
@@ -517,7 +527,7 @@ def p_declararArray(p):
         print("Stack overflow: Sobrepasaste el espacio de memoria para las variables en linea:", p.lineno(0))
         sys.exit()
 
-
+#Añade 3 direcciones de variables a la pila de operandos para ser ejecutados por el from
 def p_agregarFrom(p):
     '''agregarFrom : '''
     global pilaOp
@@ -528,6 +538,7 @@ def p_agregarFrom(p):
         pilaOp.append(varFrom)
         pilaTipos.append(tipoVarFrom)
     
+#Agrega el cuadruplo < para verificar que la variable de from no sea mayor a la expresión escrita
 def p_crearCompFrom(p):
     '''crearCompFrom : '''
     global tipoVarLeido
@@ -555,7 +566,7 @@ def p_crearCompFrom(p):
         pilaOp.append(nuevaDir)
         pilaTipos.append(tipoRes)
         
-
+#Suma por 1 a la variable declarada en el from y genera los cuadruplos correspondientes
 def p_sumarFrom(p):
     '''sumarFrom : '''
     global cuadruplos
@@ -590,6 +601,7 @@ def p_sumarFrom(p):
     cuadruplos.generarCuad("+", fromVar, constUno, nuevaDir)
     cuadruplos.generarCuad("=", nuevaDir, -1, fromVar)
 
+#Agrega una constante entera a la tabla de constantes y lo añade a la pila de operandos
 def p_agregarConstInt(p):
     '''agregarConstInt : '''
     global pilaOp
@@ -606,6 +618,7 @@ def p_agregarConstInt(p):
         pilaOp.append(dirConstante)
         pilaTipos.append("int")
 
+#Agrega una constante flotante a la tabla de constantes y lo añade a la pila de operandos
 def p_agregarConstFloat(p):
     '''agregarConstFloat : '''
     global pilaOp
@@ -622,6 +635,7 @@ def p_agregarConstFloat(p):
         pilaOp.append(dirConstante)
         pilaTipos.append("float")
 
+#Agrega una constante caracter a la tabla de constantes y lo añade a la pila de operandos
 def p_agregarConstChar(p):
     '''agregarConstChar : '''
     global pilaOp
@@ -638,6 +652,7 @@ def p_agregarConstChar(p):
         pilaOp.append(dirConstante)
         pilaTipos.append("char")
 
+#Agrega una constante string a la tabla de constantes y lo añade a la pila de operandos
 def p_agregarConstString(p):
     '''agregarConstString : '''
     global pilaOp
@@ -654,26 +669,31 @@ def p_agregarConstString(p):
         pilaOp.append(dirConstante)
         pilaTipos.append("string")
 
+#Cambia la variable scopeActual a "global"
 def p_scopeGlobal(p):
     '''scopeGlobal : '''
     global scopeActual
     scopeActual = "global"
 
+#Cambia la variable scopeActual a "local"
 def p_scopeLocal(p):
     '''scopeLocal : '''
     global scopeActual
     scopeActual = "local"
 
+#Cambia la variable scopeActual a "temp"
 def p_scopeTemp(p):
     '''scopeTemp : '''
     global scopeActual
     scopeActual = "temp"
 
+#Cambia la variable scopeActual a "const"
 def p_scopeConst(p):
     '''scopeConst : '''
     global scopeActual
     scopeActual = "const"
 
+#Crea el cuadruplo gotof y añade el contador actual a la pila de saltos
 def p_gotoIf(p):
     '''gotoIf : '''
     global pilaPoper
@@ -690,6 +710,7 @@ def p_gotoIf(p):
         cuadruplos.generarCuad("gotof", res, -1, -1)
         pilaSaltos.append(cuadruplos.contador-1)
 
+#Rellena el cuadruplo con el ultimo numero que se encuentra en la pila de saltos
 def p_terminaGoto(p):
     '''terminarGoto : '''
     global pilaSaltos
@@ -697,11 +718,13 @@ def p_terminaGoto(p):
     final = pilaSaltos.pop()
     cuadruplos.rellenar(final, cuadruplos.contador)
 
+#Agrega el contador de cuadruplo actual a la pila de saltos
 def p_agregarWhile(p):
     ''' agregarWhile : '''
     global pilaSaltos
     pilaSaltos.append(cuadruplos.contador)
 
+#Crea el cuadruplo goto y lo rellena con los dos ultimos elementos de la pila de saltos
 def p_terminaWhile(p):
     '''terminarWhile : '''
     global pilaSaltos
@@ -711,6 +734,7 @@ def p_terminaWhile(p):
     cuadruplos.generarCuad("goto", -1, -1, retorno)
     cuadruplos.rellenar(final, cuadruplos.contador)
 
+#Crea el cuadruplo goto y lo rellena con el ultimo elemento de la pila de saltos
 def p_gotoElse(p):
     '''gotoElse : '''
     global pilaSaltos
@@ -720,11 +744,13 @@ def p_gotoElse(p):
     pilaSaltos.append(cuadruplos.contador - 1)
     cuadruplos.rellenar(falso, cuadruplos.contador)
 
+# Añade un fondo falso a la pila de operandos con el simbolo "("
 def p_meterFondoFalso(p):
     '''meterFondoFalso : '''
     global pilaPoper
     pilaPoper.append('(')
 
+#Elimina el fondo falso de la pila de operandos
 def p_quitarFondoFalso(p):
     '''quitarFondoFalso : '''
     global pilaPoper
@@ -734,6 +760,7 @@ def p_quitarFondoFalso(p):
     if topPoper == '(':
         pilaPoper.pop()
 
+#Agrega un elemento a la pila de operandos y verifica que la variable haya sido declarada
 def p_agregarPilaOp(p):
     '''  agregarPilaOp : '''
     global directorioFunc
@@ -749,6 +776,7 @@ def p_agregarPilaOp(p):
         print("La variable", varName, "no ha sido declarada en linea", p.lineno(0))
         sys.exit()
 
+#Crea el cuadruplo print
 def p_popPrint(p):
     '''popPrint : '''
     global pilaOp
@@ -757,6 +785,7 @@ def p_popPrint(p):
     tipo = pilaTipos.pop()
     cuadruplos.generarCuad("print", -1, -1, elem)
 
+#Crea el cuadruplo read
 def p_popRead(p):
     '''popRead : '''
     global pilaOp
@@ -764,6 +793,7 @@ def p_popRead(p):
     elem = pilaOp.pop()
     cuadruplos.generarCuad("read", -1, -1, elem)
 
+#Crea el cuadruplo return
 def p_popReturn(p):
     '''popReturn : '''
     global pilaOp
@@ -784,6 +814,7 @@ def p_popReturn(p):
     cuadruplos.generarCuad("return", elem, -1, dirVariable)
     #cuadruplos.generarCuad("=", elem, -1, dirVariable)
 
+#Crea el cuadruplo para los operadores && y || 
 def p_popComp(p):
     '''popComp : '''
     global pilaPoper
@@ -822,6 +853,7 @@ def p_popComp(p):
             pilaOp.append(nuevaDir)
             pilaTipos.append(tipoRes)
 
+#Crea el cuadruplo para las operadores booleanos
 def p_popBool(p):
     '''popBool : '''
     global pilaPoper
@@ -860,6 +892,7 @@ def p_popBool(p):
             pilaOp.append(nuevaDir)
             pilaTipos.append(tipoRes)
 
+#Crea el cuadruplo para el operador "="
 def p_popIgual(p):
     '''popIgual : '''
     global pilaPoper
@@ -897,6 +930,7 @@ def p_popIgual(p):
             #pilaOp.append(nuevaDir)
             #pilaTipos.append(tipoRes)
 
+#Crea el cuadruplo para los operadores "*" y "/"
 def p_popMultDiv(p):
     '''popMultDiv : '''
     global pilaPoper
@@ -934,6 +968,7 @@ def p_popMultDiv(p):
             pilaOp.append(nuevaDir)
             pilaTipos.append(tipoRes)
 
+#Crea el cuadruplo para los operadores "+" y "-"
 def p_popSumaResta(p):
     '''popSumaResta : '''
     global pilaPoper
@@ -991,12 +1026,13 @@ def p_meterSumaResta(p):
     global pilaPoper
     pilaPoper.append(p[-1])
 
+#Añade el operador leido a la pila Poper
 def p_meterOperador(p):
     ''' meterOperador : '''
     global pilaPoper
     pilaPoper.append(p[-1])
 
-
+#Crea la funcion global en el directorio de funciones
 def p_crearFuncGlobal(p):
     '''crearFuncGlobal : '''
     global directorioFunc
@@ -1004,6 +1040,7 @@ def p_crearFuncGlobal(p):
     nombreFuncion = "global"
     directorioFunc.agregarFuncion(nombreFuncion, "void")
 
+#Crea la funcion main en el directorio de funciones
 def p_crearFuncMain(p):
     '''crearFuncMain : '''
     global directorioFunc
@@ -1015,6 +1052,7 @@ def p_crearFuncMain(p):
     directorioFunc.agregarFuncion(nombreFuncion, "void")
     directorioFunc.agregarDir(nombreFuncion, cuadruplos.contador)
 
+#Agrega la función declarada al directorio de funciones y agrega una variable global con el mismo nombre
 def p_agregarFunc(p):
     ''' agregarFunc : '''
     global directorioFunc
@@ -1043,6 +1081,7 @@ def p_agregarFunc(p):
         sys.exit()
     directorioFunc.agregarVariables("global", [[nombreFuncion, tipoFuncionLeido, nuevaDir]])
 
+#Añade las variables que se encuentran en la lista de variables a la función correspondiente
 def p_agregarVariables(p):
     '''agregarVariables : '''
     global directorioFunc
@@ -1053,11 +1092,13 @@ def p_agregarVariables(p):
         print("Ya existe una variable con el nombre", resultado, "en linea:", p.lineno(0))
         sys.exit()
 
+#Imprime las funciones que se encuentra en el directorio de funciones
 def p_printFunciones(p):
     '''printFunciones : '''
     global directorioFunc
     directorioFunc.printFunciones()
 
+#Exporta todos los elementos de los cuadruplos, tabla de constantes y directorio de funciones al archivo codigo.obj
 def p_printTodo(p):
     '''printTodo : '''
     global directorioFunc
@@ -1071,7 +1112,7 @@ def p_printTodo(p):
     tablaConstantes.exportarConstantes(filename)
     directorioFunc.exportarFunciones(filename)
     
-
+#Agrega una variable declarada a la lista de variables
 def p_agregarVarLista(p):
     '''agregarVarLista : '''
     global listaVariables
@@ -1103,7 +1144,7 @@ def p_agregarVarLista(p):
     listaVariables.append([nombreVar, tipoVarLeido, nuevaDir])
     
 
-
+#Borra los elementos que se encuentran en la lista de variables
 def p_borrarListaVar(p):
     ''' borrarListaVar : '''
     global listaVariables
